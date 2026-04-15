@@ -10,7 +10,7 @@ export const langLabels: Record<Lang, string> = {
 export interface Translations {
   nav: {
     home: string;
-    what: string;
+    understanding: string;
     signs: string;
     story: string;
     tools: string;
@@ -26,6 +26,8 @@ export interface Translations {
     heroTitle: string;
     heroP1: string;
     heroP2: string;
+    heroP3: string;
+    ctaButton: string;
     card1Title: string;
     card1Desc: string;
     card2Title: string;
@@ -33,788 +35,720 @@ export interface Translations {
     card3Title: string;
     card3Desc: string;
   };
-  what: {
+  understanding: {
     title: string;
+    intro: string;
+    emotionalSkinTitle: string;
+    emotionalSkinDesc: string;
+    abandonmentTitle: string;
+    abandonmentDesc: string;
+    voidTitle: string;
+    voidDesc: string;
+    closingNote: string;
     clinicalTitle: string;
-    clinicalIntro: string;
-    symptoms: string[];
-    warningNote: string;
-    whyTitle: string;
-    whyIntro: string;
-    whyPoints: string[];
-    truthNote: string;
+    clinicalPoints: { title: string; desc: string }[];
   };
   signs: {
     title: string;
-    patternsTitle: string;
-    patterns: string[];
-    warningNote: string;
-    whatToDoTitle: string;
-    whatToDo: string[];
+    intro: string;
+    patterns: { title: string; desc: string }[];
+    closingNote: string;
   };
   story: {
     title: string;
+    subtitle: string;
+    quote: string;
     intro: string;
-    beginningTitle: string;
-    beginningText: string;
-    turnTitle: string;
-    turnText: string;
-    turnText2: string;
-    collapseTitle: string;
-    collapseText: string;
-    apologyTitle: string;
-    apologyText: string;
-    lessonTitle: string;
-    lessons: string[];
-    endNote: string;
+    bodyP1: string;
+    bodyP2: string;
+    bodyP3: string;
+    bodyP4: string;
+    bodyP5: string;
+    credit: string;
   };
   tools: {
     title: string;
-    diaryTitle: string;
-    diaryIntro: string;
-    diaryPlaceholder: string;
-    questionsTitle: string;
-    questionsIntro: string;
-    q1: string;
-    q1Desc: string;
-    q2: string;
-    q2Desc: string;
-    q3: string;
-    q3Desc: string;
-    boundaryPhraseTitle: string;
-    boundaryPhraseIntro: string;
-    boundaryTemplate: string;
-    boundaryExamples: string[];
+    intro: string;
+    validationTitle: string;
+    validationSituation: string;
+    validationWrong: string;
+    validationRight: string;
+    validationWhy: string;
+    trafficLightTitle: string;
+    redLabel: string;
+    redDesc: string;
+    yellowLabel: string;
+    yellowDesc: string;
+    greenLabel: string;
+    greenDesc: string;
+    breathingTitle: string;
+    breathingDesc: string;
+    communicationTitle: string;
+    communicationIntro: string;
+    commPoints: { title: string; desc: string }[];
+    dontDoTitle: string;
+    dontDoDesc: string;
   };
   boundaries: {
     title: string;
-    differenceTitle: string;
-    withoutLabel: string;
-    withLabel: string;
-    rows: [string, string][];
-    essentialTitle: string;
-    essentials: string[];
-    paradoxNote: string;
+    intro: string;
+    badTitle: string;
+    badExample: string;
+    badExplain: string;
+    goodTitle: string;
+    goodExample: string;
+    hardestTitle: string;
+    hardestDesc: string;
+    tipsTitle: string;
+    tips: { title: string; desc: string }[];
   };
   community: {
     title: string;
-    notAloneTitle: string;
-    notAloneIntro: string;
+    intro: string;
+    lettersTitle: string;
+    letters: { text: string; author: string }[];
+    resourcesTitle: string;
+    resourcesIntro: string;
     resources: string[];
-    whenToLeaveTitle: string;
-    whenToLeaveIntro: string;
-    whenToLeave: string[];
-    finalWarning: string;
-    epilogueTitle: string;
-    epilogueP1: string;
-    epilogueP2: string;
-    epilogueFinal: string;
+    selfCareTitle: string;
+    selfCareIntro: string;
+    selfCarePoints: { title: string; desc: string }[];
+    recoveryTitle: string;
+    recoveryIntro: string;
+    recoveryPoints: { title: string; desc: string }[];
+    conclusionTitle: string;
+    conclusionText: string;
+    conclusionFinal: string;
   };
   footer: {
-    createdFrom: string;
-    credit: string;
-    copyright: string;
+    line1: string;
+    line2: string;
+    line3: string;
   };
 }
 
 export const translations: Record<Lang, Translations> = {
+  // ───────────────────── ESPAÑOL ─────────────────────
   es: {
     nav: {
       home: "Inicio",
-      what: "¿Qué es TLP?",
+      understanding: "Entender el TLP",
       signs: "Señales",
-      story: "Nuestra Historia",
+      story: "Historia Real",
       tools: "Herramientas",
       boundaries: "Límites",
       community: "Comunidad",
     },
     header: {
       title: "ABRAZO",
-      subtitle: "Para quienes aman a alguien con Trastorno Límite de la Personalidad",
-      tagline: "Nacido del dolor. Construido con ternura. Para que otros entiendan.",
+      subtitle: "Para quienes aman a alguien con Trastorno Límite de la Personalidad (TLP)",
+      tagline: "Nacido del dolor. Construido con ternura. Para convertir el dolor en comprensión.",
     },
     home: {
-      heroTitle: "Amas a alguien que sufre. Y tú también sufres.",
-      heroP1: "Amas con todo el corazón. Pero cada día es diferente. Hay días de amor puro, de risas, de sentir que nada puede separarlos. Y hay días en que todo se rompe sin aviso — donde te conviertes en el enemigo sin saber por qué.",
-      heroP2: "Este sitio existe para ti. No para juzgar. No para diagnosticar. Sino para ofrecerte comprensión, herramientas, y la verdad más tierna que conozco: puedes amar profundamente a alguien y aun así necesitar soltar.",
-      card1Title: "Comprende",
-      card1Desc: "Entiende qué es TLP desde el corazón de quien ama a alguien que lo tiene.",
-      card2Title: "Reconoce patrones",
-      card2Desc: "Identifica lo que pasa sin culpar. Con compasión, nunca con juicio.",
-      card3Title: "Cuídate",
-      card3Desc: "Aprende a poner límites que honren tu amor y protejan tu paz.",
+      heroTitle: "Amas a alguien que sufre.",
+      heroP1: "Amas con incondicionalidad. Pero cada día es diferente. Algunos días es el amor más intenso que has sentido; otros días te sientes en una pesadilla de la que no sabes cómo despertar.",
+      heroP2: "No estás solo/a. Y no eres responsable de \"arreglar\" a la otra persona.",
+      heroP3: "Este sitio existe para ti. No para diagnosticar. No para juzgar. Existe para que entiendas qué está pasando, cómo protegerte con amor, y cómo soltar sin rencor.",
+      ctaButton: "Empieza a entender",
+      card1Title: "📚 Aprende",
+      card1Desc: "Entiende qué es TLP desde la perspectiva de quien lo ama. No una lista fría de síntomas, sino un mapa del territorio emocional.",
+      card2Title: "🌿 Reconoce patrones",
+      card2Desc: "Identifica comportamientos sin diagnosticar. Con compasión, no juicio. Para entender por qué reaccionas como reaccionas.",
+      card3Title: "💛 Protégete",
+      card3Desc: "Aprende límites que honren tu amor y tu salud mental. Porque cuidarte no es egoísmo, es la base para poder seguir estando ahí.",
     },
-    what: {
-      title: "¿Qué es el Trastorno Límite de la Personalidad?",
-      clinicalTitle: "Lo que dice la ciencia, dicho con el corazón",
-      clinicalIntro: "El TLP es un trastorno que causa un dolor inmenso — tanto a quien lo vive como a quien lo ama. Se caracteriza por:",
-      symptoms: [
-        "Miedo intenso al abandono — real o imaginado",
-        "Relaciones intensas pero inestables — idealización seguida de devaluación",
-        "Identidad inestable — no saben quiénes son realmente",
-        "Impulsividad que puede ser destructiva",
-        "Cambios emocionales rápidos — de amor extremo a rechazo en horas",
-        "Rabia intensa que puede sentirse desproporcionada",
-        "Un vacío crónico que nada parece llenar",
-        "En los peores momentos, autolesión o amenazas",
+    understanding: {
+      title: "Entendiendo el TLP",
+      intro: "Cuando amas a alguien con Trastorno Límite de la Personalidad, los manuales clínicos no son suficientes. No necesitas una lista fría de síntomas; necesitas saber por qué duele tanto y por qué te sientes tan confundido/a.",
+      emotionalSkinTitle: "El \"Tercer Grado Emocional\"",
+      emotionalSkinDesc: "Su piel emocional no tiene capa protectora. Sienten el mundo a 100 grados mientras los demás estamos a 25. Por eso una crítica suave puede sentirse para ellos como un ataque devastador.",
+      abandonmentTitle: "El Miedo al Abandono",
+      abandonmentDesc: "No es capricho. Es una alarma interna que suena constantemente gritando \"Te van a dejar\". Muchas de sus reacciones desproporcionadas no son contra ti, son contra ese miedo paralizante.",
+      voidTitle: "El Vacío",
+      voidDesc: "No es aburrimiento. Es un agujero negro existencial que intentan llenar con relaciones intensas, compras o ira. Tú no puedes llenar ese vacío, y liberarte de esa carga es el primer paso para poder ayudar de verdad.",
+      closingNote: "Aprender esto no es justificar el maltrato. Es entender el mapa del territorio en el que estás caminando.",
+      clinicalTitle: "Lo que dice la ciencia",
+      clinicalPoints: [
+        { title: "Inestabilidad Emocional", desc: "Las emociones son muy intensas y cambiantes, con patrones de idealización y devaluación en sus vínculos." },
+        { title: "Miedo al Abandono", desc: "Un miedo intenso y a menudo irracional a ser dejado de lado. Pueden reaccionar de forma desproporcionada ante una separación real o percibida." },
+        { title: "Pensamiento Dicotómico", desc: "El mundo se percibe en extremos (blanco o negro), sin apenas matices. Alguien puede ser maravilloso en un momento y despreciable al siguiente." },
+        { title: "Impulsividad", desc: "Tendencia a actuar sin pensar en las consecuencias, como una forma de regular el dolor emocional." },
       ],
-      warningNote: "Nada de esto es su culpa. Pero tu bienestar también importa. Ambas verdades coexisten.",
-      whyTitle: "¿Por qué aman así?",
-      whyIntro: "Alguien con TLP ama con una intensidad que puede ser abrumadora porque:",
-      whyPoints: [
-        "Necesitan validación constante para sentirse reales",
-        "Cargan un miedo existencial al abandono que viene de heridas antiguas",
-        "No pueden regular sus emociones — oscilan entre extremos",
-        "A veces confunden control con seguridad",
-        "No toleran la ambigüedad — eres todo bueno o todo malo",
-      ],
-      truthNote: "Pueden sentir amor genuino. Pueden sanar con terapia (DBT). Pero tu amor solo no es suficiente para curar su TLP. Eso no es tu fracaso — es la realidad.",
     },
     signs: {
-      title: "Señales que quizás reconoces",
-      patternsTitle: "Si ves estos patrones en los primeros meses:",
+      title: "Reconoce Patrones",
+      intro: "Quizás tu persona no tiene diagnóstico. Quizás solo sabes que la relación es una montaña rusa. Estos son patrones que suelen aparecer. Observa con compasión, no para etiquetar, sino para entender.",
       patterns: [
-        "\"Eres perfecto, eres mi salvación\" — muy rápido, muy intenso",
-        "Te pide constantemente que confirmes tu amor — y nunca es suficiente",
-        "Te ama profundamente... y horas después no siente nada por ti",
-        "Habla de futuro en semanas — matrimonio, hijos, para siempre",
-        "\"Si me amas, harías X\" — el amor como condición, no como regalo",
-        "Quiere que dejes a amigos o familia por él",
-        "Inconsistencias que no parecen maliciosas, pero confunden",
-        "Crisis emocionales extremas — amenazas, autolesión",
+        { title: "Idealización y Devaluación", desc: "Un día eres su salvación, su persona favorita en el universo. Al día siguiente, un pequeño desacuerdo te convierte en la peor persona del mundo." },
+        { title: "Hipersensibilidad a la Crítica", desc: "Te dice: \"Ya estás enfadado conmigo, ¿verdad?\" cuando tú solo estás cansado/a. Su radar para detectar el rechazo está calibrado al máximo." },
+        { title: "Miedo a la Soledad", desc: "No soportan estar a solas consigo mismos. Pueden enviar decenas de mensajes seguidos si no respondes en 10 minutos. No es control, es pánico." },
+        { title: "Autosabotaje", desc: "Justo cuando la relación va bien y hay paz, surge una pelea por algo mínimo. La estabilidad, para un cerebro TLP, a veces es más aterradora que el caos conocido." },
       ],
-      warningNote: "Si reconoces varios de estos signos, no significa que no merezca amor. Significa que su sanación no depende de ti. Y que mereces protegerte.",
-      whatToDoTitle: "¿Qué hacer si reconoces esto?",
-      whatToDo: [
-        "No huyas asustado. Pero tampoco cierres los ojos.",
-        "Habla con ternura: \"He notado que cambian tus sentimientos rápidamente. ¿Podemos hablar de esto juntos?\"",
-        "Sugiere terapia DBT — no como ultimátum, sino como puente hacia la paz.",
-        "Establece límites con amor desde el primer día.",
-        "Pregúntate honestamente: ¿Puedo amar a esta persona tal como es? ¿O estoy esperando que cambie?",
-      ],
+      closingNote: "Reconocer estos patrones no es etiquetar a nadie. Es darte permiso para entender lo que vives y buscar herramientas para navegarlo.",
     },
     story: {
-      title: "Nuestra Historia",
-      intro: "Esta historia es real. No es única. Es la danza que millones de personas bailan cada día — la del amor que duele, que confunde, que transforma.",
-      beginningTitle: "El comienzo",
-      beginningText: "Pedro vio en Thiago alguien a quien podía abrazar con todo su ser. Le dio casa, apoyo, empresa, defensa, amor sin condiciones. Durante un tiempo, Thiago lo idealizó. Fueron los días más luminosos de la vida de Pedro.",
-      turnTitle: "El giro",
-      turnText: "Cuando Pedro quiso profundizar la intimidad, Thiago sintió pánico. \"No confundas el vínculo,\" dijo. Pedro lo sintió como frialdad. Thiago lo sintió como invasión. Ambos tenían razón. Ambos tenían miedo.",
-      turnText2: "Pedro llenó el silencio con análisis. Thiago llenó el vacío trayendo a otros. El ciclo de idealización y devaluación ya había comenzado.",
-      collapseTitle: "El colapso",
-      collapseText: "Thiago hizo cosas que lastimaron profundamente a Pedro — acusaciones falsas, traiciones, manipulación. Pedro, herido y desesperado, respondió con crueldad — mensajes hirientes, palabras que no debería haber dicho. Ambos causaron daño desde sus propias heridas.",
-      apologyTitle: "Lo que Pedro necesita decir",
-      apologyText: "\"Thiago, te hice daño. Mis palabras fueron crueles y no tenían derecho de salir de mi boca. Lamento cada mensaje que te envié desde la rabia. Pero también necesito ser honesto: tú me hiciste daño primero, y profundo. Las acusaciones falsas, las traiciones, el rechazo después de haberlo dado todo — eso me rompió. No digo esto para justificarme. Lo digo porque ambos merecemos la verdad. Te perdono. Y me perdono. Y te dejo ir con amor.\"",
-      lessonTitle: "Lo que aprendimos",
-      lessons: [
-        "El amor incondicional NO es lo mismo que amor sin límites",
-        "No puedes salvar a alguien que no quiere ser salvado — y eso no es tu culpa",
-        "Tu generosidad puede ser percibida como control — sin que tú lo sepas",
-        "Sus acusaciones pueden contener su verdad emocional, aunque no sean la verdad objetiva",
-        "El análisis obsesivo es otra forma de no soltar",
-        "Soltar es el acto final de amor — el más difícil y el más tierno",
-      ],
-      endNote: "Pedro está aprendiendo a amar desde la distancia. Thiago está buscando su propia paz. No está \"bien\" — pero es honesto. Y la honestidad es donde empieza la sanación.",
+      title: "La Historia Real",
+      subtitle: "El origen de ABRAZO",
+      quote: "ABRAZO fue creado desde el dolor vivido de alguien que amó demasiado intensamente.",
+      intro: "El creador de ABRAZO no es psicólogo. Es una persona como tú. Conoció a alguien en un momento de sus vidas en que ambos buscaban un ancla. La conexión fue inmediata, magnética, de esas que te hacen creer en almas gemelas.",
+      bodyP1: "Durante meses, navegó entre el cielo y el infierno. Había fines de semana de risas, planes de futuro y una intimidad que nunca había sentido. Pero también había portazos, amenazas de ruptura semanales y un agotamiento emocional que lo dejaba vacío.",
+      bodyP2: "Esa persona no era \"mala\". Sufría.",
+      bodyP3: "Él no era \"débil\". Amaba.",
+      bodyP4: "La relación terminó. Se quedó con el corazón roto y mil preguntas sin respuesta: ¿Por qué pasó esto? ¿Fue mi culpa? ¿Se puede amar a alguien así sin destruirse?",
+      bodyP5: "De ese duelo nació ABRAZO. Decidió transmutar el dolor en sabiduría para que la siguiente persona que busque \"Cómo ayudar a mi pareja con TLP sin volverme loco\" encuentre un abrazo y no un juicio.",
+      credit: "Basado en experiencia real. Transmutado en sabiduría para otros.",
     },
     tools: {
-      title: "Herramientas con Ternura",
-      diaryTitle: "El Diario de Patrones",
-      diaryIntro: "Cada semana, escríbete a ti mismo con honestidad:",
-      diaryPlaceholder: "FECHA: ____\n\n1. ¿Cuándo me sentí invisible esta semana?\n   - ¿Qué hice para sentirme visible de nuevo?\n\n2. ¿Qué momentos pasaron de un extremo a otro?\n   - ¿Cómo respondí?\n\n3. ¿Intenté salvarlo? ¿O intenté salvarme a mí mismo?\n\n4. Mi verdadera necesidad esta semana fue: _____\n   - ¿La pedí? ¿O esperé que la adivinara?",
-      questionsTitle: "Las 3 Preguntas de Claridad",
-      questionsIntro: "Cuando todo se nubla, responde por escrito:",
-      q1: "¿Esto es su verdad o su síntoma?",
-      q1Desc: "Si dice \"No te amo,\" puede ser lo que siente en ese instante. No lo discutas. Reconócelo: \"Entiendo que así te sientes ahora.\"",
-      q2: "¿Puedo controlar esto?",
-      q2Desc: "Si no puedes: suelta con amor. Si puedes: actúa con ternura, no con control.",
-      q3: "¿Estoy salvando o estoy evitando mi propio dolor?",
-      q3Desc: "Esta es la pregunta más importante. Si es lo segundo, necesitas terapia propia — no una relación.",
-      boundaryPhraseTitle: "La Frase del Límite Amoroso",
-      boundaryPhraseIntro: "Cuando necesites un límite, usa esta estructura:",
-      boundaryTemplate: "\"Te amo. [LÍMITE]. Esto no cambia que te ame — cambia cómo puedo estar contigo.\"",
-      boundaryExamples: [
-        "\"Te amo. No voy a responder amenazas. Esto no cambia que te ame — cambia cómo puedo estar contigo.\"",
-        "\"Te amo. No voy a dejar a mi familia porque tú lo pidas. Esto no cambia que te ame.\"",
-        "\"Te amo. Voy a dejarte ir porque ambos necesitamos sanar. Esto no cambia que te ame — nunca dejará de ser cierto.\"",
+      title: "Herramientas para el Día a Día",
+      intro: "Amar a alguien con TLP requiere un nuevo lenguaje. No el de la lógica fría, sino el de la validación emocional.",
+      validationTitle: "1. Validación sin estar de acuerdo",
+      validationSituation: "Situación: Te grita: \"¡Odias estar conmigo, lo sé!\"",
+      validationWrong: "Reacción normal (que empeora todo): \"Eso no es verdad, estás exagerando, cálmate.\"",
+      validationRight: "Herramienta ABRAZO: \"Siento mucho que te estés sintiendo así ahora mismo. Debe ser horrible sentir que alguien a quien quieres te rechaza.\"",
+      validationWhy: "No confirmas que le odias; confirmas que su sentimiento es real y doloroso. Eso baja la temperatura de la crisis.",
+      trafficLightTitle: "2. La Técnica del Semáforo en Crisis",
+      redLabel: "🔴 Luz Roja — Crisis aguda",
+      redDesc: "No razonar. Solo decir: \"Estoy aquí. No me voy a ir. Cuando puedas respirar, hablamos.\"",
+      yellowLabel: "🟡 Luz Amarilla — Calma tensa",
+      yellowDesc: "Distraer con algo sensorial: un vaso de agua fría, una manta, salir al balcón 1 minuto.",
+      greenLabel: "🟢 Luz Verde — Tranquilidad",
+      greenDesc: "Es el momento de hablar del problema real, pero siempre desde el \"Yo\" y no desde el \"Tú\". \"Cuando sube la voz, yo me asusto y necesito un momento para mí.\"",
+      breathingTitle: "3. Respiración para ti",
+      breathingDesc: "Si sientes que te ahogas, usa la técnica 4-7-8: Inhala en 4 segundos, retén 7, exhala en 8. Repite 3 veces. Es para ti. Para no perder tu centro.",
+      communicationTitle: "Estrategias de Comunicación",
+      communicationIntro: "La comunicación es el pilar para manejar los momentos difíciles:",
+      commPoints: [
+        { title: "Validación Emocional", desc: "Reconocer y aceptar el sentimiento de la otra persona, sin que esto signifique que estés de acuerdo con su conducta." },
+        { title: "Escucha Activa", desc: "Estar plenamente presente, escuchar sin juzgar, sin minimizar su experiencia ni ofrecer soluciones no solicitadas." },
+        { title: "Comunicación No Violenta", desc: "Expresa tus propias necesidades sin atacar ni culpar, utilizando frases en primera persona (\"Yo me siento...\")." },
       ],
+      dontDoTitle: "Qué NO hacer",
+      dontDoDesc: "Ponerse a la defensiva, usar etiquetas o comentarios invalidantes (\"estás exagerando\") que pueden intensificar el conflicto.",
     },
     boundaries: {
       title: "Límites Compasivos",
-      differenceTitle: "¿Cuál es la diferencia?",
-      withoutLabel: "Sin Límites (Dañino)",
-      withLabel: "Con Límites (Amoroso)",
-      rows: [
-        ["\"Te doy TODO porque te amo\"", "\"Te doy lo que puedo sin perderme\""],
-        ["\"Si me amenazas, accedo\"", "\"Si hablas de hacerte daño, llamo a emergencias. Eso es amor.\""],
-        ["\"Espío para saber si me amas\"", "\"Te pregunto directamente qué necesitas\""],
-        ["\"Te humillo cuando duele\"", "\"Tomo distancia para no dañarnos\""],
-        ["\"Sacrifico todo por ti\"", "\"Te amo Y tengo una vida propia\""],
+      intro: "En el amor con TLP, o aprendes a poner límites o el vínculo te devora. El límite no es un castigo, es la valla que protege el jardín de tu relación para que no sea pisoteado.",
+      badTitle: "Límite Mal Puesto (Castigo)",
+      badExample: "\"Como me has gritado, me voy y no vuelvo en 3 días.\"",
+      badExplain: "Esto activa el miedo al abandono y desata una crisis mayor.",
+      goodTitle: "Límite Compasivo (Amor propio)",
+      goodExample: "\"Te quiero muchísimo, y justo porque te quiero y quiero que esto funcione, necesito salir a dar una vuelta de 20 minutos para calmarme. Cuando vuelva, si los dos estamos más tranquilos, podemos seguir hablando. No me voy de la relación, me voy de la discusión.\"",
+      hardestTitle: "El límite más difícil",
+      hardestDesc: "Hay un momento en que el límite compasivo es: \"No puedo ayudarte sin destruirme a mí mismo/a.\" Amar también es saber soltar. No por falta de amor, sino por exceso de respeto a tu propia vida.",
+      tipsTitle: "Claves para establecer límites",
+      tips: [
+        { title: "Sé Claro y Cariñoso", desc: "\"Te quiero y quiero escucharte, pero no puedo hacerlo si me gritas.\"" },
+        { title: "Sé Consistente", desc: "Una vez puesto, mantenlo. La consistencia genera seguridad y previsibilidad, algo que las personas con TLP necesitan profundamente." },
+        { title: "Diferencia Límites de Ultimátums", desc: "Los límites protegen tu bienestar (\"Necesito salir a caminar si la conversación sube de tono\"), mientras que los ultimátums controlan la conducta del otro." },
       ],
-      essentialTitle: "Los 5 Límites Esenciales",
-      essentials: [
-        "Límite emocional: \"Tu colapso no es mi responsabilidad. Puedo acompañarte, pero no salvarte.\"",
-        "Límite de tiempo: \"Te amo. Y también necesito tiempo para mí.\"",
-        "Límite de honestidad: \"No voy a prometerte algo que no puedo cumplir.\"",
-        "Límite de seguridad: \"Si hay amenazas, llamaré a profesionales. Eso es cuidarte de verdad.\"",
-        "Límite de verdad: \"No aceptaré acusaciones falsas como forma de control.\"",
-      ],
-      paradoxNote: "Cuando pones límites compasivos, puede sentirse como menos amor. En realidad, es el primer momento en que la otra persona siente la responsabilidad de su propio dolor. Y eso puede ser el inicio de su sanación.",
     },
     community: {
-      title: "No Estás Solo",
-      notAloneTitle: "Millones de personas aman a alguien con TLP",
-      notAloneIntro: "Hay comunidades y recursos que pueden ayudarte:",
+      title: "No Estás Solo/a",
+      intro: "Este rincón es para compartir lo que callas. Para soltar el peso de sentirte el único cuidador del mundo.",
+      lettersTitle: "Cartas a ABRAZO",
+      letters: [
+        { text: "Hoy pude poner un límite por primera vez. Estoy temblando, pero me siento un poco más yo.", author: "Ana" },
+        { text: "Entendí que cuando me insulta, no está hablando de mí, sino de su infierno interno. Sigue doliendo, pero ya no me lo creo.", author: "Carlos" },
+      ],
+      resourcesTitle: "Recursos Profesionales",
+      resourcesIntro: "ABRAZO no reemplaza la terapia.",
       resources: [
-        "BPDfamily.com — Comunidad para amigos y familia",
-        "NAMI.org — National Alliance on Mental Illness",
-        "Terapia de pareja informada en DBT",
-        "Grupos de apoyo locales (busca \"NAMI Family Support\")",
-        "Libros: \"I Hate You — Don't Leave Me\" (Krieger), \"The Buddha and Borderline\" (Kiera)",
+        "Busca profesionales especializados en Terapia Dialéctica Conductual (DBT) para tu ser querido.",
+        "Busca terapia individual para ti. Cuidar a alguien con TLP es un trabajo emocional de alto rendimiento.",
+        "BPDfamily.com — Comunidad para amigos y familia.",
+        "NAMI.org — National Alliance on Mental Illness.",
+        "Libros: \"I Hate You — Don't Leave Me\" (Krieger), \"The Buddha and Borderline\" (Kiera).",
       ],
-      whenToLeaveTitle: "Cuándo alejarse — no es fracaso, es claridad",
-      whenToLeaveIntro: "Alejarse es correcto cuando:",
-      whenToLeave: [
-        "Tu propia salud mental se está destruyendo",
-        "Se niega a buscar ayuda profesional",
-        "Las acusaciones falsas te ponen en peligro",
-        "Te obliga a elegir entre él y tu vida",
-        "Descubres que amas la idea de salvarlo — no a él",
+      selfCareTitle: "❤️ Cuidando de Ti Mismo/a",
+      selfCareIntro: "Apoyar a alguien con TLP es agotador y conlleva un alto riesgo de fatiga por compasión. Cuidarte no es egoísta, es la única forma de poder seguir estando ahí.",
+      selfCarePoints: [
+        { title: "Busca tu propia red", desc: "Habla con amigos, familiares o únete a un grupo de apoyo para familiares." },
+        { title: "Considera terapia para ti", desc: "Un profesional puede proporcionarte herramientas para gestionar el estrés y poner límites saludables." },
+        { title: "Mantén tu propia vida", desc: "No abandones tus aficiones, amistades y rutinas. Recuperar tiempo para ti es vital." },
       ],
-      finalWarning: "Alejarse no es abandonar. Es reconocer que su sanación no depende de ti. Y que la tuya tampoco depende de quedarte.",
-      epilogueTitle: "¿Qué pasó con Pedro y Thiago?",
-      epilogueP1: "Pedro está aprendiendo a amar sin necesitar salvar. Ha establecido límites. Ha buscado terapia. Ha creado este sitio.",
-      epilogueP2: "Thiago está en su propio camino. Tal vez algún día busque ayuda. Tal vez no. Pero esa ya no es responsabilidad de Pedro.",
-      epilogueFinal: "Eso es amor incondicional: soltar con ternura.",
+      recoveryTitle: "🤝 Apoyando su Proceso",
+      recoveryIntro: "Tu papel es de apoyo, no de terapeuta. La responsabilidad del tratamiento es de la persona con TLP y de sus profesionales.",
+      recoveryPoints: [
+        { title: "Anímale a buscar ayuda", desc: "Es fundamental que el tratamiento lo guíe un profesional especializado en TLP." },
+        { title: "Celebra los pequeños logros", desc: "Reconoce el esfuerzo y los pequeños avances sin grandes aspavientos." },
+        { title: "Mantén una estructura estable", desc: "Las rutinas familiares predecibles son una fuente de seguridad que contrarresta su caos interno." },
+      ],
+      conclusionTitle: "💡 En Conclusión",
+      conclusionText: "Amar a alguien con TLP es un viaje complejo y profundo que requiere aprender nuevas habilidades, practicar la compasión y, sobre todo, ser muy amable contigo mismo/a. Con el enfoque correcto, es posible construir una relación más fuerte y estable.",
+      conclusionFinal: "Si la situación se vuelve insostenible o afecta gravemente tu salud mental, buscar ayuda profesional para ti es un acto de responsabilidad y amor propio.",
     },
     footer: {
-      createdFrom: "ABRAZO fue creado desde el dolor vivido, transformado en ternura para otros.",
-      credit: "Basado en la experiencia real de Pedro y su amor por Thiago. Transmutado en sabiduría.",
-      copyright: "© 2026 ABRAZO — Amar con ternura. Este sitio no reemplaza terapia profesional.",
+      line1: "ABRAZO fue creado desde el dolor vivido, transformado en comprensión para otros.",
+      line2: "Basado en experiencia real. Para convertir el dolor en comprensión.",
+      line3: "© 2026 ABRAZO — Amar a alguien con TLP. Este sitio no reemplaza terapia profesional.",
     },
   },
 
+  // ───────────────────── ENGLISH ─────────────────────
   en: {
     nav: {
       home: "Home",
-      what: "What is BPD?",
+      understanding: "Understanding BPD",
       signs: "Warning Signs",
-      story: "Our Story",
+      story: "Real Story",
       tools: "Tools",
       boundaries: "Boundaries",
       community: "Community",
     },
     header: {
       title: "ABRAZO",
-      subtitle: "For those who love someone with Borderline Personality Disorder",
-      tagline: "Born from pain. Built with tenderness. So others may understand.",
+      subtitle: "For those who love someone with Borderline Personality Disorder (BPD)",
+      tagline: "Born from pain. Built with tenderness. To turn pain into understanding.",
     },
     home: {
-      heroTitle: "You love someone who suffers. And you suffer too.",
-      heroP1: "You love with everything you have. But every day is different. Some days it's pure love, laughter, feeling like nothing could ever tear you apart. Other days, everything shatters without warning — and suddenly you're the enemy without knowing why.",
-      heroP2: "This site exists for you. Not to judge. Not to diagnose. But to offer understanding, tools, and the most tender truth I know: you can love someone deeply and still need to let go.",
-      card1Title: "Understand",
-      card1Desc: "Learn what BPD is from the heart of someone who loves a person who has it.",
-      card2Title: "Recognize patterns",
-      card2Desc: "Identify what's happening without blame. With compassion, never judgment.",
-      card3Title: "Protect yourself",
-      card3Desc: "Learn boundaries that honor your love and protect your peace.",
+      heroTitle: "You love someone who suffers.",
+      heroP1: "You love unconditionally. But every day is different. Some days it's the most intense love you've ever felt; other days you feel trapped in a nightmare you can't wake up from.",
+      heroP2: "You're not alone. And you're not responsible for \"fixing\" the other person.",
+      heroP3: "This site exists for you. Not to diagnose. Not to judge. It exists so you can understand what's happening, how to protect yourself with love, and how to let go without resentment.",
+      ctaButton: "Start understanding",
+      card1Title: "📚 Learn",
+      card1Desc: "Understand what BPD is from the perspective of someone who loves a person with it. Not a cold list of symptoms, but a map of the emotional terrain.",
+      card2Title: "🌿 Recognize patterns",
+      card2Desc: "Identify behaviors without diagnosing. With compassion, not judgment. To understand why you react the way you do.",
+      card3Title: "💛 Protect yourself",
+      card3Desc: "Learn boundaries that honor your love and your mental health. Because self-care isn't selfish — it's the foundation for being able to stay present.",
     },
-    what: {
-      title: "What is Borderline Personality Disorder?",
-      clinicalTitle: "What science says, spoken from the heart",
-      clinicalIntro: "BPD causes immense pain — both to the person living with it and to those who love them. It's characterized by:",
-      symptoms: [
-        "Intense fear of abandonment — real or imagined",
-        "Intense but unstable relationships — idealization followed by devaluation",
-        "Unstable identity — not knowing who they truly are",
-        "Impulsivity that can be destructive",
-        "Rapid emotional shifts — from extreme love to rejection in hours",
-        "Intense anger that can feel disproportionate",
-        "A chronic emptiness that nothing seems to fill",
-        "In the worst moments, self-harm or threats",
+    understanding: {
+      title: "Understanding BPD",
+      intro: "When you love someone with Borderline Personality Disorder, clinical manuals aren't enough. You don't need a cold list of symptoms; you need to know why it hurts so much and why you feel so confused.",
+      emotionalSkinTitle: "The \"Emotional Third Degree\"",
+      emotionalSkinDesc: "Their emotional skin has no protective layer. They feel the world at 100 degrees while the rest of us are at 25. That's why a gentle criticism can feel to them like a devastating attack.",
+      abandonmentTitle: "The Fear of Abandonment",
+      abandonmentDesc: "It's not a whim. It's an internal alarm that constantly screams \"They're going to leave you.\" Many of their disproportionate reactions aren't against you — they're against that paralyzing fear.",
+      voidTitle: "The Void",
+      voidDesc: "It's not boredom. It's an existential black hole they try to fill with intense relationships, shopping, or anger. You can't fill that void, and freeing yourself from that burden is the first step to truly helping.",
+      closingNote: "Learning this doesn't justify mistreatment. It's understanding the map of the territory you're walking through.",
+      clinicalTitle: "What science says",
+      clinicalPoints: [
+        { title: "Emotional Instability", desc: "Emotions are very intense and changeable, with patterns of idealization and devaluation in their relationships." },
+        { title: "Fear of Abandonment", desc: "An intense and often irrational fear of being left behind. They may react disproportionately to real or perceived separation." },
+        { title: "Dichotomous Thinking", desc: "The world is perceived in extremes (black or white), with hardly any nuance. Someone can be wonderful one moment and despicable the next." },
+        { title: "Impulsivity", desc: "A tendency to act without thinking about consequences, as a way to regulate emotional pain." },
       ],
-      warningNote: "None of this is their fault. But your wellbeing matters too. Both truths coexist.",
-      whyTitle: "Why do they love like this?",
-      whyIntro: "Someone with BPD loves with overwhelming intensity because:",
-      whyPoints: [
-        "They need constant validation to feel real",
-        "They carry an existential fear of abandonment from old wounds",
-        "They can't regulate their emotions — they swing between extremes",
-        "Sometimes they confuse control with safety",
-        "They can't tolerate ambiguity — you're all good or all bad",
-      ],
-      truthNote: "They can feel genuine love. They can heal with therapy (DBT). But your love alone isn't enough to cure their BPD. That's not your failure — it's reality.",
     },
     signs: {
-      title: "Signs you might recognize",
-      patternsTitle: "If you see these patterns in the first months:",
+      title: "Recognize Patterns",
+      intro: "Maybe your person doesn't have a diagnosis. Maybe you just know the relationship is a rollercoaster. These are patterns that tend to appear. Observe with compassion, not to label, but to understand.",
       patterns: [
-        "\"You're perfect, you're my salvation\" — too fast, too intense",
-        "Constantly asks you to confirm your love — and it's never enough",
-        "Loves you deeply... and hours later feels nothing for you",
-        "Talks about the future in weeks — marriage, children, forever",
-        "\"If you love me, you'd do X\" — love as condition, not gift",
-        "Wants you to leave friends or family for them",
-        "Inconsistencies that don't seem malicious, but confuse you",
-        "Extreme emotional crises — threats, self-harm",
+        { title: "Idealization and Devaluation", desc: "One day you're their salvation, their favorite person in the universe. The next day, a small disagreement makes you the worst person in the world." },
+        { title: "Hypersensitivity to Criticism", desc: "They say: \"You're mad at me, aren't you?\" when you're just tired. Their radar for detecting rejection is calibrated to the max." },
+        { title: "Fear of Being Alone", desc: "They can't stand being alone with themselves. They might send dozens of messages in a row if you don't respond in 10 minutes. It's not control — it's panic." },
+        { title: "Self-sabotage", desc: "Just when the relationship is going well and there's peace, a fight erupts over something minor. Stability, for a BPD mind, is sometimes more terrifying than familiar chaos." },
       ],
-      warningNote: "Recognizing these signs doesn't mean they don't deserve love. It means their healing doesn't depend on you. And you deserve to protect yourself.",
-      whatToDoTitle: "What to do if you recognize this?",
-      whatToDo: [
-        "Don't run scared. But don't close your eyes either.",
-        "Speak with tenderness: \"I've noticed your feelings change quickly. Can we talk about this together?\"",
-        "Suggest DBT therapy — not as an ultimatum, but as a bridge to peace.",
-        "Set loving boundaries from day one.",
-        "Ask yourself honestly: Can I love this person as they are? Or am I waiting for them to change?",
-      ],
+      closingNote: "Recognizing these patterns isn't labeling anyone. It's giving yourself permission to understand what you're living through and to seek tools to navigate it.",
     },
     story: {
-      title: "Our Story",
-      intro: "This story is real. It's not unique. It's the dance millions of people dance every day — love that hurts, that confuses, that transforms.",
-      beginningTitle: "The beginning",
-      beginningText: "Pedro saw in Thiago someone he could embrace with everything he had. He gave him a home, support, a business, legal defense, unconditional love. For a while, Thiago idealized him. Those were the brightest days of Pedro's life.",
-      turnTitle: "The turn",
-      turnText: "When Pedro tried to deepen the intimacy, Thiago panicked. \"Don't confuse the bond,\" he said. Pedro felt it as coldness. Thiago felt it as invasion. Both were right. Both were afraid.",
-      turnText2: "Pedro filled the silence with analysis. Thiago filled the void by bringing others in. The cycle of idealization and devaluation had already begun.",
-      collapseTitle: "The collapse",
-      collapseText: "Thiago did things that deeply hurt Pedro — false accusations, betrayals, manipulation. Pedro, wounded and desperate, responded with cruelty — hurtful messages, words he should never have said. Both caused damage from their own wounds.",
-      apologyTitle: "What Pedro needs to say",
-      apologyText: "\"Thiago, I hurt you. My words were cruel and had no right to leave my mouth. I'm sorry for every message I sent from rage. But I also need to be honest: you hurt me first, and deeply. The false accusations, the betrayals, the rejection after I gave everything — that broke me. I don't say this to justify myself. I say it because we both deserve the truth. I forgive you. And I forgive myself. And I let you go with love.\"",
-      lessonTitle: "What we learned",
-      lessons: [
-        "Unconditional love is NOT the same as love without boundaries",
-        "You can't save someone who doesn't want to be saved — and that's not your fault",
-        "Your generosity can be perceived as control — without you knowing",
-        "Their accusations may contain their emotional truth, even if not objective truth",
-        "Obsessive analysis is another way of not letting go",
-        "Letting go is the final act of love — the hardest and the most tender",
-      ],
-      endNote: "Pedro is learning to love from a distance. Thiago is searching for his own peace. It's not \"fine\" — but it's honest. And honesty is where healing begins.",
+      title: "The Real Story",
+      subtitle: "The origin of ABRAZO",
+      quote: "ABRAZO was created from the lived pain of someone who loved too intensely.",
+      intro: "The creator of ABRAZO is not a psychologist. He's a person like you. He met someone at a moment in their lives when both were looking for an anchor. The connection was immediate, magnetic — the kind that makes you believe in soulmates.",
+      bodyP1: "For months, he navigated between heaven and hell. There were weekends of laughter, plans for the future, and an intimacy he'd never felt. But there were also slammed doors, weekly breakup threats, and an emotional exhaustion that left him empty.",
+      bodyP2: "That person wasn't \"bad.\" They suffered.",
+      bodyP3: "He wasn't \"weak.\" He loved.",
+      bodyP4: "The relationship ended. He was left heartbroken with a thousand unanswered questions: Why did this happen? Was it my fault? Can you love someone like this without destroying yourself?",
+      bodyP5: "From that grief, ABRAZO was born. He decided to transmute pain into wisdom so the next person who searches \"How to help my partner with BPD without losing my mind\" finds an embrace and not a judgment.",
+      credit: "Based on real experience. Transmuted into wisdom for others.",
     },
     tools: {
-      title: "Tools with Tenderness",
-      diaryTitle: "The Pattern Diary",
-      diaryIntro: "Each week, write to yourself with honesty:",
-      diaryPlaceholder: "DATE: ____\n\n1. When did I feel invisible this week?\n   - What did I do to feel seen again?\n\n2. What moments swung from one extreme to another?\n   - How did I respond?\n\n3. Did I try to save them? Or was I trying to save myself?\n\n4. My real need this week was: _____\n   - Did I ask for it? Or did I wait for them to guess?",
-      questionsTitle: "The 3 Clarity Questions",
-      questionsIntro: "When everything gets cloudy, answer in writing:",
-      q1: "Is this their truth or their symptom?",
-      q1Desc: "If they say \"I don't love you,\" it may be what they feel right now. Don't argue. Acknowledge: \"I understand that's how you feel right now.\"",
-      q2: "Can I control this?",
-      q2Desc: "If not: let go with love. If yes: act with tenderness, not control.",
-      q3: "Am I saving them or avoiding my own pain?",
-      q3Desc: "This is the most important question. If it's the latter, you need your own therapy — not a relationship.",
-      boundaryPhraseTitle: "The Loving Boundary Phrase",
-      boundaryPhraseIntro: "When you need a boundary, use this structure:",
-      boundaryTemplate: "\"I love you. [BOUNDARY]. This doesn't change that I love you — it changes how I can be with you.\"",
-      boundaryExamples: [
-        "\"I love you. I won't respond to threats. This doesn't change that I love you — it changes how I can be with you.\"",
-        "\"I love you. I won't leave my family because you ask. This doesn't change that I love you.\"",
-        "\"I love you. I'm letting you go because we both need to heal. This doesn't change that I love you — it never will.\"",
+      title: "Daily Tools",
+      intro: "Loving someone with BPD requires a new language. Not one of cold logic, but of emotional validation.",
+      validationTitle: "1. Validation without agreeing",
+      validationSituation: "Situation: They yell: \"You hate being with me, I know it!\"",
+      validationWrong: "Normal reaction (which makes it worse): \"That's not true, you're exaggerating, calm down.\"",
+      validationRight: "ABRAZO tool: \"I'm so sorry you're feeling this way right now. It must be horrible to feel that someone you love is rejecting you.\"",
+      validationWhy: "You're not confirming that you hate them; you're confirming that their feeling is real and painful. That lowers the temperature of the crisis.",
+      trafficLightTitle: "2. The Traffic Light Technique in Crisis",
+      redLabel: "🔴 Red Light — Acute crisis",
+      redDesc: "Don't reason. Just say: \"I'm here. I'm not leaving. When you can breathe, we'll talk.\"",
+      yellowLabel: "🟡 Yellow Light — Tense calm",
+      yellowDesc: "Distract with something sensory: a glass of cold water, a blanket, stepping outside for 1 minute.",
+      greenLabel: "🟢 Green Light — Calm",
+      greenDesc: "This is the time to talk about the real issue, but always from \"I\" not \"You.\" \"When voices are raised, I get scared and I need a moment.\"",
+      breathingTitle: "3. Breathing for you",
+      breathingDesc: "If you feel like you're drowning, use the 4-7-8 technique: Inhale for 4 seconds, hold for 7, exhale for 8. Repeat 3 times. It's for you. To not lose your center.",
+      communicationTitle: "Communication Strategies",
+      communicationIntro: "Communication is the pillar for handling difficult moments:",
+      commPoints: [
+        { title: "Emotional Validation", desc: "Recognize and accept the other person's feelings, without it meaning you agree with their behavior." },
+        { title: "Active Listening", desc: "Be fully present, listen without judging, without minimizing their experience or offering unsolicited solutions." },
+        { title: "Nonviolent Communication", desc: "Express your own needs without attacking or blaming, using first-person statements (\"I feel...\")." },
       ],
+      dontDoTitle: "What NOT to do",
+      dontDoDesc: "Getting defensive, using labels or invalidating comments (\"you're exaggerating\") that can intensify the conflict.",
     },
     boundaries: {
       title: "Compassionate Boundaries",
-      differenceTitle: "What's the difference?",
-      withoutLabel: "Without Boundaries (Harmful)",
-      withLabel: "With Boundaries (Loving)",
-      rows: [
-        ["\"I give you EVERYTHING because I love you\"", "\"I give what I can without losing myself\""],
-        ["\"If you threaten, I comply\"", "\"If you talk about hurting yourself, I call for help. That's love.\""],
-        ["\"I spy to know if you love me\"", "\"I ask you directly what you need\""],
-        ["\"I humiliate you when it hurts\"", "\"I take distance so we don't hurt each other\""],
-        ["\"I sacrifice everything for you\"", "\"I love you AND I have my own life\""],
+      intro: "In love with BPD, either you learn to set boundaries or the bond consumes you. A boundary isn't punishment — it's the fence that protects the garden of your relationship from being trampled.",
+      badTitle: "Poorly Set Boundary (Punishment)",
+      badExample: "\"Since you yelled at me, I'm leaving and not coming back for 3 days.\"",
+      badExplain: "This triggers the fear of abandonment and unleashes a bigger crisis.",
+      goodTitle: "Compassionate Boundary (Self-love)",
+      goodExample: "\"I love you so much, and precisely because I love you and want this to work, I need to go for a 20-minute walk to calm down. When I come back, if we're both calmer, we can keep talking. I'm not leaving the relationship — I'm leaving the argument.\"",
+      hardestTitle: "The hardest boundary",
+      hardestDesc: "There comes a moment when the compassionate boundary is: \"I can't help you without destroying myself.\" Loving also means knowing how to let go. Not from lack of love, but from excess of respect for your own life.",
+      tipsTitle: "Keys to setting boundaries",
+      tips: [
+        { title: "Be Clear and Caring", desc: "\"I love you and want to listen, but I can't do it if you're yelling at me.\"" },
+        { title: "Be Consistent", desc: "Once set, maintain it. Consistency creates safety and predictability — something people with BPD deeply need." },
+        { title: "Distinguish Boundaries from Ultimatums", desc: "Boundaries protect your wellbeing (\"I need to step away if the conversation escalates\"), while ultimatums control the other person's behavior." },
       ],
-      essentialTitle: "The 5 Essential Boundaries",
-      essentials: [
-        "Emotional boundary: \"Your collapse is not my responsibility. I can walk beside you, but not save you.\"",
-        "Time boundary: \"I love you. And I also need time for myself.\"",
-        "Honesty boundary: \"I won't promise something I can't keep.\"",
-        "Safety boundary: \"If there are threats, I'll call professionals. That's truly caring for you.\"",
-        "Truth boundary: \"I won't accept false accusations as a form of control.\"",
-      ],
-      paradoxNote: "When you set compassionate boundaries, it may feel like less love. In reality, it's the first moment the other person feels responsible for their own pain. And that can be the beginning of their healing.",
     },
     community: {
       title: "You're Not Alone",
-      notAloneTitle: "Millions of people love someone with BPD",
-      notAloneIntro: "There are communities and resources that can help:",
+      intro: "This corner is for sharing what you keep silent. For releasing the weight of feeling like the only caretaker in the world.",
+      lettersTitle: "Letters to ABRAZO",
+      letters: [
+        { text: "Today I was able to set a boundary for the first time. I'm trembling, but I feel a little more like myself.", author: "Ana" },
+        { text: "I understood that when they insult me, they're not talking about me — they're talking about their inner hell. It still hurts, but I no longer believe it.", author: "Carlos" },
+      ],
+      resourcesTitle: "Professional Resources",
+      resourcesIntro: "ABRAZO does not replace therapy.",
       resources: [
-        "BPDfamily.com — Community for friends and family",
-        "NAMI.org — National Alliance on Mental Illness",
-        "DBT-informed couples therapy",
-        "Local support groups (search \"NAMI Family Support\")",
-        "Books: \"I Hate You — Don't Leave Me\" (Krieger), \"The Buddha and Borderline\" (Kiera)",
+        "Find professionals specialized in Dialectical Behavior Therapy (DBT) for your loved one.",
+        "Seek individual therapy for yourself. Supporting someone with BPD is high-performance emotional work.",
+        "BPDfamily.com — Community for friends and family.",
+        "NAMI.org — National Alliance on Mental Illness.",
+        "Books: \"I Hate You — Don't Leave Me\" (Krieger), \"The Buddha and Borderline\" (Kiera).",
       ],
-      whenToLeaveTitle: "When to walk away — it's not failure, it's clarity",
-      whenToLeaveIntro: "Walking away is right when:",
-      whenToLeave: [
-        "Your own mental health is being destroyed",
-        "They refuse to seek professional help",
-        "False accusations put you in danger",
-        "They force you to choose between them and your life",
-        "You discover you love the idea of saving them — not them",
+      selfCareTitle: "❤️ Taking Care of Yourself",
+      selfCareIntro: "Supporting someone with BPD is exhausting and carries a high risk of compassion fatigue. Taking care of yourself isn't selfish — it's the only way to keep being there.",
+      selfCarePoints: [
+        { title: "Build your own support network", desc: "Talk to friends, family, or join a support group for families." },
+        { title: "Consider therapy for yourself", desc: "A professional can give you tools to manage stress and set healthy boundaries." },
+        { title: "Maintain your own life", desc: "Don't abandon your hobbies, friendships, and routines. Time for yourself is vital." },
       ],
-      finalWarning: "Walking away is not abandoning. It's recognizing that their healing doesn't depend on you. And yours doesn't depend on staying.",
-      epilogueTitle: "What happened with Pedro and Thiago?",
-      epilogueP1: "Pedro is learning to love without needing to save. He's set boundaries. He's sought therapy. He's created this site.",
-      epilogueP2: "Thiago is on his own path. Maybe one day he'll seek help. Maybe not. But that's no longer Pedro's responsibility.",
-      epilogueFinal: "That is unconditional love: letting go with tenderness.",
+      recoveryTitle: "🤝 Supporting Their Process",
+      recoveryIntro: "Your role is support, not therapist. The responsibility of treatment belongs to the person with BPD and their professionals.",
+      recoveryPoints: [
+        { title: "Encourage them to seek help", desc: "It's essential that treatment is guided by a professional specialized in BPD." },
+        { title: "Celebrate small wins", desc: "Acknowledge the effort and small progress without fanfare." },
+        { title: "Maintain a stable structure", desc: "Predictable family routines are a source of security that counteracts their internal chaos." },
+      ],
+      conclusionTitle: "💡 In Conclusion",
+      conclusionText: "Loving someone with BPD is a complex and profound journey that requires learning new skills, practicing compassion, and above all, being very kind to yourself. With the right approach, it's possible to build a stronger and more stable relationship.",
+      conclusionFinal: "If the situation becomes unbearable or seriously affects your mental health, seeking professional help for yourself is an act of responsibility and self-love.",
     },
     footer: {
-      createdFrom: "ABRAZO was created from lived pain, transformed into tenderness for others.",
-      credit: "Based on the real experience of Pedro and his love for Thiago. Transmuted into wisdom.",
-      copyright: "© 2026 ABRAZO — Love with tenderness. This site does not replace professional therapy.",
+      line1: "ABRAZO was created from lived pain, transformed into understanding for others.",
+      line2: "Based on real experience. To turn pain into understanding.",
+      line3: "© 2026 ABRAZO — Loving someone with BPD. This site does not replace professional therapy.",
     },
   },
 
+  // ───────────────────── PORTUGUÊS ─────────────────────
   pt: {
     nav: {
       home: "Início",
-      what: "O que é TPB?",
+      understanding: "Entender o TPB",
       signs: "Sinais",
-      story: "Nossa História",
+      story: "História Real",
       tools: "Ferramentas",
       boundaries: "Limites",
       community: "Comunidade",
     },
     header: {
       title: "ABRAZO",
-      subtitle: "Para quem ama alguém com Transtorno de Personalidade Borderline",
-      tagline: "Nascido da dor. Construído com ternura. Para que outros compreendam.",
+      subtitle: "Para quem ama alguém com Transtorno de Personalidade Borderline (TPB)",
+      tagline: "Nascido da dor. Construído com ternura. Para transformar dor em compreensão.",
     },
     home: {
-      heroTitle: "Você ama alguém que sofre. E você também sofre.",
-      heroP1: "Você ama com tudo que tem. Mas cada dia é diferente. Há dias de amor puro, de risadas, de sentir que nada pode separá-los. E há dias em que tudo se quebra sem aviso — e de repente você é o inimigo sem saber por quê.",
-      heroP2: "Este site existe para você. Não para julgar. Não para diagnosticar. Mas para oferecer compreensão, ferramentas, e a verdade mais terna que conheço: você pode amar alguém profundamente e ainda assim precisar soltar.",
-      card1Title: "Compreenda",
-      card1Desc: "Entenda o que é TPB a partir do coração de quem ama alguém que o tem.",
-      card2Title: "Reconheça padrões",
-      card2Desc: "Identifique o que acontece sem culpar. Com compaixão, nunca com julgamento.",
-      card3Title: "Cuide-se",
-      card3Desc: "Aprenda limites que honrem seu amor e protejam sua paz.",
+      heroTitle: "Você ama alguém que sofre.",
+      heroP1: "Você ama incondicionalmente. Mas cada dia é diferente. Alguns dias é o amor mais intenso que já sentiu; outros dias você se sente preso num pesadelo do qual não sabe como acordar.",
+      heroP2: "Você não está sozinho/a. E não é responsável por \"consertar\" a outra pessoa.",
+      heroP3: "Este site existe para você. Não para diagnosticar. Não para julgar. Existe para que você entenda o que está acontecendo, como se proteger com amor, e como soltar sem ressentimento.",
+      ctaButton: "Comece a entender",
+      card1Title: "📚 Aprenda",
+      card1Desc: "Entenda o que é TPB pela perspectiva de quem ama alguém que o tem. Não uma lista fria de sintomas, mas um mapa do terreno emocional.",
+      card2Title: "🌿 Reconheça padrões",
+      card2Desc: "Identifique comportamentos sem diagnosticar. Com compaixão, não julgamento. Para entender por que você reage como reage.",
+      card3Title: "💛 Proteja-se",
+      card3Desc: "Aprenda limites que honrem seu amor e sua saúde mental. Porque cuidar de si não é egoísmo — é a base para poder continuar presente.",
     },
-    what: {
-      title: "O que é o Transtorno de Personalidade Borderline?",
-      clinicalTitle: "O que a ciência diz, falado com o coração",
-      clinicalIntro: "O TPB causa uma dor imensa — tanto para quem vive com ele quanto para quem ama. Caracteriza-se por:",
-      symptoms: [
-        "Medo intenso de abandono — real ou imaginário",
-        "Relações intensas mas instáveis — idealização seguida de desvalorização",
-        "Identidade instável — não sabem quem realmente são",
-        "Impulsividade que pode ser destrutiva",
-        "Mudanças emocionais rápidas — de amor extremo a rejeição em horas",
-        "Raiva intensa que pode parecer desproporcional",
-        "Um vazio crônico que nada parece preencher",
-        "Nos piores momentos, autolesão ou ameaças",
+    understanding: {
+      title: "Entendendo o TPB",
+      intro: "Quando você ama alguém com Transtorno de Personalidade Borderline, os manuais clínicos não são suficientes. Você não precisa de uma lista fria de sintomas; precisa saber por que dói tanto e por que se sente tão confuso/a.",
+      emotionalSkinTitle: "O \"Terceiro Grau Emocional\"",
+      emotionalSkinDesc: "Sua pele emocional não tem camada protetora. Sentem o mundo a 100 graus enquanto os demais estamos a 25. Por isso uma crítica suave pode ser sentida por eles como um ataque devastador.",
+      abandonmentTitle: "O Medo do Abandono",
+      abandonmentDesc: "Não é capricho. É um alarme interno que toca constantemente gritando \"Vão te deixar\". Muitas de suas reações desproporcionadas não são contra você, são contra esse medo paralisante.",
+      voidTitle: "O Vazio",
+      voidDesc: "Não é tédio. É um buraco negro existencial que tentam preencher com relações intensas, compras ou raiva. Você não pode preencher esse vazio, e se libertar dessa carga é o primeiro passo para ajudar de verdade.",
+      closingNote: "Aprender isso não é justificar maus tratos. É entender o mapa do território em que você está caminhando.",
+      clinicalTitle: "O que diz a ciência",
+      clinicalPoints: [
+        { title: "Instabilidade Emocional", desc: "As emoções são muito intensas e mutáveis, com padrões de idealização e desvalorização nos vínculos." },
+        { title: "Medo do Abandono", desc: "Um medo intenso e frequentemente irracional de ser deixado de lado. Podem reagir de forma desproporcional a uma separação real ou percebida." },
+        { title: "Pensamento Dicotômico", desc: "O mundo é percebido em extremos (preto ou branco), quase sem nuances. Alguém pode ser maravilhoso num momento e desprezível no seguinte." },
+        { title: "Impulsividade", desc: "Tendência a agir sem pensar nas consequências, como forma de regular a dor emocional." },
       ],
-      warningNote: "Nada disso é culpa deles. Mas seu bem-estar também importa. Ambas as verdades coexistem.",
-      whyTitle: "Por que amam assim?",
-      whyIntro: "Alguém com TPB ama com intensidade avassaladora porque:",
-      whyPoints: [
-        "Precisam de validação constante para se sentirem reais",
-        "Carregam um medo existencial de abandono que vem de feridas antigas",
-        "Não conseguem regular suas emoções — oscilam entre extremos",
-        "Às vezes confundem controle com segurança",
-        "Não toleram ambiguidade — você é todo bom ou todo mau",
-      ],
-      truthNote: "Podem sentir amor genuíno. Podem curar-se com terapia (DBT). Mas seu amor sozinho não é suficiente para curar o TPB deles. Isso não é seu fracasso — é a realidade.",
     },
     signs: {
-      title: "Sinais que talvez você reconheça",
-      patternsTitle: "Se você vê estes padrões nos primeiros meses:",
+      title: "Reconheça Padrões",
+      intro: "Talvez sua pessoa não tenha diagnóstico. Talvez você só saiba que a relação é uma montanha-russa. Estes são padrões que costumam aparecer. Observe com compaixão, não para rotular, mas para entender.",
       patterns: [
-        "\"Você é perfeito, é minha salvação\" — rápido demais, intenso demais",
-        "Pede constantemente que confirme seu amor — e nunca é suficiente",
-        "Te ama profundamente... e horas depois não sente nada por você",
-        "Fala de futuro em semanas — casamento, filhos, para sempre",
-        "\"Se você me ama, faria X\" — amor como condição, não como presente",
-        "Quer que você deixe amigos ou família por ele",
-        "Inconsistências que não parecem maliciosas, mas confundem",
-        "Crises emocionais extremas — ameaças, autolesão",
+        { title: "Idealização e Desvalorização", desc: "Um dia você é a salvação dele/a, a pessoa favorita no universo. No dia seguinte, um pequeno desentendimento te transforma na pior pessoa do mundo." },
+        { title: "Hipersensibilidade à Crítica", desc: "Diz: \"Você está bravo comigo, né?\" quando você só está cansado/a. Seu radar para detectar rejeição está calibrado no máximo." },
+        { title: "Medo da Solidão", desc: "Não suportam estar sozinhos consigo mesmos. Podem enviar dezenas de mensagens seguidas se você não responder em 10 minutos. Não é controle, é pânico." },
+        { title: "Autossabotagem", desc: "Justo quando a relação vai bem e há paz, surge uma briga por algo mínimo. A estabilidade, para um cérebro TPB, às vezes é mais assustadora que o caos conhecido." },
       ],
-      warningNote: "Reconhecer estes sinais não significa que não merece amor. Significa que a cura dele não depende de você. E que você merece se proteger.",
-      whatToDoTitle: "O que fazer se reconhece isso?",
-      whatToDo: [
-        "Não fuja assustado. Mas também não feche os olhos.",
-        "Fale com ternura: \"Percebi que seus sentimentos mudam rápido. Podemos conversar sobre isso juntos?\"",
-        "Sugira terapia DBT — não como ultimato, mas como ponte para a paz.",
-        "Estabeleça limites com amor desde o primeiro dia.",
-        "Pergunte-se honestamente: Posso amar esta pessoa como ela é? Ou estou esperando que mude?",
-      ],
+      closingNote: "Reconhecer esses padrões não é rotular ninguém. É se dar permissão para entender o que você vive e buscar ferramentas para navegar isso.",
     },
     story: {
-      title: "Nossa História",
-      intro: "Esta história é real. Não é única. É a dança que milhões de pessoas dançam todos os dias — a do amor que dói, que confunde, que transforma.",
-      beginningTitle: "O começo",
-      beginningText: "Pedro viu em Thiago alguém que podia abraçar com todo seu ser. Deu-lhe casa, apoio, empresa, defesa, amor sem condições. Por um tempo, Thiago o idealizou. Foram os dias mais luminosos da vida de Pedro.",
-      turnTitle: "A virada",
-      turnText: "Quando Pedro quis aprofundar a intimidade, Thiago sentiu pânico. \"Não confunda o vínculo,\" disse. Pedro sentiu como frieza. Thiago sentiu como invasão. Ambos tinham razão. Ambos tinham medo.",
-      turnText2: "Pedro preencheu o silêncio com análise. Thiago preencheu o vazio trazendo outros. O ciclo de idealização e desvalorização já havia começado.",
-      collapseTitle: "O colapso",
-      collapseText: "Thiago fez coisas que machucaram profundamente Pedro — acusações falsas, traições, manipulação. Pedro, ferido e desesperado, respondeu com crueldade — mensagens ferinas, palavras que não deveria ter dito. Ambos causaram dano a partir de suas próprias feridas.",
-      apologyTitle: "O que Pedro precisa dizer",
-      apologyText: "\"Thiago, eu te machuquei. Minhas palavras foram cruéis e não tinham direito de sair da minha boca. Lamento cada mensagem que te enviei da raiva. Mas também preciso ser honesto: você me machucou primeiro, e profundamente. As acusações falsas, as traições, a rejeição depois de ter dado tudo — isso me quebrou. Não digo isso para me justificar. Digo porque ambos merecemos a verdade. Eu te perdoo. E me perdoo. E te deixo ir com amor.\"",
-      lessonTitle: "O que aprendemos",
-      lessons: [
-        "Amor incondicional NÃO é o mesmo que amor sem limites",
-        "Você não pode salvar alguém que não quer ser salvo — e isso não é sua culpa",
-        "Sua generosidade pode ser percebida como controle — sem você saber",
-        "As acusações deles podem conter sua verdade emocional, mesmo não sendo verdade objetiva",
-        "Análise obsessiva é outra forma de não soltar",
-        "Soltar é o ato final de amor — o mais difícil e o mais terno",
-      ],
-      endNote: "Pedro está aprendendo a amar à distância. Thiago está buscando sua própria paz. Não está \"bem\" — mas é honesto. E a honestidade é onde começa a cura.",
+      title: "A História Real",
+      subtitle: "A origem do ABRAZO",
+      quote: "ABRAZO foi criado a partir da dor vivida de alguém que amou intensamente demais.",
+      intro: "O criador do ABRAZO não é psicólogo. É uma pessoa como você. Conheceu alguém num momento de suas vidas em que ambos buscavam uma âncora. A conexão foi imediata, magnética, daquelas que fazem você acreditar em almas gêmeas.",
+      bodyP1: "Durante meses, navegou entre o céu e o inferno. Havia fins de semana de risos, planos de futuro e uma intimidade que nunca havia sentido. Mas também havia portas batendo, ameaças semanais de término e uma exaustão emocional que o deixava vazio.",
+      bodyP2: "Essa pessoa não era \"má\". Sofria.",
+      bodyP3: "Ele não era \"fraco\". Amava.",
+      bodyP4: "A relação terminou. Ficou com o coração partido e mil perguntas sem resposta: Por que isso aconteceu? Foi minha culpa? Dá para amar alguém assim sem se destruir?",
+      bodyP5: "Desse luto nasceu o ABRAZO. Decidiu transmutar a dor em sabedoria para que a próxima pessoa que pesquise \"Como ajudar meu parceiro com TPB sem enlouquecer\" encontre um abraço e não um julgamento.",
+      credit: "Baseado em experiência real. Transmutado em sabedoria para outros.",
     },
     tools: {
-      title: "Ferramentas com Ternura",
-      diaryTitle: "O Diário de Padrões",
-      diaryIntro: "Cada semana, escreva para si mesmo com honestidade:",
-      diaryPlaceholder: "DATA: ____\n\n1. Quando me senti invisível esta semana?\n   - O que fiz para me sentir visto novamente?\n\n2. Que momentos foram de um extremo ao outro?\n   - Como respondi?\n\n3. Tentei salvá-lo? Ou tentei salvar a mim mesmo?\n\n4. Minha verdadeira necessidade esta semana foi: _____\n   - Pedi? Ou esperei que adivinhasse?",
-      questionsTitle: "As 3 Perguntas de Clareza",
-      questionsIntro: "Quando tudo fica nublado, responda por escrito:",
-      q1: "Isto é verdade dele ou sintoma dele?",
-      q1Desc: "Se ele diz \"Não te amo,\" pode ser o que sente naquele instante. Não discuta. Reconheça: \"Entendo que é assim que você se sente agora.\"",
-      q2: "Posso controlar isso?",
-      q2Desc: "Se não: solte com amor. Se sim: aja com ternura, não com controle.",
-      q3: "Estou salvando ou evitando minha própria dor?",
-      q3Desc: "Esta é a pergunta mais importante. Se é a segunda, você precisa de terapia própria — não de um relacionamento.",
-      boundaryPhraseTitle: "A Frase do Limite Amoroso",
-      boundaryPhraseIntro: "Quando precisar de um limite, use esta estrutura:",
-      boundaryTemplate: "\"Eu te amo. [LIMITE]. Isso não muda que eu te amo — muda como posso estar com você.\"",
-      boundaryExamples: [
-        "\"Eu te amo. Não vou responder a ameaças. Isso não muda que eu te amo — muda como posso estar com você.\"",
-        "\"Eu te amo. Não vou deixar minha família porque você pede. Isso não muda que eu te amo.\"",
-        "\"Eu te amo. Vou te deixar ir porque ambos precisamos curar. Isso não muda que eu te amo — nunca vai.\"",
+      title: "Ferramentas para o Dia a Dia",
+      intro: "Amar alguém com TPB requer uma nova linguagem. Não a da lógica fria, mas a da validação emocional.",
+      validationTitle: "1. Validação sem concordar",
+      validationSituation: "Situação: Grita: \"Você odeia estar comigo, eu sei!\"",
+      validationWrong: "Reação normal (que piora tudo): \"Isso não é verdade, você está exagerando, se acalma.\"",
+      validationRight: "Ferramenta ABRAZO: \"Sinto muito que você esteja se sentindo assim agora. Deve ser horrível sentir que alguém que você ama está te rejeitando.\"",
+      validationWhy: "Você não confirma que o odeia; confirma que o sentimento dele é real e doloroso. Isso baixa a temperatura da crise.",
+      trafficLightTitle: "2. A Técnica do Semáforo na Crise",
+      redLabel: "🔴 Luz Vermelha — Crise aguda",
+      redDesc: "Não raciocinar. Apenas dizer: \"Estou aqui. Não vou embora. Quando você puder respirar, conversamos.\"",
+      yellowLabel: "🟡 Luz Amarela — Calma tensa",
+      yellowDesc: "Distrair com algo sensorial: um copo de água gelada, um cobertor, sair na varanda 1 minuto.",
+      greenLabel: "🟢 Luz Verde — Tranquilidade",
+      greenDesc: "É o momento de falar do problema real, mas sempre desde o \"Eu\" e não desde o \"Você\". \"Quando a voz sobe, eu me assusto e preciso de um momento.\"",
+      breathingTitle: "3. Respiração para você",
+      breathingDesc: "Se sentir que está se afogando, use a técnica 4-7-8: Inspire em 4 segundos, segure 7, expire em 8. Repita 3 vezes. É para você. Para não perder seu centro.",
+      communicationTitle: "Estratégias de Comunicação",
+      communicationIntro: "A comunicação é o pilar para lidar com os momentos difíceis:",
+      commPoints: [
+        { title: "Validação Emocional", desc: "Reconhecer e aceitar o sentimento da outra pessoa, sem que isso signifique concordar com sua conduta." },
+        { title: "Escuta Ativa", desc: "Estar plenamente presente, ouvir sem julgar, sem minimizar a experiência nem oferecer soluções não solicitadas." },
+        { title: "Comunicação Não Violenta", desc: "Expressar suas próprias necessidades sem atacar nem culpar, usando frases em primeira pessoa (\"Eu me sinto...\")." },
       ],
+      dontDoTitle: "O que NÃO fazer",
+      dontDoDesc: "Ficar na defensiva, usar rótulos ou comentários invalidantes (\"você está exagerando\") que podem intensificar o conflito.",
     },
     boundaries: {
       title: "Limites Compassivos",
-      differenceTitle: "Qual é a diferença?",
-      withoutLabel: "Sem Limites (Prejudicial)",
-      withLabel: "Com Limites (Amoroso)",
-      rows: [
-        ["\"Te dou TUDO porque te amo\"", "\"Te dou o que posso sem me perder\""],
-        ["\"Se ameaça, eu cedo\"", "\"Se fala em se machucar, chamo ajuda. Isso é amor.\""],
-        ["\"Espio para saber se me ama\"", "\"Pergunto diretamente o que precisa\""],
-        ["\"Te humilho quando dói\"", "\"Me afasto para não nos machucarmos\""],
-        ["\"Sacrifico tudo por você\"", "\"Te amo E tenho minha própria vida\""],
+      intro: "No amor com TPB, ou você aprende a colocar limites ou o vínculo te devora. O limite não é castigo, é a cerca que protege o jardim do seu relacionamento para que não seja pisoteado.",
+      badTitle: "Limite Mal Colocado (Castigo)",
+      badExample: "\"Como você gritou comigo, vou embora e não volto por 3 dias.\"",
+      badExplain: "Isso ativa o medo do abandono e desencadeia uma crise maior.",
+      goodTitle: "Limite Compassivo (Amor-próprio)",
+      goodExample: "\"Te amo muito, e justamente porque te amo e quero que isso funcione, preciso sair para caminhar 20 minutos para me acalmar. Quando voltar, se estivermos mais tranquilos, podemos continuar conversando. Não estou saindo da relação — estou saindo da discussão.\"",
+      hardestTitle: "O limite mais difícil",
+      hardestDesc: "Há um momento em que o limite compassivo é: \"Não posso te ajudar sem me destruir.\" Amar também é saber soltar. Não por falta de amor, mas por excesso de respeito pela sua própria vida.",
+      tipsTitle: "Chaves para estabelecer limites",
+      tips: [
+        { title: "Seja Claro e Carinhoso", desc: "\"Te amo e quero te ouvir, mas não consigo fazer isso se você gritar comigo.\"" },
+        { title: "Seja Consistente", desc: "Uma vez colocado, mantenha. A consistência gera segurança e previsibilidade — algo que pessoas com TPB precisam profundamente." },
+        { title: "Diferencie Limites de Ultimatos", desc: "Limites protegem seu bem-estar (\"Preciso sair se a conversa esquentar\"), enquanto ultimatos controlam a conduta do outro." },
       ],
-      essentialTitle: "Os 5 Limites Essenciais",
-      essentials: [
-        "Limite emocional: \"Seu colapso não é minha responsabilidade. Posso caminhar ao seu lado, mas não salvá-lo.\"",
-        "Limite de tempo: \"Te amo. E também preciso de tempo para mim.\"",
-        "Limite de honestidade: \"Não vou prometer algo que não posso cumprir.\"",
-        "Limite de segurança: \"Se houver ameaças, chamarei profissionais. Isso é cuidar de verdade.\"",
-        "Limite de verdade: \"Não aceitarei acusações falsas como forma de controle.\"",
-      ],
-      paradoxNote: "Quando você coloca limites compassivos, pode parecer menos amor. Na verdade, é o primeiro momento em que a outra pessoa sente a responsabilidade pela própria dor. E isso pode ser o início da cura dela.",
     },
     community: {
-      title: "Você Não Está Sozinho",
-      notAloneTitle: "Milhões de pessoas amam alguém com TPB",
-      notAloneIntro: "Há comunidades e recursos que podem ajudar:",
+      title: "Você Não Está Sozinho/a",
+      intro: "Este cantinho é para compartilhar o que você cala. Para soltar o peso de se sentir o único cuidador do mundo.",
+      lettersTitle: "Cartas ao ABRAZO",
+      letters: [
+        { text: "Hoje consegui colocar um limite pela primeira vez. Estou tremendo, mas me sinto um pouco mais eu.", author: "Ana" },
+        { text: "Entendi que quando me insulta, não está falando de mim, mas do seu inferno interno. Ainda dói, mas já não acredito.", author: "Carlos" },
+      ],
+      resourcesTitle: "Recursos Profissionais",
+      resourcesIntro: "ABRAZO não substitui terapia.",
       resources: [
-        "BPDfamily.com — Comunidade para amigos e família",
-        "NAMI.org — National Alliance on Mental Illness",
-        "Terapia de casal informada em DBT",
-        "Grupos de apoio locais (busque \"NAMI Family Support\")",
-        "Livros: \"I Hate You — Don't Leave Me\" (Krieger), \"The Buddha and Borderline\" (Kiera)",
+        "Busque profissionais especializados em Terapia Comportamental Dialética (DBT) para seu ente querido.",
+        "Busque terapia individual para você. Cuidar de alguém com TPB é trabalho emocional de alto rendimento.",
+        "BPDfamily.com — Comunidade para amigos e família.",
+        "NAMI.org — National Alliance on Mental Illness.",
+        "Livros: \"I Hate You — Don't Leave Me\" (Krieger), \"The Buddha and Borderline\" (Kiera).",
       ],
-      whenToLeaveTitle: "Quando se afastar — não é fracasso, é clareza",
-      whenToLeaveIntro: "Se afastar é correto quando:",
-      whenToLeave: [
-        "Sua própria saúde mental está sendo destruída",
-        "Ele se recusa a buscar ajuda profissional",
-        "Acusações falsas te colocam em perigo",
-        "Te obriga a escolher entre ele e sua vida",
-        "Você descobre que ama a ideia de salvá-lo — não ele",
+      selfCareTitle: "❤️ Cuidando de Você",
+      selfCareIntro: "Apoiar alguém com TPB é exaustivo e carrega alto risco de fadiga por compaixão. Cuidar de si não é egoísmo — é a única forma de poder continuar presente.",
+      selfCarePoints: [
+        { title: "Construa sua rede", desc: "Converse com amigos, familiares ou participe de um grupo de apoio para famílias." },
+        { title: "Considere terapia para você", desc: "Um profissional pode fornecer ferramentas para gerenciar estresse e colocar limites saudáveis." },
+        { title: "Mantenha sua própria vida", desc: "Não abandone seus hobbies, amizades e rotinas. Tempo para si é vital." },
       ],
-      finalWarning: "Se afastar não é abandonar. É reconhecer que a cura dele não depende de você. E que a sua também não depende de ficar.",
-      epilogueTitle: "O que aconteceu com Pedro e Thiago?",
-      epilogueP1: "Pedro está aprendendo a amar sem precisar salvar. Estabeleceu limites. Buscou terapia. Criou este site.",
-      epilogueP2: "Thiago está em seu próprio caminho. Talvez um dia busque ajuda. Talvez não. Mas isso já não é responsabilidade de Pedro.",
-      epilogueFinal: "Isso é amor incondicional: soltar com ternura.",
+      recoveryTitle: "🤝 Apoiando o Processo",
+      recoveryIntro: "Seu papel é de apoio, não de terapeuta. A responsabilidade do tratamento é da pessoa com TPB e seus profissionais.",
+      recoveryPoints: [
+        { title: "Incentive a buscar ajuda", desc: "É fundamental que o tratamento seja guiado por um profissional especializado em TPB." },
+        { title: "Celebre pequenas conquistas", desc: "Reconheça o esforço e os pequenos avanços sem grandes alvoroços." },
+        { title: "Mantenha uma estrutura estável", desc: "Rotinas familiares previsíveis são fonte de segurança que contrabalança o caos interno." },
+      ],
+      conclusionTitle: "💡 Em Conclusão",
+      conclusionText: "Amar alguém com TPB é uma jornada complexa e profunda que requer aprender novas habilidades, praticar a compaixão e, acima de tudo, ser muito gentil consigo mesmo/a. Com a abordagem certa, é possível construir uma relação mais forte e estável.",
+      conclusionFinal: "Se a situação se tornar insustentável ou afetar gravemente sua saúde mental, buscar ajuda profissional para si é um ato de responsabilidade e amor-próprio.",
     },
     footer: {
-      createdFrom: "ABRAZO foi criado a partir da dor vivida, transformada em ternura para outros.",
-      credit: "Baseado na experiência real de Pedro e seu amor por Thiago. Transmutado em sabedoria.",
-      copyright: "© 2026 ABRAZO — Amar com ternura. Este site não substitui terapia profissional.",
+      line1: "ABRAZO foi criado a partir da dor vivida, transformada em compreensão para outros.",
+      line2: "Baseado em experiência real. Para transformar dor em compreensão.",
+      line3: "© 2026 ABRAZO — Amar alguém com TPB. Este site não substitui terapia profissional.",
     },
   },
 
+  // ───────────────────── CATALÀ ─────────────────────
   ca: {
     nav: {
       home: "Inici",
-      what: "Què és el TLP?",
+      understanding: "Entendre el TLP",
       signs: "Senyals",
-      story: "La nostra història",
+      story: "Història Real",
       tools: "Eines",
       boundaries: "Límits",
       community: "Comunitat",
     },
     header: {
       title: "ABRAZO",
-      subtitle: "Per a qui estima algú amb Trastorn Límit de la Personalitat",
-      tagline: "Nascut del dolor. Construït amb tendresa. Perquè altres ho entenguin.",
+      subtitle: "Per a qui estima algú amb Trastorn Límit de la Personalitat (TLP)",
+      tagline: "Nascut del dolor. Construït amb tendresa. Per convertir el dolor en comprensió.",
     },
     home: {
-      heroTitle: "Estimes algú que pateix. I tu també pateixes.",
-      heroP1: "Estimes amb tot el cor. Però cada dia és diferent. Hi ha dies d'amor pur, de riures, de sentir que res no us pot separar. I hi ha dies en què tot es trenca sense avís — i de cop ets l'enemic sense saber per què.",
-      heroP2: "Aquest lloc existeix per a tu. No per jutjar. No per diagnosticar. Sinó per oferir-te comprensió, eines, i la veritat més tendra que conec: pots estimar algú profundament i igualment necessitar deixar anar.",
-      card1Title: "Comprèn",
-      card1Desc: "Entén què és el TLP des del cor de qui estima algú que el té.",
-      card2Title: "Reconeix patrons",
-      card2Desc: "Identifica què passa sense culpar. Amb compassió, mai amb judici.",
-      card3Title: "Cuida't",
-      card3Desc: "Aprèn límits que honrin el teu amor i protegeixin la teva pau.",
+      heroTitle: "Estimes algú que pateix.",
+      heroP1: "Estimes incondicionalment. Però cada dia és diferent. Alguns dies és l'amor més intens que has sentit; altres dies et sents atrapat en un malson del qual no saps com despertar.",
+      heroP2: "No estàs sol/a. I no ets responsable d'\"arreglar\" l'altra persona.",
+      heroP3: "Aquest lloc existeix per a tu. No per diagnosticar. No per jutjar. Existeix perquè entenguis què està passant, com protegir-te amb amor, i com deixar anar sense rancor.",
+      ctaButton: "Comença a entendre",
+      card1Title: "📚 Aprèn",
+      card1Desc: "Entén què és el TLP des de la perspectiva de qui estima algú que el té. No una llista freda de símptomes, sinó un mapa del terreny emocional.",
+      card2Title: "🌿 Reconeix patrons",
+      card2Desc: "Identifica comportaments sense diagnosticar. Amb compassió, no judici. Per entendre per què reacciones com reacciones.",
+      card3Title: "💛 Protegeix-te",
+      card3Desc: "Aprèn límits que honrin el teu amor i la teva salut mental. Perquè cuidar-te no és egoisme — és la base per poder seguir present.",
     },
-    what: {
-      title: "Què és el Trastorn Límit de la Personalitat?",
-      clinicalTitle: "El que diu la ciència, dit amb el cor",
-      clinicalIntro: "El TLP causa un dolor immens — tant a qui el viu com a qui l'estima. Es caracteritza per:",
-      symptoms: [
-        "Por intensa a l'abandonament — real o imaginat",
-        "Relacions intenses però inestables — idealització seguida de devaluació",
-        "Identitat inestable — no saben qui són realment",
-        "Impulsivitat que pot ser destructiva",
-        "Canvis emocionals ràpids — d'amor extrem a rebuig en hores",
-        "Ràbia intensa que pot semblar desproporcionada",
-        "Un buit crònic que res no sembla omplir",
-        "En els pitjors moments, autolesió o amenaces",
+    understanding: {
+      title: "Entenent el TLP",
+      intro: "Quan estimes algú amb Trastorn Límit de la Personalitat, els manuals clínics no són suficients. No necessites una llista freda de símptomes; necessites saber per què fa tant de mal i per què et sents tan confós/a.",
+      emotionalSkinTitle: "El \"Tercer Grau Emocional\"",
+      emotionalSkinDesc: "La seva pell emocional no té capa protectora. Senten el món a 100 graus mentre els altres estem a 25. Per això una crítica suau pot sentir-se per a ells com un atac devastador.",
+      abandonmentTitle: "La Por a l'Abandonament",
+      abandonmentDesc: "No és un caprici. És una alarma interna que sona constantment cridant \"Et deixaran\". Moltes de les seves reaccions desproporcionades no són contra tu, són contra aquesta por paralitzant.",
+      voidTitle: "El Buit",
+      voidDesc: "No és avorriment. És un forat negre existencial que intenten omplir amb relacions intenses, compres o ràbia. Tu no pots omplir aquest buit, i alliberar-te d'aquesta càrrega és el primer pas per poder ajudar de veritat.",
+      closingNote: "Aprendre això no és justificar el maltractament. És entendre el mapa del territori pel qual estàs caminant.",
+      clinicalTitle: "El que diu la ciència",
+      clinicalPoints: [
+        { title: "Inestabilitat Emocional", desc: "Les emocions són molt intenses i canviants, amb patrons d'idealització i devaluació en els seus vincles." },
+        { title: "Por a l'Abandonament", desc: "Una por intensa i sovint irracional a ser deixat de banda. Poden reaccionar de forma desproporcionada davant una separació real o percebuda." },
+        { title: "Pensament Dicotòmic", desc: "El món es percep en extrems (blanc o negre), gairebé sense matisos. Algú pot ser meravellós en un moment i menyspreable al següent." },
+        { title: "Impulsivitat", desc: "Tendència a actuar sense pensar en les conseqüències, com a forma de regular el dolor emocional." },
       ],
-      warningNote: "Res d'això és culpa seva. Però el teu benestar també importa. Ambdues veritats coexisteixen.",
-      whyTitle: "Per què estimen així?",
-      whyIntro: "Algú amb TLP estima amb una intensitat aclaparadora perquè:",
-      whyPoints: [
-        "Necessiten validació constant per sentir-se reals",
-        "Porten una por existencial a l'abandonament que ve de ferides antigues",
-        "No poden regular les seves emocions — oscil·len entre extrems",
-        "De vegades confonen control amb seguretat",
-        "No toleren l'ambigüitat — ets tot bo o tot dolent",
-      ],
-      truthNote: "Poden sentir amor genuí. Poden curar-se amb teràpia (DBT). Però el teu amor sol no és suficient per curar el seu TLP. Això no és el teu fracàs — és la realitat.",
     },
     signs: {
-      title: "Senyals que potser reconeixes",
-      patternsTitle: "Si veus aquests patrons en els primers mesos:",
+      title: "Reconeix Patrons",
+      intro: "Potser la teva persona no té diagnòstic. Potser només saps que la relació és una muntanya russa. Aquests són patrons que solen aparèixer. Observa amb compassió, no per etiquetar, sinó per entendre.",
       patterns: [
-        "\"Ets perfecte, ets la meva salvació\" — massa ràpid, massa intens",
-        "Et demana constantment que confirmis el teu amor — i mai n'hi ha prou",
-        "T'estima profundament... i hores després no sent res per tu",
-        "Parla de futur en setmanes — matrimoni, fills, per sempre",
-        "\"Si m'estimes, faries X\" — l'amor com a condició, no com a regal",
-        "Vol que deixis amics o família per ell",
-        "Inconsistències que no semblen malicioses, però confonen",
-        "Crisis emocionals extremes — amenaces, autolesió",
+        { title: "Idealització i Devaluació", desc: "Un dia ets la seva salvació, la seva persona favorita a l'univers. L'endemà, un petit desacord et converteix en la pitjor persona del món." },
+        { title: "Hipersensibilitat a la Crítica", desc: "Et diu: \"Ja estàs enfadat amb mi, oi?\" quan tu només estàs cansat/da. El seu radar per detectar el rebuig està calibrat al màxim." },
+        { title: "Por a la Soledat", desc: "No suporten estar sols amb si mateixos. Poden enviar desenes de missatges seguits si no respons en 10 minuts. No és control, és pànic." },
+        { title: "Autosabotatge", desc: "Just quan la relació va bé i hi ha pau, sorgeix una baralla per alguna cosa mínima. L'estabilitat, per a un cervell TLP, de vegades és més aterridora que el caos conegut." },
       ],
-      warningNote: "Reconèixer aquests senyals no vol dir que no mereixi amor. Vol dir que la seva curació no depèn de tu. I que mereixes protegir-te.",
-      whatToDoTitle: "Què fer si ho reconeixes?",
-      whatToDo: [
-        "No fugis espantat. Però tampoc tanquis els ulls.",
-        "Parla amb tendresa: \"He notat que els teus sentiments canvien ràpidament. Podem parlar-ne junts?\"",
-        "Suggereix teràpia DBT — no com a ultimàtum, sinó com a pont cap a la pau.",
-        "Estableix límits amb amor des del primer dia.",
-        "Pregunta't honestament: Puc estimar aquesta persona tal com és? O estic esperant que canviï?",
-      ],
+      closingNote: "Reconèixer aquests patrons no és etiquetar ningú. És donar-te permís per entendre el que vius i buscar eines per navegar-ho.",
     },
     story: {
-      title: "La Nostra Història",
-      intro: "Aquesta història és real. No és única. És la dansa que milions de persones ballen cada dia — la de l'amor que fa mal, que confon, que transforma.",
-      beginningTitle: "El començament",
-      beginningText: "Pedro va veure en Thiago algú a qui podia abraçar amb tot el seu ésser. Li va donar casa, suport, empresa, defensa, amor sense condicions. Durant un temps, Thiago el va idealitzar. Van ser els dies més lluminosos de la vida de Pedro.",
-      turnTitle: "El gir",
-      turnText: "Quan Pedro va voler aprofundir la intimitat, Thiago va sentir pànic. \"No confonguis el vincle,\" va dir. Pedro ho va sentir com a fredor. Thiago ho va sentir com a invasió. Tots dos tenien raó. Tots dos tenien por.",
-      turnText2: "Pedro va omplir el silenci amb anàlisi. Thiago va omplir el buit portant-hi altres. El cicle d'idealització i devaluació ja havia començat.",
-      collapseTitle: "El col·lapse",
-      collapseText: "Thiago va fer coses que van fer molt de mal a Pedro — acusacions falses, traïcions, manipulació. Pedro, ferit i desesperat, va respondre amb crueltat — missatges feridors, paraules que no hauria d'haver dit. Tots dos van causar dany des de les seves pròpies ferides.",
-      apologyTitle: "El que Pedro necessita dir",
-      apologyText: "\"Thiago, et vaig fer mal. Les meves paraules van ser cruels i no tenien dret de sortir de la meva boca. Lamento cada missatge que et vaig enviar des de la ràbia. Però també necessito ser honest: tu em vas fer mal primer, i profundament. Les acusacions falses, les traïcions, el rebuig després d'haver-ho donat tot — això em va trencar. No ho dic per justificar-me. Ho dic perquè tots dos mereixem la veritat. Et perdono. I em perdono. I et deixo anar amb amor.\"",
-      lessonTitle: "El que vam aprendre",
-      lessons: [
-        "L'amor incondicional NO és el mateix que amor sense límits",
-        "No pots salvar algú que no vol ser salvat — i això no és culpa teva",
-        "La teva generositat pot ser percebuda com a control — sense que ho sàpigues",
-        "Les seves acusacions poden contenir la seva veritat emocional, encara que no siguin veritat objectiva",
-        "L'anàlisi obsessiva és una altra forma de no deixar anar",
-        "Deixar anar és l'acte final d'amor — el més difícil i el més tendre",
-      ],
-      endNote: "Pedro està aprenent a estimar des de la distància. Thiago està buscant la seva pròpia pau. No està \"bé\" — però és honest. I l'honestedat és on comença la curació.",
+      title: "La Història Real",
+      subtitle: "L'origen d'ABRAZO",
+      quote: "ABRAZO va ser creat des del dolor viscut d'algú que va estimar massa intensament.",
+      intro: "El creador d'ABRAZO no és psicòleg. És una persona com tu. Va conèixer algú en un moment de les seves vides en què tots dos buscaven una àncora. La connexió va ser immediata, magnètica, d'aquelles que et fan creure en ànimes bessones.",
+      bodyP1: "Durant mesos, va navegar entre el cel i l'infern. Hi havia caps de setmana de riures, plans de futur i una intimitat que mai havia sentit. Però també hi havia portades, amenaces setmanals de ruptura i un esgotament emocional que el deixava buit.",
+      bodyP2: "Aquella persona no era \"dolenta\". Patia.",
+      bodyP3: "Ell no era \"feble\". Estimava.",
+      bodyP4: "La relació va acabar. Es va quedar amb el cor trencat i mil preguntes sense resposta: Per què va passar això? Va ser culpa meva? Es pot estimar algú així sense destruir-se?",
+      bodyP5: "D'aquell dol va néixer ABRAZO. Va decidir transmutar el dolor en saviesa perquè la propera persona que cerqui \"Com ajudar la meva parella amb TLP sense tornar-me boig\" trobi una abraçada i no un judici.",
+      credit: "Basat en experiència real. Transmutat en saviesa per a altres.",
     },
     tools: {
-      title: "Eines amb Tendresa",
-      diaryTitle: "El Diari de Patrons",
-      diaryIntro: "Cada setmana, escriu-te a tu mateix amb honestedat:",
-      diaryPlaceholder: "DATA: ____\n\n1. Quan em vaig sentir invisible aquesta setmana?\n   - Què vaig fer per sentir-me visible de nou?\n\n2. Quins moments van anar d'un extrem a l'altre?\n   - Com vaig respondre?\n\n3. Vaig intentar salvar-lo? O intentava salvar-me a mi mateix?\n\n4. La meva veritable necessitat aquesta setmana va ser: _____\n   - La vaig demanar? O vaig esperar que l'endevinés?",
-      questionsTitle: "Les 3 Preguntes de Claredat",
-      questionsIntro: "Quan tot s'ennuvola, respon per escrit:",
-      q1: "Això és la seva veritat o el seu símptoma?",
-      q1Desc: "Si diu \"No t'estimo,\" pot ser el que sent en aquell instant. No ho discuteixis. Reconeix-ho: \"Entenc que així et sents ara.\"",
-      q2: "Puc controlar això?",
-      q2Desc: "Si no: deixa anar amb amor. Si sí: actua amb tendresa, no amb control.",
-      q3: "Estic salvant o estic evitant el meu propi dolor?",
-      q3Desc: "Aquesta és la pregunta més important. Si és la segona, necessites teràpia pròpia — no una relació.",
-      boundaryPhraseTitle: "La Frase del Límit Amorós",
-      boundaryPhraseIntro: "Quan necessitis un límit, utilitza aquesta estructura:",
-      boundaryTemplate: "\"T'estimo. [LÍMIT]. Això no canvia que t'estimo — canvia com puc estar amb tu.\"",
-      boundaryExamples: [
-        "\"T'estimo. No respondré amenaces. Això no canvia que t'estimo — canvia com puc estar amb tu.\"",
-        "\"T'estimo. No deixaré la meva família perquè tu ho demanis. Això no canvia que t'estimo.\"",
-        "\"T'estimo. Et deixo anar perquè tots dos necessitem curar. Això no canvia que t'estimo — mai ho farà.\"",
+      title: "Eines per al Dia a Dia",
+      intro: "Estimar algú amb TLP requereix un nou llenguatge. No el de la lògica freda, sinó el de la validació emocional.",
+      validationTitle: "1. Validació sense estar d'acord",
+      validationSituation: "Situació: Et crida: \"Odies estar amb mi, ho sé!\"",
+      validationWrong: "Reacció normal (que empitjora tot): \"Això no és veritat, estàs exagerant, calma't.\"",
+      validationRight: "Eina ABRAZO: \"Sento molt que et sentis així ara mateix. Deu ser horrible sentir que algú a qui estimes et rebutja.\"",
+      validationWhy: "No confirmes que l'odies; confirmes que el seu sentiment és real i dolorós. Això baixa la temperatura de la crisi.",
+      trafficLightTitle: "2. La Tècnica del Semàfor en Crisi",
+      redLabel: "🔴 Llum Vermella — Crisi aguda",
+      redDesc: "No raonar. Només dir: \"Sóc aquí. No me n'aniré. Quan puguis respirar, parlarem.\"",
+      yellowLabel: "🟡 Llum Groga — Calma tensa",
+      yellowDesc: "Distreure amb alguna cosa sensorial: un got d'aigua freda, una manta, sortir al balcó 1 minut.",
+      greenLabel: "🟢 Llum Verda — Tranquil·litat",
+      greenDesc: "És el moment de parlar del problema real, però sempre des del \"Jo\" i no des del \"Tu\". \"Quan puja la veu, jo m'espanto i necessito un moment.\"",
+      breathingTitle: "3. Respiració per a tu",
+      breathingDesc: "Si sents que t'ofegues, usa la tècnica 4-7-8: Inhala en 4 segons, reté 7, exhala en 8. Repeteix 3 vegades. És per a tu. Per no perdre el teu centre.",
+      communicationTitle: "Estratègies de Comunicació",
+      communicationIntro: "La comunicació és el pilar per gestionar els moments difícils:",
+      commPoints: [
+        { title: "Validació Emocional", desc: "Reconèixer i acceptar el sentiment de l'altra persona, sense que això signifiqui que estiguis d'acord amb la seva conducta." },
+        { title: "Escolta Activa", desc: "Estar plenament present, escoltar sense jutjar, sense minimitzar la seva experiència ni oferir solucions no sol·licitades." },
+        { title: "Comunicació No Violenta", desc: "Expressar les teves pròpies necessitats sense atacar ni culpar, utilitzant frases en primera persona (\"Jo em sento...\")." },
       ],
+      dontDoTitle: "Què NO fer",
+      dontDoDesc: "Posar-se a la defensiva, usar etiquetes o comentaris invalidants (\"estàs exagerant\") que poden intensificar el conflicte.",
     },
     boundaries: {
       title: "Límits Compassius",
-      differenceTitle: "Quina és la diferència?",
-      withoutLabel: "Sense Límits (Perjudicial)",
-      withLabel: "Amb Límits (Amorós)",
-      rows: [
-        ["\"Et dono TOT perquè t'estimo\"", "\"Et dono el que puc sense perdre'm\""],
-        ["\"Si amenaces, cedeixo\"", "\"Si parles de fer-te mal, truco ajuda. Això és amor.\""],
-        ["\"Espio per saber si m'estimes\"", "\"Et pregunto directament què necessites\""],
-        ["\"T'humilio quan fa mal\"", "\"Prenc distància per no fer-nos mal\""],
-        ["\"Sacrifico tot per tu\"", "\"T'estimo I tinc la meva pròpia vida\""],
+      intro: "En l'amor amb TLP, o aprens a posar límits o el vincle et devora. El límit no és un càstig, és la tanca que protegeix el jardí de la teva relació perquè no sigui trepitjat.",
+      badTitle: "Límit Mal Posat (Càstig)",
+      badExample: "\"Com que m'has cridat, me'n vaig i no torno en 3 dies.\"",
+      badExplain: "Això activa la por a l'abandonament i desencadena una crisi major.",
+      goodTitle: "Límit Compassiu (Amor propi)",
+      goodExample: "\"T'estimo moltíssim, i justament perquè t'estimo i vull que això funcioni, necessito sortir a fer una volta de 20 minuts per calmar-me. Quan torni, si tots dos estem més tranquils, podem seguir parlant. No me'n vaig de la relació, me'n vaig de la discussió.\"",
+      hardestTitle: "El límit més difícil",
+      hardestDesc: "Hi ha un moment en què el límit compassiu és: \"No puc ajudar-te sense destruir-me a mi mateix/a.\" Estimar també és saber deixar anar. No per falta d'amor, sinó per excés de respecte a la teva pròpia vida.",
+      tipsTitle: "Claus per establir límits",
+      tips: [
+        { title: "Sigues Clar i Carinyós", desc: "\"T'estimo i vull escoltar-te, però no puc fer-ho si em crides.\"" },
+        { title: "Sigues Consistent", desc: "Un cop posat, manté'l. La consistència genera seguretat i previsibilitat, quelcom que les persones amb TLP necessiten profundament." },
+        { title: "Diferencia Límits d'Ultimàtums", desc: "Els límits protegeixen el teu benestar (\"Necessito sortir si la conversa puja de to\"), mentre que els ultimàtums controlen la conducta de l'altre." },
       ],
-      essentialTitle: "Els 5 Límits Essencials",
-      essentials: [
-        "Límit emocional: \"El teu col·lapse no és la meva responsabilitat. Puc caminar al teu costat, però no salvar-te.\"",
-        "Límit de temps: \"T'estimo. I també necessito temps per a mi.\"",
-        "Límit d'honestedat: \"No prometré quelcom que no puc complir.\"",
-        "Límit de seguretat: \"Si hi ha amenaces, trucaré professionals. Això és cuidar-te de veritat.\"",
-        "Límit de veritat: \"No acceptaré acusacions falses com a forma de control.\"",
-      ],
-      paradoxNote: "Quan poses límits compassius, pot semblar menys amor. En realitat, és el primer moment en què l'altra persona sent la responsabilitat del seu propi dolor. I això pot ser l'inici de la seva curació.",
     },
     community: {
-      title: "No Estàs Sol",
-      notAloneTitle: "Milions de persones estimen algú amb TLP",
-      notAloneIntro: "Hi ha comunitats i recursos que poden ajudar:",
+      title: "No Estàs Sol/a",
+      intro: "Aquest racó és per compartir el que calles. Per deixar anar el pes de sentir-te l'únic cuidador del món.",
+      lettersTitle: "Cartes a ABRAZO",
+      letters: [
+        { text: "Avui he pogut posar un límit per primera vegada. Estic tremolant, però em sento una mica més jo.", author: "Ana" },
+        { text: "He entès que quan m'insulta, no està parlant de mi, sinó del seu infern intern. Segueix fent mal, però ja no m'ho crec.", author: "Carlos" },
+      ],
+      resourcesTitle: "Recursos Professionals",
+      resourcesIntro: "ABRAZO no substitueix la teràpia.",
       resources: [
-        "BPDfamily.com — Comunitat per a amics i família",
-        "NAMI.org — National Alliance on Mental Illness",
-        "Teràpia de parella informada en DBT",
-        "Grups de suport locals (cerca \"NAMI Family Support\")",
-        "Llibres: \"I Hate You — Don't Leave Me\" (Krieger), \"The Buddha and Borderline\" (Kiera)",
+        "Busca professionals especialitzats en Teràpia Dialèctica Conductual (DBT) per al teu ésser estimat.",
+        "Busca teràpia individual per a tu. Cuidar algú amb TLP és un treball emocional d'alt rendiment.",
+        "BPDfamily.com — Comunitat per a amics i família.",
+        "NAMI.org — National Alliance on Mental Illness.",
+        "Llibres: \"I Hate You — Don't Leave Me\" (Krieger), \"The Buddha and Borderline\" (Kiera).",
       ],
-      whenToLeaveTitle: "Quan allunyar-se — no és fracàs, és claredat",
-      whenToLeaveIntro: "Allunyar-se és correcte quan:",
-      whenToLeave: [
-        "La teva pròpia salut mental s'està destruint",
-        "Es nega a buscar ajuda professional",
-        "Les acusacions falses et posen en perill",
-        "T'obliga a triar entre ell i la teva vida",
-        "Descobreixes que estimes la idea de salvar-lo — no a ell",
+      selfCareTitle: "❤️ Cuidant de Tu Mateix/a",
+      selfCareIntro: "Donar suport a algú amb TLP és esgotador i comporta un alt risc de fatiga per compassió. Cuidar-te no és egoisme — és l'única forma de poder seguir sent-hi.",
+      selfCarePoints: [
+        { title: "Construeix la teva xarxa", desc: "Parla amb amics, familiars o uneix-te a un grup de suport per a famílies." },
+        { title: "Considera teràpia per a tu", desc: "Un professional pot proporcionar-te eines per gestionar l'estrès i posar límits saludables." },
+        { title: "Manté la teva pròpia vida", desc: "No abandonis les teves aficions, amistats i rutines. Temps per a tu és vital." },
       ],
-      finalWarning: "Allunyar-se no és abandonar. És reconèixer que la seva curació no depèn de tu. I que la teva tampoc depèn de quedar-te.",
-      epilogueTitle: "Què va passar amb Pedro i Thiago?",
-      epilogueP1: "Pedro està aprenent a estimar sense necessitar salvar. Ha establert límits. Ha buscat teràpia. Ha creat aquest lloc.",
-      epilogueP2: "Thiago està en el seu propi camí. Potser algun dia buscarà ajuda. Potser no. Però això ja no és responsabilitat de Pedro.",
-      epilogueFinal: "Això és amor incondicional: deixar anar amb tendresa.",
+      recoveryTitle: "🤝 Donant Suport al Procés",
+      recoveryIntro: "El teu paper és de suport, no de terapeuta. La responsabilitat del tractament és de la persona amb TLP i els seus professionals.",
+      recoveryPoints: [
+        { title: "Anima'l a buscar ajuda", desc: "És fonamental que el tractament el guiï un professional especialitzat en TLP." },
+        { title: "Celebra les petites fites", desc: "Reconeix l'esforç i els petits avenços sense grans rebombories." },
+        { title: "Manté una estructura estable", desc: "Les rutines familiars previsibles són font de seguretat que contraresta el seu caos intern." },
+      ],
+      conclusionTitle: "💡 En Conclusió",
+      conclusionText: "Estimar algú amb TLP és un viatge complex i profund que requereix aprendre noves habilitats, practicar la compassió i, sobretot, ser molt amable amb tu mateix/a. Amb l'enfocament correcte, és possible construir una relació més forta i estable.",
+      conclusionFinal: "Si la situació es torna insostenible o afecta greument la teva salut mental, buscar ajuda professional per a tu és un acte de responsabilitat i amor propi.",
     },
     footer: {
-      createdFrom: "ABRAZO va ser creat des del dolor viscut, transformat en tendresa per a altres.",
-      credit: "Basat en l'experiència real de Pedro i el seu amor per Thiago. Transmutat en saviesa.",
-      copyright: "© 2026 ABRAZO — Estimar amb tendresa. Aquest lloc no substitueix teràpia professional.",
+      line1: "ABRAZO va ser creat des del dolor viscut, transformat en comprensió per a altres.",
+      line2: "Basat en experiència real. Per convertir el dolor en comprensió.",
+      line3: "© 2026 ABRAZO — Estimar algú amb TLP. Aquest lloc no substitueix teràpia professional.",
     },
   },
 };
