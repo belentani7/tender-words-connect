@@ -1,9 +1,9 @@
 import { useState, ReactNode } from "react";
 import { useLang } from "@/hooks/useLang";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight } from "lucide-react";
+import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind } from "lucide-react";
 
-type Section = "home" | "what" | "signs" | "story" | "tools" | "boundaries" | "community";
+type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "community";
 
 const SectionWrapper = ({ children, visible }: { children: ReactNode; visible: boolean }) => {
   if (!visible) return null;
@@ -20,9 +20,14 @@ const Index = () => {
   const { t } = useLang();
   const [section, setSection] = useState<Section>("home");
 
+  const goTo = (s: Section) => {
+    setSection(s);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const navItems: { id: Section; label: string; icon: ReactNode }[] = [
     { id: "home", label: t.nav.home, icon: <Heart className="w-4 h-4" /> },
-    { id: "what", label: t.nav.what, icon: <BookOpen className="w-4 h-4" /> },
+    { id: "understanding", label: t.nav.understanding, icon: <BookOpen className="w-4 h-4" /> },
     { id: "signs", label: t.nav.signs, icon: <Eye className="w-4 h-4" /> },
     { id: "story", label: t.nav.story, icon: <MessageCircleHeart className="w-4 h-4" /> },
     { id: "tools", label: t.nav.tools, icon: <Shield className="w-4 h-4" /> },
@@ -34,28 +39,27 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
-        <div className="max-w-4xl mx-auto px-4 py-4 md:py-6">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">🤝</span>
-              <h1 className="text-2xl md:text-3xl font-bold text-gradient-primary">{t.header.title}</h1>
+        <div className="max-w-4xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">🤝</span>
+              <h1 className="text-xl md:text-2xl font-bold text-gradient-primary">{t.header.title}</h1>
             </div>
             <LanguageSwitcher />
           </div>
-          <p className="text-muted-foreground text-sm md:text-base">{t.header.subtitle}</p>
-          <p className="text-muted-foreground/60 text-xs mt-1">{t.header.tagline}</p>
+          <p className="text-muted-foreground text-xs md:text-sm leading-snug">{t.header.subtitle}</p>
         </div>
       </header>
 
       {/* Navigation */}
-      <nav className="sticky top-[100px] md:top-[120px] z-40 bg-background/60 backdrop-blur-md border-b border-border/30">
-        <div className="max-w-4xl mx-auto px-4 py-3">
-          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+      <nav className="sticky top-[72px] md:top-[76px] z-40 bg-background/60 backdrop-blur-md border-b border-border/30">
+        <div className="max-w-4xl mx-auto px-4 py-2">
+          <div className="flex gap-1.5 overflow-x-auto pb-1">
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => { setSection(item.id); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+                onClick={() => goTo(item.id)}
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all duration-300 ${
                   section === item.id
                     ? "bg-primary text-primary-foreground shadow-tender"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary"
@@ -70,261 +74,319 @@ const Index = () => {
       </nav>
 
       {/* Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+      <main className="max-w-4xl mx-auto px-4 py-6 md:py-10">
 
-        {/* HOME */}
+        {/* ─── HOME ─── */}
         <SectionWrapper visible={section === "home"}>
-          <div className="bg-gradient-hero rounded-3xl p-8 md:p-12 mb-8 border border-primary/10">
-            <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-6 leading-tight">{t.home.heroTitle}</h2>
-            <p className="text-foreground/80 text-lg leading-relaxed mb-4">{t.home.heroP1}</p>
-            <p className="text-foreground/80 text-lg leading-relaxed">{t.home.heroP2}</p>
+          <div className="bg-gradient-hero rounded-3xl p-6 md:p-10 mb-6 border border-primary/10">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4 leading-tight">{t.home.heroTitle}</h2>
+            <p className="text-foreground/80 leading-relaxed mb-3">{t.home.heroP1}</p>
+            <p className="text-foreground font-semibold mb-3">{t.home.heroP2}</p>
+            <p className="text-foreground/80 leading-relaxed mb-5">{t.home.heroP3}</p>
+            <button
+              onClick={() => goTo("understanding")}
+              className="bg-primary text-primary-foreground px-5 py-2.5 rounded-xl font-medium shadow-tender hover:opacity-90 transition-all"
+            >
+              {t.home.ctaButton}
+            </button>
           </div>
 
           <div className="grid md:grid-cols-3 gap-4">
             {[
-              { icon: "📚", title: t.home.card1Title, desc: t.home.card1Desc },
-              { icon: "🌿", title: t.home.card2Title, desc: t.home.card2Desc },
-              { icon: "💛", title: t.home.card3Title, desc: t.home.card3Desc },
+              { title: t.home.card1Title, desc: t.home.card1Desc },
+              { title: t.home.card2Title, desc: t.home.card2Desc },
+              { title: t.home.card3Title, desc: t.home.card3Desc },
             ].map((c, i) => (
               <Card key={i}>
-                <span className="text-2xl mb-3 block">{c.icon}</span>
-                <h3 className="text-lg font-semibold text-foreground mb-2">{c.title}</h3>
+                <h3 className="text-base font-semibold text-foreground mb-2">{c.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{c.desc}</p>
               </Card>
             ))}
           </div>
         </SectionWrapper>
 
-        {/* WHAT IS BPD */}
-        <SectionWrapper visible={section === "what"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-8">{t.what.title}</h2>
-          
-          <Card className="mb-6">
-            <h3 className="text-lg font-semibold text-foreground mb-3">{t.what.clinicalTitle}</h3>
-            <p className="text-muted-foreground mb-4">{t.what.clinicalIntro}</p>
-            <ul className="space-y-2">
-              {t.what.symptoms.map((s, i) => (
-                <li key={i} className="flex gap-3 text-foreground/80">
-                  <span className="text-healing mt-0.5">✓</span>
-                  <span>{s}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
+        {/* ─── UNDERSTANDING ─── */}
+        <SectionWrapper visible={section === "understanding"}>
+          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.understanding.title}</h2>
+          <p className="text-muted-foreground mb-6 text-base italic leading-relaxed">{t.understanding.intro}</p>
 
-          <div className="bg-warm/10 border-l-4 border-warm rounded-r-xl p-4 mb-6 text-foreground/80">
-            ⚠️ {t.what.warningNote}
+          <div className="space-y-4 mb-6">
+            {[
+              { icon: "🔥", title: t.understanding.emotionalSkinTitle, desc: t.understanding.emotionalSkinDesc },
+              { icon: "🚪", title: t.understanding.abandonmentTitle, desc: t.understanding.abandonmentDesc },
+              { icon: "🕳️", title: t.understanding.voidTitle, desc: t.understanding.voidDesc },
+            ].map((item, i) => (
+              <Card key={i}>
+                <h3 className="text-base font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <span>{item.icon}</span>{item.title}
+                </h3>
+                <p className="text-foreground/80 leading-relaxed text-sm">{item.desc}</p>
+              </Card>
+            ))}
           </div>
 
-          <Card className="mb-6">
-            <h3 className="text-lg font-semibold text-foreground mb-3">{t.what.whyTitle}</h3>
-            <p className="text-muted-foreground mb-4">{t.what.whyIntro}</p>
-            <ul className="space-y-2 ml-4 list-disc text-foreground/80">
-              {t.what.whyPoints.map((p, i) => <li key={i}>{p}</li>)}
-            </ul>
-          </Card>
-
-          <div className="bg-healing/10 border-l-4 border-healing rounded-r-xl p-4 text-foreground/80">
-            ✓ {t.what.truthNote}
-          </div>
-        </SectionWrapper>
-
-        {/* SIGNS */}
-        <SectionWrapper visible={section === "signs"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-8">{t.signs.title}</h2>
-
-          <Card className="mb-6">
-            <h3 className="text-lg font-semibold text-destructive/80 mb-4">{t.signs.patternsTitle}</h3>
-            <ul className="space-y-3">
-              {t.signs.patterns.map((p, i) => (
-                <li key={i} className="flex gap-3 text-foreground/80">
-                  <span className="text-destructive/60 mt-0.5">🚩</span>
-                  <span>{p}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-
-          <div className="bg-warm/10 border-l-4 border-warm rounded-r-xl p-4 mb-6 text-foreground/80">
-            {t.signs.warningNote}
+          <div className="bg-warm/10 border-l-4 border-warm rounded-r-xl p-4 mb-6 text-foreground/80 text-sm italic">
+            {t.understanding.closingNote}
           </div>
 
           <Card>
-            <h3 className="text-lg font-semibold text-foreground mb-4">{t.signs.whatToDoTitle}</h3>
-            <ol className="space-y-3 list-decimal ml-5 text-foreground/80">
-              {t.signs.whatToDo.map((s, i) => <li key={i} className="leading-relaxed">{s}</li>)}
-            </ol>
-          </Card>
-        </SectionWrapper>
-
-        {/* STORY */}
-        <SectionWrapper visible={section === "story"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.story.title}</h2>
-          <p className="text-muted-foreground mb-8 text-lg italic">{t.story.intro}</p>
-
-          <Card className="border-l-4 border-l-primary mb-6">
-            <h4 className="text-primary font-semibold mb-2">{t.story.beginningTitle}</h4>
-            <p className="text-foreground/80 leading-relaxed">{t.story.beginningText}</p>
-          </Card>
-
-          <Card className="border-l-4 border-l-warm mb-6">
-            <h4 className="text-warm font-semibold mb-2">{t.story.turnTitle}</h4>
-            <p className="text-foreground/80 leading-relaxed mb-3">{t.story.turnText}</p>
-            <p className="text-foreground/80 leading-relaxed">{t.story.turnText2}</p>
-          </Card>
-
-          <Card className="border-l-4 border-l-destructive mb-6">
-            <h4 className="text-destructive font-semibold mb-2">{t.story.collapseTitle}</h4>
-            <p className="text-foreground/80 leading-relaxed">{t.story.collapseText}</p>
-          </Card>
-
-          {/* THE APOLOGY — tender, central */}
-          <div className="bg-gradient-warm rounded-3xl p-8 md:p-10 mb-6 border border-primary/20">
-            <h4 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-              <Heart className="w-5 h-5 text-primary" />
-              {t.story.apologyTitle}
-            </h4>
-            <p className="text-foreground/90 leading-relaxed italic text-lg">{t.story.apologyText}</p>
-          </div>
-
-          <Card className="mb-6">
-            <h4 className="text-foreground font-semibold mb-4">{t.story.lessonTitle}</h4>
-            <ul className="space-y-2">
-              {t.story.lessons.map((l, i) => (
-                <li key={i} className="flex gap-3 text-foreground/80">
-                  <ChevronRight className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
-                  <span>{l}</span>
-                </li>
+            <h3 className="text-base font-semibold text-foreground mb-4">{t.understanding.clinicalTitle}</h3>
+            <div className="space-y-3">
+              {t.understanding.clinicalPoints.map((p, i) => (
+                <div key={i} className="flex gap-3">
+                  <span className="text-healing mt-0.5">✓</span>
+                  <div>
+                    <span className="font-medium text-foreground">{p.title}: </span>
+                    <span className="text-foreground/70 text-sm">{p.desc}</span>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           </Card>
+        </SectionWrapper>
 
-          <div className="bg-healing/10 border-l-4 border-healing rounded-r-xl p-4 text-foreground/80 italic">
-            {t.story.endNote}
+        {/* ─── SIGNS ─── */}
+        <SectionWrapper visible={section === "signs"}>
+          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.signs.title}</h2>
+          <p className="text-muted-foreground mb-6 italic leading-relaxed">{t.signs.intro}</p>
+
+          <div className="space-y-4 mb-6">
+            {t.signs.patterns.map((p, i) => (
+              <Card key={i} className="border-l-4 border-l-warm">
+                <h4 className="font-semibold text-foreground mb-1 flex items-center gap-2">
+                  <span className="text-warm">🚩</span>{p.title}
+                </h4>
+                <p className="text-foreground/70 text-sm leading-relaxed">{p.desc}</p>
+              </Card>
+            ))}
+          </div>
+
+          <div className="bg-healing/10 border-l-4 border-healing rounded-r-xl p-4 text-foreground/80 text-sm italic">
+            {t.signs.closingNote}
           </div>
         </SectionWrapper>
 
-        {/* TOOLS */}
-        <SectionWrapper visible={section === "tools"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-8">{t.tools.title}</h2>
+        {/* ─── STORY ─── */}
+        <SectionWrapper visible={section === "story"}>
+          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-1">{t.story.title}</h2>
+          <p className="text-muted-foreground text-sm mb-6">{t.story.subtitle}</p>
+
+          <div className="bg-gradient-warm rounded-2xl p-6 md:p-8 mb-6 border border-primary/15">
+            <p className="text-foreground italic text-lg leading-relaxed mb-0">"{t.story.quote}"</p>
+          </div>
 
           <Card className="mb-6">
-            <h3 className="text-lg font-semibold text-foreground mb-3">{t.tools.diaryTitle}</h3>
-            <p className="text-muted-foreground mb-4">{t.tools.diaryIntro}</p>
-            <textarea
-              className="w-full bg-background border border-border rounded-xl p-4 text-foreground/80 text-sm font-mono min-h-[200px] resize-y focus:outline-none focus:ring-2 focus:ring-primary/30"
-              placeholder={t.tools.diaryPlaceholder}
-            />
+            <p className="text-foreground/80 leading-relaxed mb-4">{t.story.intro}</p>
+            <p className="text-foreground/80 leading-relaxed mb-4">{t.story.bodyP1}</p>
+            <div className="my-5 space-y-1">
+              <p className="text-foreground font-semibold italic">{t.story.bodyP2}</p>
+              <p className="text-foreground font-semibold italic">{t.story.bodyP3}</p>
+            </div>
+            <p className="text-foreground/80 leading-relaxed mb-4">{t.story.bodyP4}</p>
+            <p className="text-foreground/80 leading-relaxed">{t.story.bodyP5}</p>
           </Card>
 
-          <Card className="mb-6">
-            <h3 className="text-lg font-semibold text-foreground mb-3">{t.tools.questionsTitle}</h3>
-            <p className="text-muted-foreground mb-4">{t.tools.questionsIntro}</p>
-            <div className="space-y-4">
+          <p className="text-muted-foreground text-xs text-center italic">{t.story.credit}</p>
+        </SectionWrapper>
+
+        {/* ─── TOOLS ─── */}
+        <SectionWrapper visible={section === "tools"}>
+          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.tools.title}</h2>
+          <p className="text-muted-foreground mb-6 italic">{t.tools.intro}</p>
+
+          {/* Validation */}
+          <Card className="mb-5">
+            <h3 className="text-base font-semibold text-foreground mb-4">{t.tools.validationTitle}</h3>
+            <div className="space-y-3 text-sm">
+              <div className="bg-muted/50 rounded-xl p-3">
+                <p className="text-foreground/80">💬 {t.tools.validationSituation}</p>
+              </div>
+              <div className="bg-destructive/5 rounded-xl p-3 border-l-3 border-l-destructive/40">
+                <p className="text-foreground/70">❌ {t.tools.validationWrong}</p>
+              </div>
+              <div className="bg-healing/5 rounded-xl p-3 border-l-3 border-l-healing">
+                <p className="text-foreground/90">✅ {t.tools.validationRight}</p>
+              </div>
+              <p className="text-muted-foreground text-xs italic pt-1">{t.tools.validationWhy}</p>
+            </div>
+          </Card>
+
+          {/* Traffic Light */}
+          <Card className="mb-5">
+            <h3 className="text-base font-semibold text-foreground mb-4">{t.tools.trafficLightTitle}</h3>
+            <div className="space-y-3">
               {[
-                { q: t.tools.q1, d: t.tools.q1Desc },
-                { q: t.tools.q2, d: t.tools.q2Desc },
-                { q: t.tools.q3, d: t.tools.q3Desc },
-              ].map((item, i) => (
-                <div key={i} className="bg-primary/5 rounded-xl p-4 border-l-3 border-l-primary">
-                  <p className="font-semibold text-foreground mb-1">{item.q}</p>
-                  <p className="text-muted-foreground text-sm">{item.d}</p>
+                { label: t.tools.redLabel, desc: t.tools.redDesc, color: "bg-destructive/8 border-l-destructive/50" },
+                { label: t.tools.yellowLabel, desc: t.tools.yellowDesc, color: "bg-warm/8 border-l-warm" },
+                { label: t.tools.greenLabel, desc: t.tools.greenDesc, color: "bg-healing/8 border-l-healing" },
+              ].map((light, i) => (
+                <div key={i} className={`rounded-xl p-3 border-l-4 ${light.color}`}>
+                  <p className="font-medium text-foreground text-sm mb-1">{light.label}</p>
+                  <p className="text-foreground/70 text-sm">{light.desc}</p>
                 </div>
               ))}
             </div>
           </Card>
 
-          <Card>
-            <h3 className="text-lg font-semibold text-foreground mb-3">{t.tools.boundaryPhraseTitle}</h3>
-            <p className="text-muted-foreground mb-4">{t.tools.boundaryPhraseIntro}</p>
-            <div className="bg-healing/5 rounded-xl p-5 border-l-4 border-healing mb-4">
-              <p className="text-foreground font-medium italic">{t.tools.boundaryTemplate}</p>
-            </div>
-            <div className="space-y-2">
-              {t.tools.boundaryExamples.map((ex, i) => (
-                <p key={i} className="text-foreground/70 text-sm pl-4 border-l-2 border-border">{ex}</p>
+          {/* Breathing */}
+          <Card className="mb-5">
+            <h3 className="text-base font-semibold text-foreground mb-2 flex items-center gap-2">
+              <Wind className="w-4 h-4 text-primary" />{t.tools.breathingTitle}
+            </h3>
+            <p className="text-foreground/80 text-sm leading-relaxed">{t.tools.breathingDesc}</p>
+            <div className="flex gap-3 mt-4 justify-center">
+              {[
+                { n: "4", label: "Inhala" },
+                { n: "7", label: "Retén" },
+                { n: "8", label: "Exhala" },
+              ].map((step, i) => (
+                <div key={i} className="bg-primary/5 rounded-xl px-5 py-3 text-center">
+                  <p className="text-2xl font-bold text-primary">{step.n}</p>
+                  <p className="text-xs text-muted-foreground">{step.label}</p>
+                </div>
               ))}
             </div>
           </Card>
-        </SectionWrapper>
 
-        {/* BOUNDARIES */}
-        <SectionWrapper visible={section === "boundaries"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-8">{t.boundaries.title}</h2>
-
-          <Card className="mb-6 overflow-hidden">
-            <h3 className="text-lg font-semibold text-foreground mb-4">{t.boundaries.differenceTitle}</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-primary/5">
-                    <th className="text-left p-3 text-destructive/80 font-semibold rounded-tl-lg">{t.boundaries.withoutLabel}</th>
-                    <th className="text-left p-3 text-healing font-semibold rounded-tr-lg">{t.boundaries.withLabel}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {t.boundaries.rows.map(([without, withB], i) => (
-                    <tr key={i} className={i % 2 === 0 ? "" : "bg-muted/30"}>
-                      <td className="p-3 text-foreground/70 border-t border-border/30">{without}</td>
-                      <td className="p-3 text-foreground/90 border-t border-border/30">{withB}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          {/* Communication */}
+          <Card className="mb-5">
+            <h3 className="text-base font-semibold text-foreground mb-2">{t.tools.communicationTitle}</h3>
+            <p className="text-muted-foreground text-sm mb-4">{t.tools.communicationIntro}</p>
+            <div className="space-y-3">
+              {t.tools.commPoints.map((cp, i) => (
+                <div key={i} className="flex gap-3">
+                  <ChevronRight className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <div>
+                    <span className="font-medium text-foreground text-sm">{cp.title}: </span>
+                    <span className="text-foreground/70 text-sm">{cp.desc}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </Card>
 
-          <Card className="mb-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">{t.boundaries.essentialTitle}</h3>
-            <ol className="space-y-3 list-decimal ml-5 text-foreground/80">
-              {t.boundaries.essentials.map((e, i) => <li key={i} className="leading-relaxed">{e}</li>)}
-            </ol>
-          </Card>
-
-          <div className="bg-healing/10 border-l-4 border-healing rounded-r-xl p-4 text-foreground/80 italic">
-            {t.boundaries.paradoxNote}
+          <div className="bg-destructive/5 border-l-4 border-destructive/40 rounded-r-xl p-4 text-sm">
+            <p className="font-medium text-foreground mb-1">{t.tools.dontDoTitle}</p>
+            <p className="text-foreground/70">{t.tools.dontDoDesc}</p>
           </div>
         </SectionWrapper>
 
-        {/* COMMUNITY */}
-        <SectionWrapper visible={section === "community"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-8">{t.community.title}</h2>
+        {/* ─── BOUNDARIES ─── */}
+        <SectionWrapper visible={section === "boundaries"}>
+          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.boundaries.title}</h2>
+          <p className="text-muted-foreground mb-6 italic leading-relaxed">{t.boundaries.intro}</p>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <Card className="border-l-4 border-l-destructive/40">
+              <h4 className="text-sm font-semibold text-destructive/80 mb-2">{t.boundaries.badTitle}</h4>
+              <p className="text-foreground/80 text-sm italic mb-2">{t.boundaries.badExample}</p>
+              <p className="text-muted-foreground text-xs">{t.boundaries.badExplain}</p>
+            </Card>
+            <Card className="border-l-4 border-l-healing">
+              <h4 className="text-sm font-semibold text-healing mb-2">{t.boundaries.goodTitle}</h4>
+              <p className="text-foreground/80 text-sm italic">{t.boundaries.goodExample}</p>
+            </Card>
+          </div>
 
           <Card className="mb-6">
-            <h3 className="text-lg font-semibold text-foreground mb-3">{t.community.notAloneTitle}</h3>
-            <p className="text-muted-foreground mb-4">{t.community.notAloneIntro}</p>
-            <ul className="space-y-2 ml-4 list-disc text-foreground/80">
+            <h3 className="text-base font-semibold text-foreground mb-4">{t.boundaries.tipsTitle}</h3>
+            <div className="space-y-3">
+              {t.boundaries.tips.map((tip, i) => (
+                <div key={i} className="flex gap-3">
+                  <ChevronRight className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <div>
+                    <span className="font-medium text-foreground text-sm">{tip.title}: </span>
+                    <span className="text-foreground/70 text-sm">{tip.desc}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <div className="bg-gradient-warm rounded-2xl p-6 border border-primary/15">
+            <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+              <Heart className="w-4 h-4 text-primary" />{t.boundaries.hardestTitle}
+            </h4>
+            <p className="text-foreground/80 text-sm leading-relaxed italic">{t.boundaries.hardestDesc}</p>
+          </div>
+        </SectionWrapper>
+
+        {/* ─── COMMUNITY ─── */}
+        <SectionWrapper visible={section === "community"}>
+          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.community.title}</h2>
+          <p className="text-muted-foreground mb-6 italic">{t.community.intro}</p>
+
+          {/* Letters */}
+          <div className="mb-6">
+            <h3 className="text-base font-semibold text-foreground mb-3">{t.community.lettersTitle}</h3>
+            <div className="space-y-3">
+              {t.community.letters.map((letter, i) => (
+                <Card key={i} className="border-l-4 border-l-tender">
+                  <p className="text-foreground/80 text-sm italic leading-relaxed">"{letter.text}"</p>
+                  <p className="text-muted-foreground text-xs mt-2">— {letter.author}</p>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Self-care */}
+          <Card className="mb-5">
+            <h3 className="text-base font-semibold text-foreground mb-2">{t.community.selfCareTitle}</h3>
+            <p className="text-muted-foreground text-sm mb-4">{t.community.selfCareIntro}</p>
+            <div className="space-y-3">
+              {t.community.selfCarePoints.map((p, i) => (
+                <div key={i} className="flex gap-3">
+                  <ChevronRight className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <div>
+                    <span className="font-medium text-foreground text-sm">{p.title}: </span>
+                    <span className="text-foreground/70 text-sm">{p.desc}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* Supporting recovery */}
+          <Card className="mb-5">
+            <h3 className="text-base font-semibold text-foreground mb-2">{t.community.recoveryTitle}</h3>
+            <p className="text-muted-foreground text-sm mb-4">{t.community.recoveryIntro}</p>
+            <div className="space-y-3">
+              {t.community.recoveryPoints.map((p, i) => (
+                <div key={i} className="flex gap-3">
+                  <ChevronRight className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <div>
+                    <span className="font-medium text-foreground text-sm">{p.title}: </span>
+                    <span className="text-foreground/70 text-sm">{p.desc}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* Resources */}
+          <Card className="mb-5">
+            <h3 className="text-base font-semibold text-foreground mb-2">{t.community.resourcesTitle}</h3>
+            <p className="text-muted-foreground text-sm mb-3">{t.community.resourcesIntro}</p>
+            <ul className="space-y-1.5 ml-4 list-disc text-foreground/80 text-sm">
               {t.community.resources.map((r, i) => <li key={i}>{r}</li>)}
             </ul>
           </Card>
 
-          <Card className="mb-6">
-            <h3 className="text-lg font-semibold text-foreground mb-3">{t.community.whenToLeaveTitle}</h3>
-            <p className="text-muted-foreground mb-4">{t.community.whenToLeaveIntro}</p>
-            <ul className="space-y-2 ml-4 list-disc text-foreground/80">
-              {t.community.whenToLeave.map((w, i) => <li key={i}>{w}</li>)}
-            </ul>
-          </Card>
-
-          <div className="bg-warm/10 border-l-4 border-warm rounded-r-xl p-4 mb-6 text-foreground/80">
-            {t.community.finalWarning}
+          {/* Conclusion */}
+          <div className="bg-gradient-warm rounded-2xl p-6 border border-primary/15">
+            <h3 className="font-semibold text-foreground mb-3">{t.community.conclusionTitle}</h3>
+            <p className="text-foreground/80 text-sm leading-relaxed mb-3">{t.community.conclusionText}</p>
+            <p className="text-foreground font-medium text-sm italic">{t.community.conclusionFinal}</p>
           </div>
-
-          <Card>
-            <h3 className="text-lg font-semibold text-foreground mb-3">{t.community.epilogueTitle}</h3>
-            <p className="text-foreground/80 mb-3">{t.community.epilogueP1}</p>
-            <p className="text-foreground/80 mb-4">{t.community.epilogueP2}</p>
-            <p className="text-foreground font-semibold italic text-lg">{t.community.epilogueFinal}</p>
-          </Card>
         </SectionWrapper>
       </main>
 
       {/* Footer */}
-      <footer className="bg-secondary/50 border-t border-border/50 mt-16 py-10">
+      <footer className="bg-secondary/50 border-t border-border/50 mt-12 py-8">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <p className="text-muted-foreground text-sm mb-2">{t.footer.createdFrom}</p>
-          <p className="text-muted-foreground/60 text-xs mb-4">{t.footer.credit}</p>
-          <p className="text-muted-foreground/40 text-xs">{t.footer.copyright}</p>
+          <p className="text-muted-foreground text-xs mb-1">{t.footer.line1}</p>
+          <p className="text-muted-foreground/60 text-xs mb-2">{t.footer.line2}</p>
+          <p className="text-muted-foreground/40 text-xs">{t.footer.line3}</p>
         </div>
       </footer>
     </div>
