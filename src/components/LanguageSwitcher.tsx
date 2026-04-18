@@ -1,23 +1,26 @@
 import { useLang, langLabels, Lang } from "@/hooks/useLang";
 
 const langs: Lang[] = ["es", "en", "pt", "ca"];
+const codeLabels: Record<Lang, string> = { es: "ES", en: "EN", pt: "PT", ca: "CA" };
 
 const LanguageSwitcher = () => {
   const { lang, setLang } = useLang();
 
   return (
-    <div className="flex gap-2 flex-wrap">
+    <div className="flex gap-1 glass rounded-full p-1" role="group" aria-label="Language selector">
       {langs.map((l) => (
         <button
           key={l}
           onClick={() => setLang(l)}
-          className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
+          aria-pressed={lang === l}
+          title={langLabels[l]}
+          className={`mono px-2.5 py-1 rounded-full text-[10px] tracking-wider-2 transition-all duration-500 ${
             lang === l
               ? "bg-primary text-primary-foreground shadow-tender"
-              : "bg-secondary text-secondary-foreground hover:bg-primary/10"
+              : "text-foreground/50 hover:text-foreground/90"
           }`}
         >
-          {langLabels[l]}
+          {codeLabels[l]}
         </button>
       ))}
     </div>

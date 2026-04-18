@@ -1,24 +1,34 @@
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useEffect } from "react";
 import { useLang } from "@/hooks/useLang";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame } from "lucide-react";
+import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame, ArrowRight } from "lucide-react";
 
 type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community";
 
-const SectionWrapper = ({ children, visible }: { children: ReactNode; visible: boolean }) => {
-  if (!visible) return null;
-  return <div className="animate-fade-in">{children}</div>;
-};
-
-const Card = ({ children, className = "" }: { children: ReactNode; className?: string }) => (
-  <div className={`bg-card rounded-2xl p-6 md:p-8 shadow-card border border-border/50 transition-all duration-300 hover:shadow-tender ${className}`}>
+const Panel = ({ children, className = "", laser = false }: { children: ReactNode; className?: string; laser?: boolean }) => (
+  <div className={`reveal ${laser ? "glass-laser" : "glass"} laser-border rounded-3xl p-5 md:p-7 ${className}`}>
     {children}
   </div>
 );
 
+const SectionTitle = ({ kicker, title, subtitle }: { kicker: string; title: string; subtitle?: string }) => (
+  <div className="reveal mb-8">
+    <p className="mono text-[10px] tracking-wider-2 text-primary/80 uppercase mb-3">— {kicker}</p>
+    <h2 className="text-3xl md:text-5xl font-light text-foreground/95 leading-[1.05] tracking-tight">{title}</h2>
+    {subtitle && <p className="text-foreground/50 text-sm md:text-base mt-3 italic font-light">{subtitle}</p>}
+  </div>
+);
+
 const Index = () => {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [section, setSection] = useState<Section>("home");
+
+  useScrollReveal(`${section}-${lang}`);
+
+  useEffect(() => {
+    document.title = `${t.header.title} — ${t.header.subtitle}`;
+  }, [t]);
 
   const goTo = (s: Section) => {
     setSection(s);
@@ -26,52 +36,68 @@ const Index = () => {
   };
 
   const navItems: { id: Section; label: string; icon: ReactNode }[] = [
-    { id: "home", label: t.nav.home, icon: <Heart className="w-4 h-4" /> },
-    { id: "understanding", label: t.nav.understanding, icon: <BookOpen className="w-4 h-4" /> },
-    { id: "signs", label: t.nav.signs, icon: <Eye className="w-4 h-4" /> },
-    { id: "story", label: t.nav.story, icon: <MessageCircleHeart className="w-4 h-4" /> },
-    { id: "tools", label: t.nav.tools, icon: <Shield className="w-4 h-4" /> },
-    { id: "boundaries", label: t.nav.boundaries, icon: <Scale className="w-4 h-4" /> },
-    { id: "forBoth", label: t.nav.forBoth, icon: <Handshake className="w-4 h-4" /> },
-    { id: "whatIfMe", label: t.nav.whatIfMe, icon: <HelpCircle className="w-4 h-4" /> },
-    { id: "faq", label: t.nav.faq, icon: <BookOpenCheck className="w-4 h-4" /> },
-    { id: "glossary", label: t.nav.glossary, icon: <BookOpen className="w-4 h-4" /> },
-    { id: "farewell", label: t.nav.farewell, icon: <Flame className="w-4 h-4" /> },
-    { id: "community", label: t.nav.community, icon: <Users className="w-4 h-4" /> },
+    { id: "home", label: t.nav.home, icon: <Heart className="w-3.5 h-3.5" /> },
+    { id: "understanding", label: t.nav.understanding, icon: <BookOpen className="w-3.5 h-3.5" /> },
+    { id: "signs", label: t.nav.signs, icon: <Eye className="w-3.5 h-3.5" /> },
+    { id: "tools", label: t.nav.tools, icon: <Shield className="w-3.5 h-3.5" /> },
+    { id: "boundaries", label: t.nav.boundaries, icon: <Scale className="w-3.5 h-3.5" /> },
+    { id: "forBoth", label: t.nav.forBoth, icon: <Handshake className="w-3.5 h-3.5" /> },
+    { id: "whatIfMe", label: t.nav.whatIfMe, icon: <HelpCircle className="w-3.5 h-3.5" /> },
+    { id: "story", label: t.nav.story, icon: <MessageCircleHeart className="w-3.5 h-3.5" /> },
+    { id: "faq", label: t.nav.faq, icon: <BookOpenCheck className="w-3.5 h-3.5" /> },
+    { id: "glossary", label: t.nav.glossary, icon: <BookOpen className="w-3.5 h-3.5" /> },
+    { id: "farewell", label: t.nav.farewell, icon: <Flame className="w-3.5 h-3.5" /> },
+    { id: "community", label: t.nav.community, icon: <Users className="w-3.5 h-3.5" /> },
   ];
 
+  const sectionMeta: Record<Section, string> = {
+    home: "00", understanding: "01", signs: "02", tools: "03", boundaries: "04",
+    forBoth: "05", whatIfMe: "06", story: "07", faq: "08", glossary: "09",
+    farewell: "10", community: "11",
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-x-hidden">
+      {/* Ambient orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden -z-0">
+        <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-primary/[0.06] blur-[120px] animate-float" />
+        <div className="absolute bottom-[-30%] right-[-20%] w-[70vw] h-[70vw] rounded-full bg-primary/[0.04] blur-[140px] animate-float" style={{ animationDelay: "2s" }} />
+      </div>
+
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">🤝</span>
-              <h1 className="text-xl md:text-2xl font-bold text-gradient-primary">{t.header.title}</h1>
-            </div>
+      <header className="sticky top-0 z-50 glass-strong border-b border-foreground/[0.06]">
+        <div className="max-w-5xl mx-auto px-4 py-3.5">
+          <div className="flex items-center justify-between gap-3">
+            <button onClick={() => goTo("home")} className="flex items-center gap-2.5 group">
+              <div className="relative w-2 h-2 rounded-full bg-primary animate-pulse-laser" />
+              <h1 className="mono text-sm tracking-wider-2 text-foreground/90 group-hover:text-laser transition-all">
+                {t.header.title}
+              </h1>
+              <span className="mono text-[10px] tracking-wider-2 text-foreground/30 hidden sm:inline">
+                / {sectionMeta[section]}
+              </span>
+            </button>
             <LanguageSwitcher />
           </div>
-          <p className="text-muted-foreground text-xs md:text-sm leading-snug">{t.header.subtitle}</p>
         </div>
       </header>
 
       {/* Navigation */}
-      <nav className="sticky top-[72px] md:top-[76px] z-40 bg-background/60 backdrop-blur-md border-b border-border/30">
-        <div className="max-w-4xl mx-auto px-4 py-2">
-          <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
+      <nav className="sticky top-[57px] z-40 bg-background/40 backdrop-blur-xl border-b border-foreground/[0.04]">
+        <div className="max-w-5xl mx-auto px-4 py-2">
+          <div className="flex gap-1 overflow-x-auto scrollbar-hide">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => goTo(item.id)}
-                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all duration-300 ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] mono tracking-wider whitespace-nowrap transition-all duration-500 ${
                   section === item.id
-                    ? "bg-primary text-primary-foreground shadow-tender"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                    ? "bg-primary/15 text-primary border border-primary/30"
+                    : "text-foreground/40 hover:text-foreground/80 border border-transparent"
                 }`}
               >
                 {item.icon}
-                <span className="hidden sm:inline">{item.label}</span>
+                <span>{item.label}</span>
               </button>
             ))}
           </div>
@@ -79,377 +105,423 @@ const Index = () => {
       </nav>
 
       {/* Content */}
-      <main className="max-w-4xl mx-auto px-4 py-6 md:py-10">
+      <main className="max-w-5xl mx-auto px-4 py-10 md:py-16 relative z-10">
 
         {/* ─── HOME ─── */}
-        <SectionWrapper visible={section === "home"}>
-          <div className="bg-gradient-hero rounded-3xl p-6 md:p-10 mb-6 border border-primary/10">
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4 leading-tight">{t.home.heroTitle}</h2>
-            <p className="text-foreground/80 leading-relaxed mb-3">{t.home.heroP1}</p>
-            <p className="text-foreground font-semibold mb-3">{t.home.heroP2}</p>
-            <p className="text-foreground/80 leading-relaxed mb-5">{t.home.heroP3}</p>
-            <button onClick={() => goTo("understanding")} className="bg-primary text-primary-foreground px-5 py-2.5 rounded-xl font-medium shadow-tender hover:opacity-90 transition-all">
-              {t.home.ctaButton}
-            </button>
+        {section === "home" && (
+          <div className="space-y-10">
+            <div className="reveal">
+              <p className="mono text-[10px] tracking-wider-2 text-primary/80 uppercase mb-4">— {t.header.tagline}</p>
+              <h2 className="text-4xl md:text-6xl lg:text-7xl font-extralight text-foreground/95 leading-[1.05] tracking-tight mb-6">
+                {t.home.heroTitle}
+              </h2>
+              <p className="text-foreground/70 text-base md:text-lg leading-relaxed mb-4 max-w-3xl">{t.home.heroP1}</p>
+              <p className="text-laser font-light text-base md:text-lg mb-4 max-w-3xl">{t.home.heroP2}</p>
+              <p className="text-foreground/60 text-sm md:text-base leading-relaxed mb-8 max-w-3xl">{t.home.heroP3}</p>
+              <button
+                onClick={() => goTo("understanding")}
+                className="group inline-flex items-center gap-2 glass-laser laser-border rounded-full px-6 py-3 mono text-xs tracking-wider-2 text-foreground hover:text-laser transition-all duration-500 animate-pulse-laser"
+              >
+                {t.home.ctaButton}
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              {[
+                { n: "01", title: t.home.card1Title, desc: t.home.card1Desc, target: "understanding" as Section },
+                { n: "02", title: t.home.card2Title, desc: t.home.card2Desc, target: "signs" as Section },
+                { n: "03", title: t.home.card3Title, desc: t.home.card3Desc, target: "tools" as Section },
+              ].map((c) => (
+                <button key={c.n} onClick={() => goTo(c.target)} className="text-left">
+                  <Panel className="hover:border-primary/40 transition-all duration-500 cursor-pointer h-full">
+                    <p className="mono text-[10px] text-primary/70 tracking-wider-2 mb-3">{c.n}</p>
+                    <h3 className="text-lg font-light text-foreground/95 mb-2">{c.title}</h3>
+                    <p className="text-foreground/55 text-sm leading-relaxed">{c.desc}</p>
+                  </Panel>
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-4">
-            {[
-              { title: t.home.card1Title, desc: t.home.card1Desc },
-              { title: t.home.card2Title, desc: t.home.card2Desc },
-              { title: t.home.card3Title, desc: t.home.card3Desc },
-            ].map((c, i) => (
-              <Card key={i}>
-                <h3 className="text-base font-semibold text-foreground mb-2">{c.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{c.desc}</p>
-              </Card>
-            ))}
-          </div>
-        </SectionWrapper>
+        )}
 
         {/* ─── UNDERSTANDING ─── */}
-        <SectionWrapper visible={section === "understanding"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.understanding.title}</h2>
-          <p className="text-muted-foreground mb-6 text-base italic leading-relaxed">{t.understanding.intro}</p>
-          <div className="space-y-4 mb-6">
+        {section === "understanding" && (
+          <div className="space-y-6">
+            <SectionTitle kicker="01 / Mapa" title={t.understanding.title} />
+            <Panel><p className="text-foreground/70 leading-relaxed text-sm md:text-base italic">{t.understanding.intro}</p></Panel>
+
             {[
               { icon: "🔥", title: t.understanding.emotionalSkinTitle, desc: t.understanding.emotionalSkinDesc },
               { icon: "🚪", title: t.understanding.abandonmentTitle, desc: t.understanding.abandonmentDesc },
               { icon: "🕳️", title: t.understanding.voidTitle, desc: t.understanding.voidDesc },
             ].map((item, i) => (
-              <Card key={i}>
-                <h3 className="text-base font-semibold text-foreground mb-2 flex items-center gap-2"><span>{item.icon}</span>{item.title}</h3>
-                <p className="text-foreground/80 leading-relaxed text-sm">{item.desc}</p>
-              </Card>
+              <Panel key={i}>
+                <h3 className="text-lg font-light text-foreground/95 mb-3 flex items-center gap-3">
+                  <span className="text-xl opacity-80">{item.icon}</span>{item.title}
+                </h3>
+                <p className="text-foreground/65 leading-relaxed text-sm md:text-base">{item.desc}</p>
+              </Panel>
             ))}
+
+            <Panel laser><p className="text-foreground/80 text-sm italic leading-relaxed">{t.understanding.closingNote}</p></Panel>
+
+            <Panel>
+              <h3 className="text-lg font-light text-foreground/95 mb-5">{t.understanding.clinicalTitle}</h3>
+              <div className="space-y-4">
+                {t.understanding.clinicalPoints.map((p, i) => (
+                  <div key={i} className="flex gap-4 pb-4 border-b border-foreground/5 last:border-0 last:pb-0">
+                    <span className="mono text-xs text-primary/80 mt-1">0{i + 1}</span>
+                    <div>
+                      <p className="font-medium text-foreground/90 text-sm mb-1">{p.title}</p>
+                      <p className="text-foreground/55 text-sm leading-relaxed">{p.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Panel>
           </div>
-          <div className="bg-warm/10 border-l-4 border-warm rounded-r-xl p-4 mb-6 text-foreground/80 text-sm italic">{t.understanding.closingNote}</div>
-          <Card>
-            <h3 className="text-base font-semibold text-foreground mb-4">{t.understanding.clinicalTitle}</h3>
-            <div className="space-y-3">
-              {t.understanding.clinicalPoints.map((p, i) => (
-                <div key={i} className="flex gap-3">
-                  <span className="text-healing mt-0.5">✓</span>
-                  <div><span className="font-medium text-foreground">{p.title}: </span><span className="text-foreground/70 text-sm">{p.desc}</span></div>
-                </div>
-              ))}
-            </div>
-          </Card>
-        </SectionWrapper>
+        )}
 
         {/* ─── SIGNS ─── */}
-        <SectionWrapper visible={section === "signs"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.signs.title}</h2>
-          <p className="text-muted-foreground mb-6 italic leading-relaxed">{t.signs.intro}</p>
-          <div className="space-y-4 mb-6">
+        {section === "signs" && (
+          <div className="space-y-6">
+            <SectionTitle kicker="02 / Patrones" title={t.signs.title} />
+            <Panel><p className="text-foreground/70 leading-relaxed text-sm md:text-base italic">{t.signs.intro}</p></Panel>
             {t.signs.patterns.map((p, i) => (
-              <Card key={i} className="border-l-4 border-l-warm">
-                <h4 className="font-semibold text-foreground mb-1 flex items-center gap-2"><span className="text-warm">🚩</span>{p.title}</h4>
-                <p className="text-foreground/70 text-sm leading-relaxed">{p.desc}</p>
-              </Card>
+              <Panel key={i}>
+                <div className="flex items-baseline gap-3 mb-2">
+                  <span className="mono text-[10px] tracking-wider-2 text-primary/70">0{i + 1}</span>
+                  <h4 className="text-base md:text-lg font-light text-foreground/95">{p.title}</h4>
+                </div>
+                <p className="text-foreground/60 text-sm leading-relaxed pl-8">{p.desc}</p>
+              </Panel>
             ))}
+            <Panel laser><p className="text-foreground/80 text-sm italic leading-relaxed">{t.signs.closingNote}</p></Panel>
           </div>
-          <div className="bg-healing/10 border-l-4 border-healing rounded-r-xl p-4 text-foreground/80 text-sm italic">{t.signs.closingNote}</div>
-        </SectionWrapper>
-
-        {/* ─── STORY ─── */}
-        <SectionWrapper visible={section === "story"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-1">{t.story.title}</h2>
-          <p className="text-muted-foreground text-sm mb-6">{t.story.subtitle}</p>
-          <div className="bg-gradient-warm rounded-2xl p-6 md:p-8 mb-6 border border-primary/15">
-            <p className="text-foreground italic text-lg leading-relaxed">"{t.story.quote}"</p>
-          </div>
-          <Card className="mb-6">
-            <p className="text-foreground/80 leading-relaxed mb-4">{t.story.intro}</p>
-            <p className="text-foreground/80 leading-relaxed mb-4">{t.story.bodyP1}</p>
-            <div className="my-5 space-y-1">
-              <p className="text-foreground font-semibold italic">{t.story.bodyP2}</p>
-              <p className="text-foreground font-semibold italic">{t.story.bodyP3}</p>
-            </div>
-            <p className="text-foreground/80 leading-relaxed mb-4">{t.story.bodyP4}</p>
-            <p className="text-foreground/80 leading-relaxed">{t.story.bodyP5}</p>
-          </Card>
-          <p className="text-muted-foreground text-xs text-center italic">{t.story.credit}</p>
-        </SectionWrapper>
+        )}
 
         {/* ─── TOOLS ─── */}
-        <SectionWrapper visible={section === "tools"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.tools.title}</h2>
-          <p className="text-muted-foreground mb-6 italic">{t.tools.intro}</p>
-          <Card className="mb-5">
-            <h3 className="text-base font-semibold text-foreground mb-4">{t.tools.validationTitle}</h3>
-            <div className="space-y-3 text-sm">
-              <div className="bg-muted/50 rounded-xl p-3"><p className="text-foreground/80">💬 {t.tools.validationSituation}</p></div>
-              <div className="bg-destructive/5 rounded-xl p-3 border-l-3 border-l-destructive/40"><p className="text-foreground/70">❌ {t.tools.validationWrong}</p></div>
-              <div className="bg-healing/5 rounded-xl p-3 border-l-3 border-l-healing"><p className="text-foreground/90">✅ {t.tools.validationRight}</p></div>
-              <p className="text-muted-foreground text-xs italic pt-1">{t.tools.validationWhy}</p>
-            </div>
-          </Card>
-          <Card className="mb-5">
-            <h3 className="text-base font-semibold text-foreground mb-4">{t.tools.trafficLightTitle}</h3>
-            <div className="space-y-3">
-              {[
-                { label: t.tools.redLabel, desc: t.tools.redDesc, color: "bg-destructive/8 border-l-destructive/50" },
-                { label: t.tools.yellowLabel, desc: t.tools.yellowDesc, color: "bg-warm/8 border-l-warm" },
-                { label: t.tools.greenLabel, desc: t.tools.greenDesc, color: "bg-healing/8 border-l-healing" },
-              ].map((light, i) => (
-                <div key={i} className={`rounded-xl p-3 border-l-4 ${light.color}`}>
-                  <p className="font-medium text-foreground text-sm mb-1">{light.label}</p>
-                  <p className="text-foreground/70 text-sm">{light.desc}</p>
-                </div>
-              ))}
-            </div>
-          </Card>
-          <Card className="mb-5">
-            <h3 className="text-base font-semibold text-foreground mb-2 flex items-center gap-2">
-              <Wind className="w-4 h-4 text-primary" />{t.tools.breathingTitle}
-            </h3>
-            <p className="text-foreground/80 text-sm leading-relaxed">{t.tools.breathingDesc}</p>
-            <div className="flex gap-3 mt-4 justify-center">
-              {[
-                { n: "4", label: t.tools.breathingInhale },
-                { n: "7", label: t.tools.breathingHold },
-                { n: "8", label: t.tools.breathingExhale },
-              ].map((step, i) => (
-                <div key={i} className="bg-primary/5 rounded-xl px-5 py-3 text-center">
-                  <p className="text-2xl font-bold text-primary">{step.n}</p>
-                  <p className="text-xs text-muted-foreground">{step.label}</p>
-                </div>
-              ))}
-            </div>
-          </Card>
-          <Card className="mb-5">
-            <h3 className="text-base font-semibold text-foreground mb-2">{t.tools.communicationTitle}</h3>
-            <p className="text-muted-foreground text-sm mb-4">{t.tools.communicationIntro}</p>
-            <div className="space-y-3">
-              {t.tools.commPoints.map((cp, i) => (
-                <div key={i} className="flex gap-3">
-                  <ChevronRight className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                  <div><span className="font-medium text-foreground text-sm">{cp.title}: </span><span className="text-foreground/70 text-sm">{cp.desc}</span></div>
-                </div>
-              ))}
-            </div>
-          </Card>
-          <div className="bg-destructive/5 border-l-4 border-destructive/40 rounded-r-xl p-4 text-sm">
-            <p className="font-medium text-foreground mb-1">{t.tools.dontDoTitle}</p>
-            <p className="text-foreground/70">{t.tools.dontDoDesc}</p>
+        {section === "tools" && (
+          <div className="space-y-6">
+            <SectionTitle kicker="03 / Práctica" title={t.tools.title} subtitle={t.tools.intro} />
+
+            <Panel>
+              <h3 className="text-lg font-light text-foreground/95 mb-4">{t.tools.validationTitle}</h3>
+              <div className="space-y-3 text-sm">
+                <div className="glass rounded-2xl p-4"><p className="text-foreground/80">💬 {t.tools.validationSituation}</p></div>
+                <div className="rounded-2xl p-4 border border-primary/20 bg-primary/5"><p className="text-foreground/70 mono text-xs tracking-wide">✗ {t.tools.validationWrong}</p></div>
+                <div className="rounded-2xl p-4 border border-foreground/15 bg-foreground/[0.03]"><p className="text-foreground/90 mono text-xs tracking-wide">✓ {t.tools.validationRight}</p></div>
+                <p className="text-foreground/45 text-xs italic pt-2 leading-relaxed">{t.tools.validationWhy}</p>
+              </div>
+            </Panel>
+
+            <Panel>
+              <h3 className="text-lg font-light text-foreground/95 mb-4">{t.tools.trafficLightTitle}</h3>
+              <div className="grid md:grid-cols-3 gap-3">
+                {[
+                  { label: t.tools.redLabel, desc: t.tools.redDesc },
+                  { label: t.tools.yellowLabel, desc: t.tools.yellowDesc },
+                  { label: t.tools.greenLabel, desc: t.tools.greenDesc },
+                ].map((light, i) => (
+                  <div key={i} className="rounded-2xl p-4 glass">
+                    <p className="font-light text-foreground/95 text-sm mb-2">{light.label}</p>
+                    <p className="text-foreground/55 text-xs leading-relaxed">{light.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </Panel>
+
+            <Panel>
+              <h3 className="text-lg font-light text-foreground/95 mb-2 flex items-center gap-3">
+                <Wind className="w-4 h-4 text-primary" />{t.tools.breathingTitle}
+              </h3>
+              <p className="text-foreground/65 text-sm leading-relaxed mb-5">{t.tools.breathingDesc}</p>
+              <div className="flex gap-3 justify-center">
+                {[
+                  { n: "4", label: t.tools.breathingInhale },
+                  { n: "7", label: t.tools.breathingHold },
+                  { n: "8", label: t.tools.breathingExhale },
+                ].map((step, i) => (
+                  <div key={i} className="glass-laser rounded-2xl px-6 py-4 text-center min-w-[72px]">
+                    <p className="text-3xl font-extralight text-laser">{step.n}</p>
+                    <p className="mono text-[9px] tracking-wider-2 text-foreground/60 uppercase mt-1">{step.label}</p>
+                  </div>
+                ))}
+              </div>
+            </Panel>
+
+            <Panel>
+              <h3 className="text-lg font-light text-foreground/95 mb-2">{t.tools.communicationTitle}</h3>
+              <p className="text-foreground/55 text-sm mb-5">{t.tools.communicationIntro}</p>
+              <div className="space-y-4">
+                {t.tools.commPoints.map((cp, i) => (
+                  <div key={i} className="flex gap-3">
+                    <ChevronRight className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium text-foreground/90 text-sm mb-1">{cp.title}</p>
+                      <p className="text-foreground/55 text-sm leading-relaxed">{cp.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Panel>
+
+            <Panel laser>
+              <p className="font-light text-foreground/95 mb-2 text-sm">{t.tools.dontDoTitle}</p>
+              <p className="text-foreground/65 text-sm leading-relaxed">{t.tools.dontDoDesc}</p>
+            </Panel>
           </div>
-        </SectionWrapper>
+        )}
 
         {/* ─── BOUNDARIES ─── */}
-        <SectionWrapper visible={section === "boundaries"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.boundaries.title}</h2>
-          <p className="text-muted-foreground mb-6 italic leading-relaxed">{t.boundaries.intro}</p>
-          <div className="grid md:grid-cols-2 gap-4 mb-6">
-            <Card className="border-l-4 border-l-destructive/40">
-              <h4 className="text-sm font-semibold text-destructive/80 mb-2">{t.boundaries.badTitle}</h4>
-              <p className="text-foreground/80 text-sm italic mb-2">{t.boundaries.badExample}</p>
-              <p className="text-muted-foreground text-xs">{t.boundaries.badExplain}</p>
-            </Card>
-            <Card className="border-l-4 border-l-healing">
-              <h4 className="text-sm font-semibold text-healing mb-2">{t.boundaries.goodTitle}</h4>
-              <p className="text-foreground/80 text-sm italic">{t.boundaries.goodExample}</p>
-            </Card>
-          </div>
-          <Card className="mb-6">
-            <h3 className="text-base font-semibold text-foreground mb-4">{t.boundaries.tipsTitle}</h3>
-            <div className="space-y-3">
-              {t.boundaries.tips.map((tip, i) => (
-                <div key={i} className="flex gap-3">
-                  <ChevronRight className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                  <div><span className="font-medium text-foreground text-sm">{tip.title}: </span><span className="text-foreground/70 text-sm">{tip.desc}</span></div>
-                </div>
-              ))}
+        {section === "boundaries" && (
+          <div className="space-y-6">
+            <SectionTitle kicker="04 / Cuidado" title={t.boundaries.title} subtitle={t.boundaries.intro} />
+            <div className="grid md:grid-cols-2 gap-4">
+              <Panel>
+                <p className="mono text-[10px] tracking-wider-2 text-primary/70 mb-2">✗ {t.boundaries.badTitle}</p>
+                <p className="text-foreground/85 text-sm italic mb-3">{t.boundaries.badExample}</p>
+                <p className="text-foreground/50 text-xs leading-relaxed">{t.boundaries.badExplain}</p>
+              </Panel>
+              <Panel laser>
+                <p className="mono text-[10px] tracking-wider-2 text-primary/90 mb-2">✓ {t.boundaries.goodTitle}</p>
+                <p className="text-foreground/85 text-sm italic leading-relaxed">{t.boundaries.goodExample}</p>
+              </Panel>
             </div>
-          </Card>
-          <div className="bg-gradient-warm rounded-2xl p-6 border border-primary/15">
-            <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><Heart className="w-4 h-4 text-primary" />{t.boundaries.hardestTitle}</h4>
-            <p className="text-foreground/80 text-sm leading-relaxed italic">{t.boundaries.hardestDesc}</p>
+            <Panel>
+              <h3 className="text-lg font-light text-foreground/95 mb-5">{t.boundaries.tipsTitle}</h3>
+              <div className="space-y-4">
+                {t.boundaries.tips.map((tip, i) => (
+                  <div key={i} className="flex gap-3">
+                    <span className="mono text-xs text-primary/80 mt-1">0{i + 1}</span>
+                    <div>
+                      <p className="font-medium text-foreground/90 text-sm mb-1">{tip.title}</p>
+                      <p className="text-foreground/55 text-sm leading-relaxed">{tip.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Panel>
+            <Panel laser>
+              <h4 className="font-light text-foreground/95 mb-3 flex items-center gap-2 text-base">
+                <Heart className="w-4 h-4 text-primary" />{t.boundaries.hardestTitle}
+              </h4>
+              <p className="text-foreground/75 text-sm leading-relaxed italic">{t.boundaries.hardestDesc}</p>
+            </Panel>
           </div>
-        </SectionWrapper>
+        )}
 
         {/* ─── FOR BOTH ─── */}
-        <SectionWrapper visible={section === "forBoth"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-1">{t.forBoth.title}</h2>
-          <p className="text-muted-foreground text-sm mb-4 italic">{t.forBoth.subtitle}</p>
-          <p className="text-foreground/80 leading-relaxed mb-6">{t.forBoth.intro}</p>
+        {section === "forBoth" && (
+          <div className="space-y-6">
+            <SectionTitle kicker="05 / Diálogo" title={t.forBoth.title} subtitle={t.forBoth.subtitle} />
+            <Panel><p className="text-foreground/70 leading-relaxed text-sm md:text-base">{t.forBoth.intro}</p></Panel>
 
-          {/* Side A */}
-          <div className="mb-6">
-            <div className="bg-healing/10 rounded-2xl p-5 md:p-6 border border-healing/20 mb-4">
-              <h3 className="text-lg font-bold text-healing mb-1">{t.forBoth.sideATitle}</h3>
-              <p className="text-foreground/70 text-sm italic">{t.forBoth.sideASubtitle}</p>
+            <div className="reveal">
+              <div className="glass rounded-3xl p-5 md:p-6 mb-4 border border-foreground/15">
+                <h3 className="text-base font-light text-foreground/95 mb-1">{t.forBoth.sideATitle}</h3>
+                <p className="text-foreground/55 text-sm italic">{t.forBoth.sideASubtitle}</p>
+              </div>
+              <div className="space-y-4">
+                {t.forBoth.sideAPoints.map((p, i) => (
+                  <Panel key={i}>
+                    <h4 className="font-light text-foreground/95 mb-2 text-base">{p.title}</h4>
+                    <p className="text-foreground/60 text-sm leading-relaxed">{p.desc}</p>
+                  </Panel>
+                ))}
+              </div>
             </div>
-            <div className="space-y-4">
-              {t.forBoth.sideAPoints.map((p, i) => (
-                <Card key={i} className="border-l-4 border-l-healing/40">
-                  <h4 className="font-semibold text-foreground mb-2">{p.title}</h4>
-                  <p className="text-foreground/70 text-sm leading-relaxed">{p.desc}</p>
-                </Card>
-              ))}
+
+            <div className="reveal">
+              <div className="glass-laser rounded-3xl p-5 md:p-6 mb-4">
+                <h3 className="text-base font-light text-laser mb-1">{t.forBoth.sideBTitle}</h3>
+                <p className="text-foreground/55 text-sm italic">{t.forBoth.sideBSubtitle}</p>
+              </div>
+              <div className="space-y-4">
+                {t.forBoth.sideBPoints.map((p, i) => (
+                  <Panel key={i} laser>
+                    <h4 className="font-light text-foreground/95 mb-2 text-base">{p.title}</h4>
+                    <p className="text-foreground/65 text-sm leading-relaxed">{p.desc}</p>
+                  </Panel>
+                ))}
+              </div>
             </div>
           </div>
-
-          {/* Side B */}
-          <div>
-            <div className="bg-warm/10 rounded-2xl p-5 md:p-6 border border-warm/20 mb-4">
-              <h3 className="text-lg font-bold text-warm mb-1">{t.forBoth.sideBTitle}</h3>
-              <p className="text-foreground/70 text-sm italic">{t.forBoth.sideBSubtitle}</p>
-            </div>
-            <div className="space-y-4">
-              {t.forBoth.sideBPoints.map((p, i) => (
-                <Card key={i} className="border-l-4 border-l-warm/40">
-                  <h4 className="font-semibold text-foreground mb-2">{p.title}</h4>
-                  <p className="text-foreground/70 text-sm leading-relaxed">{p.desc}</p>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </SectionWrapper>
+        )}
 
         {/* ─── WHAT IF ME ─── */}
-        <SectionWrapper visible={section === "whatIfMe"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-1">{t.whatIfMe.title}</h2>
-          <p className="text-muted-foreground text-sm mb-6 italic">{t.whatIfMe.subtitle}</p>
-          <Card className="mb-6">
-            <p className="text-foreground/80 leading-relaxed">{t.whatIfMe.intro}</p>
-          </Card>
+        {section === "whatIfMe" && (
+          <div className="space-y-6">
+            <SectionTitle kicker="06 / Espejo" title={t.whatIfMe.title} subtitle={t.whatIfMe.subtitle} />
+            <Panel laser><p className="text-foreground/80 leading-relaxed text-sm md:text-base">{t.whatIfMe.intro}</p></Panel>
 
-          <h3 className="text-base font-semibold text-foreground mb-2">{t.whatIfMe.signsTitle}</h3>
-          <p className="text-muted-foreground text-sm mb-4 italic">{t.whatIfMe.signsIntro}</p>
-          <div className="space-y-4 mb-6">
+            <div className="reveal pt-2">
+              <h3 className="text-base font-light text-foreground/95 mb-1">{t.whatIfMe.signsTitle}</h3>
+              <p className="text-foreground/50 text-sm italic mb-4">{t.whatIfMe.signsIntro}</p>
+            </div>
             {t.whatIfMe.signs.map((s, i) => (
-              <Card key={i} className="border-l-4 border-l-tender">
-                <h4 className="font-semibold text-foreground mb-1">{s.title}</h4>
-                <p className="text-foreground/70 text-sm leading-relaxed">{s.desc}</p>
-              </Card>
+              <Panel key={i}>
+                <div className="flex items-baseline gap-3 mb-2">
+                  <span className="mono text-[10px] text-primary/70 tracking-wider-2">0{i + 1}</span>
+                  <h4 className="font-light text-foreground/95 text-base">{s.title}</h4>
+                </div>
+                <p className="text-foreground/60 text-sm leading-relaxed pl-8">{s.desc}</p>
+              </Panel>
             ))}
-          </div>
 
-          <h3 className="text-base font-semibold text-foreground mb-4">{t.whatIfMe.stepsTitle}</h3>
-          <div className="space-y-4 mb-6">
+            <h3 className="reveal text-base font-light text-foreground/95 pt-2">{t.whatIfMe.stepsTitle}</h3>
             {t.whatIfMe.steps.map((s, i) => (
-              <Card key={i} className="border-l-4 border-l-primary/40">
-                <h4 className="font-semibold text-foreground mb-2">{s.title}</h4>
-                <p className="text-foreground/70 text-sm leading-relaxed">{s.desc}</p>
-              </Card>
+              <Panel key={i}>
+                <p className="mono text-[10px] tracking-wider-2 text-primary/80 mb-2">— PASO 0{i + 1}</p>
+                <h4 className="font-light text-foreground/95 mb-2 text-base">{s.title}</h4>
+                <p className="text-foreground/60 text-sm leading-relaxed">{s.desc}</p>
+              </Panel>
             ))}
-          </div>
 
-          <div className="bg-gradient-warm rounded-2xl p-6 border border-primary/15 text-center">
-            <p className="text-foreground/80 text-sm leading-relaxed italic">{t.whatIfMe.closingNote}</p>
+            <Panel laser><p className="text-foreground/80 text-sm leading-relaxed italic text-center">{t.whatIfMe.closingNote}</p></Panel>
           </div>
-        </SectionWrapper>
+        )}
+
+        {/* ─── STORY ─── */}
+        {section === "story" && (
+          <div className="space-y-6">
+            <SectionTitle kicker="07 / Origen" title={t.story.title} subtitle={t.story.subtitle} />
+            <Panel laser>
+              <p className="text-foreground/85 italic text-base md:text-lg leading-relaxed font-light">"{t.story.quote}"</p>
+            </Panel>
+            <Panel>
+              <p className="text-foreground/70 leading-relaxed mb-4 text-sm md:text-base">{t.story.intro}</p>
+              <p className="text-foreground/70 leading-relaxed mb-4 text-sm md:text-base">{t.story.bodyP1}</p>
+              <div className="my-6 space-y-1 pl-4 border-l border-primary/40">
+                <p className="text-foreground/95 font-light italic">{t.story.bodyP2}</p>
+                <p className="text-foreground/95 font-light italic">{t.story.bodyP3}</p>
+              </div>
+              <p className="text-foreground/70 leading-relaxed mb-4 text-sm md:text-base">{t.story.bodyP4}</p>
+              <p className="text-foreground/70 leading-relaxed text-sm md:text-base">{t.story.bodyP5}</p>
+            </Panel>
+            <p className="reveal mono text-[10px] tracking-wider-2 text-foreground/40 text-center uppercase">{t.story.credit}</p>
+          </div>
+        )}
 
         {/* ─── FAQ ─── */}
-        <SectionWrapper visible={section === "faq"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.faq.title}</h2>
-          <p className="text-muted-foreground mb-6 italic">{t.faq.intro}</p>
+        {section === "faq" && (
           <div className="space-y-4">
+            <SectionTitle kicker="08 / Voz baja" title={t.faq.title} subtitle={t.faq.intro} />
             {t.faq.questions.map((faq, i) => (
-              <Card key={i}>
-                <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                  <span className="text-primary">❓</span>{faq.q}
-                </h4>
-                <p className="text-foreground/70 text-sm leading-relaxed">{faq.a}</p>
-              </Card>
+              <Panel key={i}>
+                <p className="mono text-[10px] tracking-wider-2 text-primary/70 mb-2">— Q.0{i + 1}</p>
+                <h4 className="font-light text-foreground/95 mb-3 text-base md:text-lg">{faq.q}</h4>
+                <p className="text-foreground/60 text-sm leading-relaxed">{faq.a}</p>
+              </Panel>
             ))}
           </div>
-        </SectionWrapper>
+        )}
 
         {/* ─── GLOSSARY ─── */}
-        <SectionWrapper visible={section === "glossary"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.glossary.title}</h2>
-          <p className="text-muted-foreground mb-6 italic">{t.glossary.intro}</p>
+        {section === "glossary" && (
           <div className="space-y-4">
+            <SectionTitle kicker="09 / Diccionario" title={t.glossary.title} subtitle={t.glossary.intro} />
             {t.glossary.terms.map((term, i) => (
-              <Card key={i}>
-                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
-                  <span className="text-primary">📖</span>{term.term}
+              <Panel key={i}>
+                <h4 className="font-light text-foreground/95 mb-2 text-base flex items-center gap-2">
+                  <span className="text-laser mono text-xs">§</span>{term.term}
                 </h4>
-                <p className="text-foreground/70 text-sm leading-relaxed">{term.def}</p>
-              </Card>
+                <p className="text-foreground/60 text-sm leading-relaxed">{term.def}</p>
+              </Panel>
             ))}
           </div>
-        </SectionWrapper>
+        )}
 
         {/* ─── FAREWELL ─── */}
-        <SectionWrapper visible={section === "farewell"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-1">{t.farewell.title}</h2>
-          <p className="text-muted-foreground text-sm mb-6 italic">{t.farewell.subtitle}</p>
-          <Card className="mb-6">
-            <p className="text-foreground/80 leading-relaxed">{t.farewell.intro}</p>
-          </Card>
-          <div className="bg-gradient-warm rounded-2xl p-6 md:p-8 mb-6 border border-primary/15">
-            <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-              <span>🕯️</span>{t.farewell.letterTitle}
-            </h3>
-            <p className="text-foreground/80 italic text-base leading-relaxed">{t.farewell.letterText}</p>
+        {section === "farewell" && (
+          <div className="space-y-6">
+            <SectionTitle kicker="10 / Soltar" title={t.farewell.title} subtitle={t.farewell.subtitle} />
+            <Panel><p className="text-foreground/75 leading-relaxed text-sm md:text-base">{t.farewell.intro}</p></Panel>
+            <Panel laser>
+              <h3 className="font-light text-foreground/95 mb-4 flex items-center gap-2 text-base">
+                <Flame className="w-4 h-4 text-primary" />{t.farewell.letterTitle}
+              </h3>
+              <p className="text-foreground/85 italic text-sm md:text-base leading-relaxed font-light">{t.farewell.letterText}</p>
+            </Panel>
+            <Panel><p className="text-foreground/75 text-sm italic leading-relaxed text-center">{t.farewell.closingNote}</p></Panel>
           </div>
-          <div className="bg-healing/10 border-l-4 border-healing rounded-r-xl p-4 text-foreground/80 text-sm italic">
-            {t.farewell.closingNote}
-          </div>
-        </SectionWrapper>
+        )}
 
         {/* ─── COMMUNITY ─── */}
-        <SectionWrapper visible={section === "community"}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary mb-4">{t.community.title}</h2>
-          <p className="text-muted-foreground mb-6 italic">{t.community.intro}</p>
-          <div className="mb-6">
-            <h3 className="text-base font-semibold text-foreground mb-3">{t.community.lettersTitle}</h3>
-            <div className="space-y-3">
-              {t.community.letters.map((letter, i) => (
-                <Card key={i} className="border-l-4 border-l-tender">
-                  <p className="text-foreground/80 text-sm italic leading-relaxed">"{letter.text}"</p>
-                  <p className="text-muted-foreground text-xs mt-2">— {letter.author}</p>
-                </Card>
-              ))}
-            </div>
+        {section === "community" && (
+          <div className="space-y-6">
+            <SectionTitle kicker="11 / Juntos" title={t.community.title} subtitle={t.community.intro} />
+
+            <h3 className="reveal text-sm font-light text-foreground/80 mono tracking-wider-2 uppercase">— {t.community.lettersTitle}</h3>
+            {t.community.letters.map((letter, i) => (
+              <Panel key={i}>
+                <p className="text-foreground/80 text-sm md:text-base italic leading-relaxed font-light">"{letter.text}"</p>
+                <p className="mono text-[10px] tracking-wider-2 text-primary/70 mt-3">— {letter.author}</p>
+              </Panel>
+            ))}
+
+            <Panel>
+              <h3 className="text-base font-light text-foreground/95 mb-2">{t.community.selfCareTitle}</h3>
+              <p className="text-foreground/55 text-sm mb-4">{t.community.selfCareIntro}</p>
+              <div className="space-y-3">
+                {t.community.selfCarePoints.map((p, i) => (
+                  <div key={i} className="flex gap-3">
+                    <ChevronRight className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium text-foreground/85 text-sm mb-0.5">{p.title}</p>
+                      <p className="text-foreground/55 text-sm leading-relaxed">{p.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Panel>
+
+            <Panel>
+              <h3 className="text-base font-light text-foreground/95 mb-2">{t.community.recoveryTitle}</h3>
+              <p className="text-foreground/55 text-sm mb-4">{t.community.recoveryIntro}</p>
+              <div className="space-y-3">
+                {t.community.recoveryPoints.map((p, i) => (
+                  <div key={i} className="flex gap-3">
+                    <ChevronRight className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium text-foreground/85 text-sm mb-0.5">{p.title}</p>
+                      <p className="text-foreground/55 text-sm leading-relaxed">{p.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Panel>
+
+            <Panel>
+              <h3 className="text-base font-light text-foreground/95 mb-2">{t.community.resourcesTitle}</h3>
+              <p className="text-foreground/55 text-sm mb-4">{t.community.resourcesIntro}</p>
+              <ul className="space-y-2 text-foreground/70 text-sm">
+                {t.community.resources.map((r, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="mono text-[10px] text-primary/70 mt-1 tracking-wider-2">0{i + 1}</span>
+                    <span className="leading-relaxed">{r}</span>
+                  </li>
+                ))}
+              </ul>
+            </Panel>
+
+            <Panel laser>
+              <h3 className="font-light text-foreground/95 mb-3 text-base">{t.community.conclusionTitle}</h3>
+              <p className="text-foreground/70 text-sm leading-relaxed mb-3">{t.community.conclusionText}</p>
+              <p className="text-foreground/95 font-light text-sm italic">{t.community.conclusionFinal}</p>
+            </Panel>
           </div>
-          <Card className="mb-5">
-            <h3 className="text-base font-semibold text-foreground mb-2">{t.community.selfCareTitle}</h3>
-            <p className="text-muted-foreground text-sm mb-4">{t.community.selfCareIntro}</p>
-            <div className="space-y-3">
-              {t.community.selfCarePoints.map((p, i) => (
-                <div key={i} className="flex gap-3">
-                  <ChevronRight className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                  <div><span className="font-medium text-foreground text-sm">{p.title}: </span><span className="text-foreground/70 text-sm">{p.desc}</span></div>
-                </div>
-              ))}
-            </div>
-          </Card>
-          <Card className="mb-5">
-            <h3 className="text-base font-semibold text-foreground mb-2">{t.community.recoveryTitle}</h3>
-            <p className="text-muted-foreground text-sm mb-4">{t.community.recoveryIntro}</p>
-            <div className="space-y-3">
-              {t.community.recoveryPoints.map((p, i) => (
-                <div key={i} className="flex gap-3">
-                  <ChevronRight className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                  <div><span className="font-medium text-foreground text-sm">{p.title}: </span><span className="text-foreground/70 text-sm">{p.desc}</span></div>
-                </div>
-              ))}
-            </div>
-          </Card>
-          <Card className="mb-5">
-            <h3 className="text-base font-semibold text-foreground mb-2">{t.community.resourcesTitle}</h3>
-            <p className="text-muted-foreground text-sm mb-3">{t.community.resourcesIntro}</p>
-            <ul className="space-y-1.5 ml-4 list-disc text-foreground/80 text-sm">
-              {t.community.resources.map((r, i) => <li key={i}>{r}</li>)}
-            </ul>
-          </Card>
-          <div className="bg-gradient-warm rounded-2xl p-6 border border-primary/15">
-            <h3 className="font-semibold text-foreground mb-3">{t.community.conclusionTitle}</h3>
-            <p className="text-foreground/80 text-sm leading-relaxed mb-3">{t.community.conclusionText}</p>
-            <p className="text-foreground font-medium text-sm italic">{t.community.conclusionFinal}</p>
-          </div>
-        </SectionWrapper>
+        )}
+
       </main>
 
       {/* Footer */}
-      <footer className="bg-secondary/50 border-t border-border/50 mt-12 py-8">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <p className="text-muted-foreground text-xs mb-1">{t.footer.line1}</p>
-          <p className="text-muted-foreground/60 text-xs mb-2">{t.footer.line2}</p>
-          <p className="text-muted-foreground/40 text-xs">{t.footer.line3}</p>
+      <footer className="border-t border-foreground/[0.06] mt-16 py-10 relative z-10">
+        <div className="max-w-5xl mx-auto px-4 text-center space-y-2">
+          <p className="text-foreground/50 text-xs leading-relaxed">{t.footer.line1}</p>
+          <p className="text-foreground/35 text-xs">{t.footer.line2}</p>
+          <p className="mono text-[10px] tracking-wider-2 text-foreground/25 uppercase pt-2">{t.footer.line3}</p>
         </div>
       </footer>
     </div>
