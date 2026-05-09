@@ -4,7 +4,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame, ArrowRight } from "lucide-react";
 
-type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community";
+type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community" | "tlpDolor" | "darkIntro" | "spectrum" | "darkTriad" | "tactics" | "attachment" | "profiles" | "redFlags" | "faqRel" | "protocol" | "darkClosing";
 
 const Panel = ({ children, className = "", laser = false }: { children: ReactNode; className?: string; laser?: boolean }) => (
   <div className={`reveal ${laser ? "glass-laser" : "glass"} laser-border rounded-3xl p-5 md:p-7 ${className}`}>
@@ -23,6 +23,20 @@ const SectionTitle = ({ kicker, title, subtitle }: { kicker: string; title: stri
 const Index = () => {
   const { t, lang } = useLang();
   const [section, setSection] = useState<Section>("home");
+  const [crossed, setCrossed] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("abrazo-crossed") === "1";
+  });
+  const cross = () => {
+    setCrossed(true);
+    localStorage.setItem("abrazo-crossed", "1");
+    goTo("darkIntro");
+  };
+  const uncross = () => {
+    setCrossed(false);
+    localStorage.removeItem("abrazo-crossed");
+    goTo("home");
+  };
 
   useScrollReveal(`${section}-${lang}`);
 
@@ -48,12 +62,31 @@ const Index = () => {
     { id: "glossary", label: t.nav.glossary, icon: <BookOpen className="w-3.5 h-3.5" /> },
     { id: "farewell", label: t.nav.farewell, icon: <Flame className="w-3.5 h-3.5" /> },
     { id: "community", label: t.nav.community, icon: <Users className="w-3.5 h-3.5" /> },
+    { id: "tlpDolor", label: t.nav.tlpDolor || "Su dolor", icon: <Heart className="w-3.5 h-3.5" /> },
   ];
+
+  const darkNavItems: { id: Section; label: string }[] = crossed
+    ? [
+        { id: "darkIntro", label: t.nav.darkIntro || "Cuando el dolor daña" },
+        { id: "spectrum", label: t.nav.spectrum || "Espectro" },
+        { id: "darkTriad", label: t.nav.darkTriad || "Tríada oscura" },
+        { id: "tactics", label: t.nav.tactics || "Tácticas" },
+        { id: "attachment", label: t.nav.attachment || "Apego" },
+        { id: "profiles", label: t.nav.profiles || "Perfiles" },
+        { id: "redFlags", label: t.nav.redFlags || "Señales" },
+        { id: "faqRel", label: t.nav.faqRel || "Dudas" },
+        { id: "protocol", label: t.nav.protocol || "Protocolo" },
+        { id: "darkClosing", label: t.nav.darkClosing || "Cierre" },
+      ]
+    : [];
 
   const sectionMeta: Record<Section, string> = {
     home: "00", understanding: "01", signs: "02", tools: "03", boundaries: "04",
     forBoth: "05", whatIfMe: "06", story: "07", faq: "08", glossary: "09",
-    farewell: "10", community: "11",
+    farewell: "10", community: "11", tlpDolor: "12",
+    darkIntro: "X1", spectrum: "X2", darkTriad: "X3", tactics: "X4",
+    attachment: "X5", profiles: "X6", redFlags: "X7", faqRel: "X8",
+    protocol: "X9", darkClosing: "X0",
   };
 
   return (
