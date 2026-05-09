@@ -21,6 +21,18 @@ export interface Translations {
     glossary: string;
     farewell: string;
     community: string;
+    tlpDolor: string;
+    // Dark side (hidden until threshold is crossed)
+    darkIntro: string;
+    spectrum: string;
+    darkTriad: string;
+    tactics: string;
+    attachment: string;
+    profiles: string;
+    redFlags: string;
+    faqRel: string;
+    protocol: string;
+    darkClosing: string;
   };
   header: {
     title: string;
@@ -167,6 +179,84 @@ export interface Translations {
     conclusionTitle: string;
     conclusionText: string;
     conclusionFinal: string;
+  };
+  tlpDolor: {
+    title: string;
+    subtitle: string;
+    intro: string;
+    points: { title: string; desc: string }[];
+    closingNote: string;
+  };
+  threshold: {
+    kicker: string;
+    title: string;
+    warning: string;
+    body: string;
+    bodyP2: string;
+    enter: string;
+    return: string;
+    crossedLabel: string;
+  };
+  darkSide: {
+    sectionLabel: string;
+    darkIntro: {
+      title: string;
+      intro: string;
+      points: { title: string; desc: string }[];
+      note: string;
+    };
+    spectrum: {
+      title: string;
+      intro: string;
+      disclaimer: string;
+      types: { name: string; desc: string; dynamics: string }[];
+    };
+    darkTriad: {
+      title: string;
+      intro: string;
+      items: { name: string; desc: string; signs: string[] }[];
+    };
+    tactics: {
+      title: string;
+      intro: string;
+      items: { name: string; category: string; desc: string; example: string; counter: string }[];
+    };
+    attachment: {
+      title: string;
+      intro: string;
+      stylesTitle: string;
+      styles: { name: string; desc: string }[];
+      combosTitle: string;
+      combosIntro: string;
+      combos: { pair: string; desc: string }[];
+    };
+    profiles: {
+      title: string;
+      intro: string;
+      note: string;
+      items: { context: string; desc: string }[];
+    };
+    redFlags: {
+      title: string;
+      intro: string;
+      items: string[];
+      conclusion: string;
+    };
+    faqRel: {
+      title: string;
+      intro: string;
+      questions: { q: string; a: string }[];
+    };
+    protocol: {
+      title: string;
+      intro: string;
+      phases: { name: string; desc: string }[];
+    };
+    darkClosing: {
+      title: string;
+      text: string;
+      final: string;
+    };
   };
   footer: {
     line1: string;
