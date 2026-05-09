@@ -21,18 +21,17 @@ export interface Translations {
     glossary: string;
     farewell: string;
     community: string;
-    tlpDolor: string;
-    // Dark side (hidden until threshold is crossed)
-    darkIntro: string;
-    spectrum: string;
-    darkTriad: string;
-    tactics: string;
-    attachment: string;
-    profiles: string;
-    redFlags: string;
-    faqRel: string;
-    protocol: string;
-    darkClosing: string;
+    tlpDolor?: string;
+    darkIntro?: string;
+    spectrum?: string;
+    darkTriad?: string;
+    tactics?: string;
+    attachment?: string;
+    profiles?: string;
+    redFlags?: string;
+    faqRel?: string;
+    protocol?: string;
+    darkClosing?: string;
   };
   header: {
     title: string;
@@ -180,14 +179,14 @@ export interface Translations {
     conclusionText: string;
     conclusionFinal: string;
   };
-  tlpDolor: {
+  tlpDolor?: {
     title: string;
     subtitle: string;
     intro: string;
     points: { title: string; desc: string }[];
     closingNote: string;
   };
-  threshold: {
+  threshold?: {
     kicker: string;
     title: string;
     warning: string;
@@ -197,7 +196,7 @@ export interface Translations {
     return: string;
     crossedLabel: string;
   };
-  darkSide: {
+  darkSide?: {
     sectionLabel: string;
     darkIntro: {
       title: string;
