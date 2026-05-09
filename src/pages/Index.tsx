@@ -566,6 +566,7 @@ const Index = () => {
         )}
 
       </main>
+      {/* tlpDolor & dark side sections injected via portal-like block before threshold */}
 
       {/* Always-visible threshold (discreet) at bottom of main flow when on safe sections */}
       {!crossed && t.threshold && (section === "community" || section === "tlpDolor") && (
