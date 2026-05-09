@@ -565,6 +565,172 @@ const Index = () => {
           </div>
         )}
 
+        {/* ─── TLP DOLOR ─── */}
+        {section === "tlpDolor" && t.tlpDolor && (
+          <div className="space-y-6">
+            <SectionTitle kicker="12 / Su dolor" title={t.tlpDolor.title} subtitle={t.tlpDolor.subtitle} />
+            <Panel><p className="text-foreground/75 leading-relaxed text-sm md:text-base">{t.tlpDolor.intro}</p></Panel>
+            {t.tlpDolor.points.map((p, i) => (
+              <Panel key={i}>
+                <h4 className="font-light text-foreground/95 mb-2 text-base">{p.title}</h4>
+                <p className="text-foreground/60 text-sm leading-relaxed">{p.desc}</p>
+              </Panel>
+            ))}
+            <Panel laser><p className="text-foreground/85 text-sm italic leading-relaxed">{t.tlpDolor.closingNote}</p></Panel>
+          </div>
+        )}
+
+        {/* ─── DARK SIDE SECTIONS ─── */}
+        {crossed && t.darkSide && (section === "darkIntro" || section === "spectrum" || section === "darkTriad" || section === "tactics" || section === "attachment" || section === "profiles" || section === "redFlags" || section === "faqRel" || section === "protocol" || section === "darkClosing") && (
+          <div className="space-y-6">
+            <p className="reveal mono text-[10px] tracking-wider-2 text-foreground/50 uppercase">— {t.darkSide.sectionLabel}</p>
+
+            {section === "darkIntro" && (
+              <>
+                <SectionTitle kicker="X1" title={t.darkSide.darkIntro.title} />
+                <Panel><p className="text-foreground/75 text-sm md:text-base leading-relaxed">{t.darkSide.darkIntro.intro}</p></Panel>
+                {t.darkSide.darkIntro.points.map((p, i) => (
+                  <Panel key={i}>
+                    <h4 className="font-light text-foreground/95 mb-2 text-base">{p.title}</h4>
+                    <p className="text-foreground/60 text-sm leading-relaxed">{p.desc}</p>
+                  </Panel>
+                ))}
+                <Panel><p className="text-foreground/70 text-sm italic leading-relaxed">{t.darkSide.darkIntro.note}</p></Panel>
+              </>
+            )}
+
+            {section === "spectrum" && (
+              <>
+                <SectionTitle kicker="X2" title={t.darkSide.spectrum.title} subtitle={t.darkSide.spectrum.intro} />
+                <Panel><p className="text-foreground/70 text-sm leading-relaxed italic">{t.darkSide.spectrum.disclaimer}</p></Panel>
+                {t.darkSide.spectrum.types.map((tp, i) => (
+                  <Panel key={i}>
+                    <h4 className="font-light text-foreground/95 mb-2 text-base">{tp.name}</h4>
+                    <p className="text-foreground/65 text-sm leading-relaxed mb-2">{tp.desc}</p>
+                    <p className="text-foreground/50 text-xs leading-relaxed italic">{tp.dynamics}</p>
+                  </Panel>
+                ))}
+              </>
+            )}
+
+            {section === "darkTriad" && (
+              <>
+                <SectionTitle kicker="X3" title={t.darkSide.darkTriad.title} subtitle={t.darkSide.darkTriad.intro} />
+                {t.darkSide.darkTriad.items.map((it, i) => (
+                  <Panel key={i}>
+                    <h4 className="font-light text-foreground/95 mb-2 text-base">{it.name}</h4>
+                    <p className="text-foreground/65 text-sm leading-relaxed mb-3">{it.desc}</p>
+                    <ul className="space-y-1 pl-4">
+                      {it.signs.map((s, j) => (
+                        <li key={j} className="text-foreground/55 text-sm leading-relaxed list-disc">{s}</li>
+                      ))}
+                    </ul>
+                  </Panel>
+                ))}
+              </>
+            )}
+
+            {section === "tactics" && (
+              <>
+                <SectionTitle kicker="X4" title={t.darkSide.tactics.title} subtitle={t.darkSide.tactics.intro} />
+                {t.darkSide.tactics.items.map((it, i) => (
+                  <Panel key={i}>
+                    <p className="mono text-[10px] tracking-wider-2 text-foreground/50 uppercase mb-1">— {it.category}</p>
+                    <h4 className="font-light text-foreground/95 mb-2 text-base">{it.name}</h4>
+                    <p className="text-foreground/65 text-sm leading-relaxed mb-3">{it.desc}</p>
+                    <p className="text-foreground/55 text-xs italic leading-relaxed mb-2"><span className="text-foreground/70">Ej:</span> {it.example}</p>
+                    <p className="text-foreground/70 text-xs leading-relaxed"><span className="mono text-[10px] tracking-wider-2 text-primary/70 uppercase">Contramedida</span> · {it.counter}</p>
+                  </Panel>
+                ))}
+              </>
+            )}
+
+            {section === "attachment" && (
+              <>
+                <SectionTitle kicker="X5" title={t.darkSide.attachment.title} subtitle={t.darkSide.attachment.intro} />
+                <h3 className="reveal text-base font-light text-foreground/90 pt-2">{t.darkSide.attachment.stylesTitle}</h3>
+                {t.darkSide.attachment.styles.map((s, i) => (
+                  <Panel key={i}>
+                    <h4 className="font-light text-foreground/95 mb-2 text-base">{s.name}</h4>
+                    <p className="text-foreground/60 text-sm leading-relaxed">{s.desc}</p>
+                  </Panel>
+                ))}
+                <h3 className="reveal text-base font-light text-foreground/90 pt-2">{t.darkSide.attachment.combosTitle}</h3>
+                <Panel><p className="text-foreground/65 text-sm italic leading-relaxed">{t.darkSide.attachment.combosIntro}</p></Panel>
+                {t.darkSide.attachment.combos.map((c, i) => (
+                  <Panel key={i}>
+                    <p className="mono text-xs tracking-wider text-foreground/80 mb-2">{c.pair}</p>
+                    <p className="text-foreground/60 text-sm leading-relaxed">{c.desc}</p>
+                  </Panel>
+                ))}
+              </>
+            )}
+
+            {section === "profiles" && (
+              <>
+                <SectionTitle kicker="X6" title={t.darkSide.profiles.title} subtitle={t.darkSide.profiles.intro} />
+                <Panel><p className="text-foreground/65 text-sm italic leading-relaxed">{t.darkSide.profiles.note}</p></Panel>
+                {t.darkSide.profiles.items.map((it, i) => (
+                  <Panel key={i}>
+                    <h4 className="font-light text-foreground/95 mb-2 text-base">{it.context}</h4>
+                    <p className="text-foreground/60 text-sm leading-relaxed">{it.desc}</p>
+                  </Panel>
+                ))}
+              </>
+            )}
+
+            {section === "redFlags" && (
+              <>
+                <SectionTitle kicker="X7" title={t.darkSide.redFlags.title} subtitle={t.darkSide.redFlags.intro} />
+                <Panel>
+                  <ul className="space-y-2">
+                    {t.darkSide.redFlags.items.map((s, i) => (
+                      <li key={i} className="flex gap-3 text-foreground/70 text-sm leading-relaxed">
+                        <span className="mono text-[10px] text-primary/70 mt-1 tracking-wider-2">{String(i + 1).padStart(2, "0")}</span>
+                        <span>{s}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Panel>
+                <Panel laser><p className="text-foreground/80 text-sm italic leading-relaxed">{t.darkSide.redFlags.conclusion}</p></Panel>
+              </>
+            )}
+
+            {section === "faqRel" && (
+              <>
+                <SectionTitle kicker="X8" title={t.darkSide.faqRel.title} subtitle={t.darkSide.faqRel.intro} />
+                {t.darkSide.faqRel.questions.map((q, i) => (
+                  <Panel key={i}>
+                    <p className="mono text-[10px] tracking-wider-2 text-foreground/50 mb-2">— Q.{String(i + 1).padStart(2, "0")}</p>
+                    <h4 className="font-light text-foreground/95 mb-3 text-base">{q.q}</h4>
+                    <p className="text-foreground/60 text-sm leading-relaxed">{q.a}</p>
+                  </Panel>
+                ))}
+              </>
+            )}
+
+            {section === "protocol" && (
+              <>
+                <SectionTitle kicker="X9" title={t.darkSide.protocol.title} subtitle={t.darkSide.protocol.intro} />
+                {t.darkSide.protocol.phases.map((p, i) => (
+                  <Panel key={i}>
+                    <h4 className="font-light text-foreground/95 mb-2 text-base">{p.name}</h4>
+                    <p className="text-foreground/65 text-sm leading-relaxed">{p.desc}</p>
+                  </Panel>
+                ))}
+              </>
+            )}
+
+            {section === "darkClosing" && (
+              <>
+                <SectionTitle kicker="X0" title={t.darkSide.darkClosing.title} />
+                <Panel><p className="text-foreground/75 text-sm md:text-base leading-relaxed">{t.darkSide.darkClosing.text}</p></Panel>
+                <Panel laser><p className="text-foreground/85 text-sm italic leading-relaxed">{t.darkSide.darkClosing.final}</p></Panel>
+              </>
+            )}
+          </div>
+        )}
+
       </main>
       {/* tlpDolor & dark side sections injected via portal-like block before threshold */}
 
