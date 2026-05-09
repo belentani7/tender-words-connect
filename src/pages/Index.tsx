@@ -133,6 +133,24 @@ const Index = () => {
                 <span>{item.label}</span>
               </button>
             ))}
+            {crossed && (
+              <>
+                <span className="px-2 text-foreground/20 mono text-[11px]">|</span>
+                {darkNavItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => goTo(item.id)}
+                    className={`px-3 py-1.5 rounded-full text-[11px] mono tracking-wider whitespace-nowrap transition-all duration-500 ${
+                      section === item.id
+                        ? "bg-foreground/10 text-foreground border border-foreground/30"
+                        : "text-foreground/35 hover:text-foreground/70 border border-transparent"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -548,6 +566,32 @@ const Index = () => {
         )}
 
       </main>
+
+      {/* Always-visible threshold (discreet) at bottom of main flow when on safe sections */}
+      {!crossed && t.threshold && (section === "community" || section === "tlpDolor") && (
+        <div className="max-w-5xl mx-auto px-4 pb-12 relative z-10">
+          <div className="reveal glass rounded-3xl p-6 md:p-8 border border-foreground/10">
+            <p className="mono text-[10px] tracking-wider-2 text-foreground/40 uppercase mb-3">{t.threshold.kicker}</p>
+            <h3 className="text-xl md:text-2xl font-light text-foreground/90 mb-3">{t.threshold.title}</h3>
+            <p className="mono text-[10px] tracking-wider-2 text-foreground/40 uppercase mb-4">⚠ {t.threshold.warning}</p>
+            <p className="text-foreground/65 text-sm leading-relaxed mb-3">{t.threshold.body}</p>
+            <p className="text-foreground/55 text-sm leading-relaxed mb-5 italic">{t.threshold.bodyP2}</p>
+            <button
+              onClick={cross}
+              className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 mono text-xs tracking-wider-2 border border-foreground/30 text-foreground/80 hover:text-foreground hover:border-foreground/60 transition-all"
+            >
+              {t.threshold.enter} <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      )}
+      {crossed && t.threshold && (
+        <div className="max-w-5xl mx-auto px-4 pb-6 relative z-10 flex justify-end">
+          <button onClick={uncross} className="mono text-[10px] tracking-wider-2 text-foreground/40 hover:text-foreground/70 uppercase">
+            ← {t.threshold.return}
+          </button>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="border-t border-foreground/[0.06] mt-16 py-10 relative z-10">
