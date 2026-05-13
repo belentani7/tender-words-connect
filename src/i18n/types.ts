@@ -265,4 +265,67 @@ export interface Translations {
     line2: string;
     line3: string;
   };
+  clinical?: {
+    title: string;
+    subtitle: string;
+    intro: string;
+    dsmTitle: string;
+    dsmIntro: string;
+    dsmCriteria: { n: string; title: string; desc: string }[];
+    dsmNote: string;
+    originTitle: string;
+    originIntro: string;
+    originPoints: { title: string; desc: string }[];
+    diffTitle: string;
+    diffIntro: string;
+    diffItems: { name: string; desc: string }[];
+    dbtTitle: string;
+    dbtIntro: string;
+    dbtModules: { name: string; desc: string; example: string }[];
+    selfcareTitle: string;
+    selfcareItems: { title: string; desc: string }[];
+    familyTitle: string;
+    familyDo: string[];
+    familyDont: string[];
+    recoveryTitle: string;
+    recoveryText: string;
+    disclaimer: string;
+  };
+  resources?: {
+    title: string;
+    subtitle: string;
+    intro: string;
+    bcnTitle: string;
+    bcnItems: { name: string; desc: string; contact: string }[];
+    spainTitle: string;
+    spainItems: { name: string; desc: string; contact: string }[];
+    worldTitle: string;
+    worldIntro: string;
+    worldItems: { region: string; name: string; desc: string; url: string }[];
+    crisisTitle: string;
+    crisisText: string;
+  };
+  news?: {
+    title: string;
+    subtitle: string;
+    intro: string;
+    refresh: string;
+    refreshing: string;
+    lastUpdate: string;
+    empty: string;
+    error: string;
+    source: string;
+    open: string;
+  };
+  a11y?: {
+    title: string;
+    open: string;
+    close: string;
+    contrast: string;
+    fontSize: string;
+    reduceMotion: string;
+    skipSensitive: string;
+    dyslexia: string;
+    reset: string;
+  };
 }
