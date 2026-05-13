@@ -1,10 +1,13 @@
-import { useState, ReactNode, useEffect } from "react";
+import { useState, ReactNode, useEffect, lazy, Suspense } from "react";
 import { useLang } from "@/hooks/useLang";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame, ArrowRight } from "lucide-react";
+import AccessibilityPanel from "@/components/AccessibilityPanel";
+import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame, ArrowRight, Stethoscope, LifeBuoy, Newspaper } from "lucide-react";
 
-type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community" | "tlpDolor" | "darkIntro" | "spectrum" | "darkTriad" | "tactics" | "attachment" | "profiles" | "redFlags" | "faqRel" | "protocol" | "darkClosing";
+const NewsSection = lazy(() => import("@/components/NewsSection"));
+
+type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community" | "tlpDolor" | "clinical" | "resources" | "news" | "darkIntro" | "spectrum" | "darkTriad" | "tactics" | "attachment" | "profiles" | "redFlags" | "faqRel" | "protocol" | "darkClosing";
 
 const Panel = ({ children, className = "", laser = false }: { children: ReactNode; className?: string; laser?: boolean }) => (
   <div className={`reveal ${laser ? "glass-laser" : "glass"} laser-border rounded-3xl p-5 md:p-7 ${className}`}>
@@ -63,6 +66,9 @@ const Index = () => {
     { id: "farewell", label: t.nav.farewell, icon: <Flame className="w-3.5 h-3.5" /> },
     { id: "community", label: t.nav.community, icon: <Users className="w-3.5 h-3.5" /> },
     { id: "tlpDolor", label: t.nav.tlpDolor || "Su dolor", icon: <Heart className="w-3.5 h-3.5" /> },
+    { id: "clinical", label: t.nav.clinical || "Clínico", icon: <Stethoscope className="w-3.5 h-3.5" /> },
+    { id: "resources", label: t.nav.resources || "Recursos", icon: <LifeBuoy className="w-3.5 h-3.5" /> },
+    { id: "news", label: t.nav.news || "Noticias", icon: <Newspaper className="w-3.5 h-3.5" /> },
   ];
 
   const darkNavItems: { id: Section; label: string }[] = crossed
@@ -83,7 +89,7 @@ const Index = () => {
   const sectionMeta: Record<Section, string> = {
     home: "00", understanding: "01", signs: "02", tools: "03", boundaries: "04",
     forBoth: "05", whatIfMe: "06", story: "07", faq: "08", glossary: "09",
-    farewell: "10", community: "11", tlpDolor: "12",
+    farewell: "10", community: "11", tlpDolor: "12", clinical: "13", resources: "14", news: "15",
     darkIntro: "X1", spectrum: "X2", darkTriad: "X3", tactics: "X4",
     attachment: "X5", profiles: "X6", redFlags: "X7", faqRel: "X8",
     protocol: "X9", darkClosing: "X0",
@@ -580,6 +586,154 @@ const Index = () => {
           </div>
         )}
 
+        {/* ─── CLINICAL ─── */}
+        {section === "clinical" && t.clinical && (
+          <div className="space-y-6">
+            <SectionTitle kicker="13 / Clínico" title={t.clinical.title} subtitle={t.clinical.subtitle} />
+            <Panel><p className="text-foreground/75 leading-relaxed text-sm md:text-base">{t.clinical.intro}</p></Panel>
+
+            <h3 className="reveal text-base font-light text-foreground/90 pt-2">{t.clinical.dsmTitle}</h3>
+            <Panel><p className="text-foreground/65 text-sm italic leading-relaxed">{t.clinical.dsmIntro}</p></Panel>
+            <div className="grid md:grid-cols-2 gap-3">
+              {t.clinical.dsmCriteria.map((c, i) => (
+                <Panel key={i}>
+                  <p className="mono text-[10px] tracking-wider-2 text-primary/70 mb-1">— {c.n}</p>
+                  <h4 className="font-light text-foreground/95 mb-2 text-base">{c.title}</h4>
+                  <p className="text-foreground/60 text-sm leading-relaxed">{c.desc}</p>
+                </Panel>
+              ))}
+            </div>
+            <Panel laser><p className="text-foreground/80 text-sm italic leading-relaxed">{t.clinical.dsmNote}</p></Panel>
+
+            <h3 className="reveal text-base font-light text-foreground/90 pt-2">{t.clinical.originTitle}</h3>
+            <Panel><p className="text-foreground/65 text-sm italic leading-relaxed">{t.clinical.originIntro}</p></Panel>
+            {t.clinical.originPoints.map((p, i) => (
+              <Panel key={i}>
+                <h4 className="font-light text-foreground/95 mb-2 text-base">{p.title}</h4>
+                <p className="text-foreground/60 text-sm leading-relaxed">{p.desc}</p>
+              </Panel>
+            ))}
+
+            <h3 className="reveal text-base font-light text-foreground/90 pt-2">{t.clinical.diffTitle}</h3>
+            <Panel><p className="text-foreground/65 text-sm italic leading-relaxed">{t.clinical.diffIntro}</p></Panel>
+            {t.clinical.diffItems.map((d, i) => (
+              <Panel key={i}>
+                <h4 className="font-light text-foreground/95 mb-2 text-base">{d.name}</h4>
+                <p className="text-foreground/60 text-sm leading-relaxed">{d.desc}</p>
+              </Panel>
+            ))}
+
+            <h3 className="reveal text-base font-light text-foreground/90 pt-2">{t.clinical.dbtTitle}</h3>
+            <Panel><p className="text-foreground/65 text-sm italic leading-relaxed">{t.clinical.dbtIntro}</p></Panel>
+            {t.clinical.dbtModules.map((m, i) => (
+              <Panel key={i}>
+                <p className="mono text-[10px] tracking-wider-2 text-primary/70 mb-1">— M.0{i + 1}</p>
+                <h4 className="font-light text-foreground/95 mb-2 text-base">{m.name}</h4>
+                <p className="text-foreground/65 text-sm leading-relaxed mb-2">{m.desc}</p>
+                <p className="text-foreground/55 text-xs italic leading-relaxed"><span className="text-foreground/70">Ej:</span> {m.example}</p>
+              </Panel>
+            ))}
+
+            <h3 className="reveal text-base font-light text-foreground/90 pt-2">{t.clinical.selfcareTitle}</h3>
+            {t.clinical.selfcareItems.map((s, i) => (
+              <Panel key={i}>
+                <h4 className="font-light text-foreground/95 mb-2 text-base">{s.title}</h4>
+                <p className="text-foreground/60 text-sm leading-relaxed">{s.desc}</p>
+              </Panel>
+            ))}
+
+            <h3 className="reveal text-base font-light text-foreground/90 pt-2">{t.clinical.familyTitle}</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Panel>
+                <p className="mono text-[10px] tracking-wider-2 text-primary/80 mb-3">✓ Hacer</p>
+                <ul className="space-y-2">
+                  {t.clinical.familyDo.map((it, i) => (
+                    <li key={i} className="text-foreground/70 text-sm leading-relaxed flex gap-2">
+                      <span className="text-primary/70 mono text-[10px] mt-1">0{i + 1}</span><span>{it}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Panel>
+              <Panel>
+                <p className="mono text-[10px] tracking-wider-2 text-foreground/50 mb-3">✗ Evitar</p>
+                <ul className="space-y-2">
+                  {t.clinical.familyDont.map((it, i) => (
+                    <li key={i} className="text-foreground/70 text-sm leading-relaxed flex gap-2">
+                      <span className="text-foreground/40 mono text-[10px] mt-1">0{i + 1}</span><span>{it}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Panel>
+            </div>
+
+            <Panel laser>
+              <h3 className="font-light text-foreground/95 mb-3 text-base">{t.clinical.recoveryTitle}</h3>
+              <p className="text-foreground/75 text-sm leading-relaxed">{t.clinical.recoveryText}</p>
+            </Panel>
+            <Panel><p className="text-foreground/55 text-xs italic leading-relaxed">{t.clinical.disclaimer}</p></Panel>
+          </div>
+        )}
+
+        {/* ─── RESOURCES ─── */}
+        {section === "resources" && t.resources && (
+          <div className="space-y-6">
+            <SectionTitle kicker="14 / Recursos" title={t.resources.title} subtitle={t.resources.subtitle} />
+            <Panel><p className="text-foreground/75 leading-relaxed text-sm md:text-base">{t.resources.intro}</p></Panel>
+
+            <Panel laser>
+              <h3 className="font-light text-foreground/95 mb-3 text-base">{t.resources.crisisTitle}</h3>
+              <p className="text-foreground/85 text-sm leading-relaxed">{t.resources.crisisText}</p>
+            </Panel>
+
+            <h3 className="reveal text-base font-light text-foreground/90 pt-2">— {t.resources.bcnTitle}</h3>
+            {t.resources.bcnItems.map((r, i) => (
+              <Panel key={i}>
+                <h4 className="font-light text-foreground/95 mb-2 text-base">{r.name}</h4>
+                <p className="text-foreground/60 text-sm leading-relaxed mb-2">{r.desc}</p>
+                <p className="mono text-[10px] tracking-wider-2 text-primary/80 uppercase">{r.contact}</p>
+              </Panel>
+            ))}
+
+            <h3 className="reveal text-base font-light text-foreground/90 pt-2">— {t.resources.spainTitle}</h3>
+            {t.resources.spainItems.map((r, i) => (
+              <Panel key={i}>
+                <h4 className="font-light text-foreground/95 mb-2 text-base">{r.name}</h4>
+                <p className="text-foreground/60 text-sm leading-relaxed mb-2">{r.desc}</p>
+                <p className="mono text-[10px] tracking-wider-2 text-primary/80 uppercase">{r.contact}</p>
+              </Panel>
+            ))}
+
+            <h3 className="reveal text-base font-light text-foreground/90 pt-2">— {t.resources.worldTitle}</h3>
+            <Panel><p className="text-foreground/65 text-sm italic leading-relaxed">{t.resources.worldIntro}</p></Panel>
+            {t.resources.worldItems.map((r, i) => (
+              <Panel key={i}>
+                <p className="mono text-[10px] tracking-wider-2 text-foreground/50 uppercase mb-1">— {r.region}</p>
+                <h4 className="font-light text-foreground/95 mb-2 text-base">{r.name}</h4>
+                <p className="text-foreground/60 text-sm leading-relaxed mb-2">{r.desc}</p>
+                <a
+                  href={`https://${r.url.split(" ")[0]}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mono text-[10px] tracking-wider-2 text-primary/80 hover:text-laser uppercase"
+                >
+                  {r.url} ↗
+                </a>
+              </Panel>
+            ))}
+          </div>
+        )}
+
+        {/* ─── NEWS ─── */}
+        {section === "news" && t.news && (
+          <div className="space-y-6">
+            <SectionTitle kicker="15 / Pulso" title={t.news.title} subtitle={t.news.subtitle} />
+            <Panel><p className="text-foreground/75 leading-relaxed text-sm md:text-base">{t.news.intro}</p></Panel>
+            <Suspense fallback={<Panel><p className="text-foreground/60 text-sm">…</p></Panel>}>
+              <NewsSection />
+            </Suspense>
+          </div>
+        )}
+
         {/* ─── DARK SIDE SECTIONS ─── */}
         {crossed && t.darkSide && (section === "darkIntro" || section === "spectrum" || section === "darkTriad" || section === "tactics" || section === "attachment" || section === "profiles" || section === "redFlags" || section === "faqRel" || section === "protocol" || section === "darkClosing") && (
           <div className="space-y-6">
@@ -768,6 +922,7 @@ const Index = () => {
           <p className="mono text-[10px] tracking-wider-2 text-foreground/25 uppercase pt-2">{t.footer.line3}</p>
         </div>
       </footer>
+      <AccessibilityPanel />
     </div>
   );
 };
