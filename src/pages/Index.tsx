@@ -922,6 +922,7 @@ const Index = () => {
           <p className="mono text-[10px] tracking-wider-2 text-foreground/25 uppercase pt-2">{t.footer.line3}</p>
         </div>
       </footer>
+      <AccessibilityPanel />
     </div>
   );
 };
