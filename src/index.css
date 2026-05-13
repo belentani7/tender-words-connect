@@ -231,3 +231,46 @@
 .animate-pulse-gentle {
   animation: pulse-gentle 4s ease-in-out infinite;
 }
+
+/* Accessibility overrides */
+body.a11y-reduce-motion *,
+body.a11y-reduce-motion *::before,
+body.a11y-reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+body.a11y-contrast {
+  background: #000 !important;
+}
+body.a11y-contrast .glass,
+body.a11y-contrast .glass-strong,
+body.a11y-contrast .glass-laser {
+  background: #000 !important;
+  border-color: #fff !important;
+  backdrop-filter: none !important;
+}
+body.a11y-contrast,
+body.a11y-contrast * {
+  color: #fff !important;
+}
+body.a11y-contrast .text-laser,
+body.a11y-contrast .text-primary {
+  color: #ff5577 !important;
+}
+body.a11y-skip-sensitive [data-sensitive] {
+  filter: blur(8px);
+  opacity: 0.5;
+  transition: filter 0.3s, opacity 0.3s;
+}
+body.a11y-skip-sensitive [data-sensitive]:hover,
+body.a11y-skip-sensitive [data-sensitive]:focus-within {
+  filter: none;
+  opacity: 1;
+}
+body.a11y-dyslexia,
+body.a11y-dyslexia * {
+  font-family: 'Atkinson Hyperlegible', 'Verdana', sans-serif !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.7 !important;
+}
