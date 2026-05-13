@@ -32,6 +32,9 @@ export interface Translations {
     faqRel?: string;
     protocol?: string;
     darkClosing?: string;
+    clinical?: string;
+    resources?: string;
+    news?: string;
   };
   header: {
     title: string;
