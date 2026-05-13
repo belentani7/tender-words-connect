@@ -66,6 +66,9 @@ const Index = () => {
     { id: "farewell", label: t.nav.farewell, icon: <Flame className="w-3.5 h-3.5" /> },
     { id: "community", label: t.nav.community, icon: <Users className="w-3.5 h-3.5" /> },
     { id: "tlpDolor", label: t.nav.tlpDolor || "Su dolor", icon: <Heart className="w-3.5 h-3.5" /> },
+    { id: "clinical", label: t.nav.clinical || "Clínico", icon: <Stethoscope className="w-3.5 h-3.5" /> },
+    { id: "resources", label: t.nav.resources || "Recursos", icon: <LifeBuoy className="w-3.5 h-3.5" /> },
+    { id: "news", label: t.nav.news || "Noticias", icon: <Newspaper className="w-3.5 h-3.5" /> },
   ];
 
   const darkNavItems: { id: Section; label: string }[] = crossed
@@ -86,7 +89,7 @@ const Index = () => {
   const sectionMeta: Record<Section, string> = {
     home: "00", understanding: "01", signs: "02", tools: "03", boundaries: "04",
     forBoth: "05", whatIfMe: "06", story: "07", faq: "08", glossary: "09",
-    farewell: "10", community: "11", tlpDolor: "12",
+    farewell: "10", community: "11", tlpDolor: "12", clinical: "13", resources: "14", news: "15",
     darkIntro: "X1", spectrum: "X2", darkTriad: "X3", tactics: "X4",
     attachment: "X5", profiles: "X6", redFlags: "X7", faqRel: "X8",
     protocol: "X9", darkClosing: "X0",
