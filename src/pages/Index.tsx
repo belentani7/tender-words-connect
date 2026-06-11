@@ -3,14 +3,14 @@ import { useLang } from "@/hooks/useLang";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import AccessibilityPanel from "@/components/AccessibilityPanel";
-import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame, ArrowRight, Stethoscope, LifeBuoy, Newspaper } from "lucide-react";
+import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame, ArrowRight, Stethoscope, LifeBuoy, Library } from "lucide-react";
 
-const NewsSection = lazy(() => import("@/components/NewsSection"));
+const Encyclopedia = lazy(() => import("@/components/Encyclopedia"));
 
-type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community" | "tlpDolor" | "clinical" | "resources" | "news" | "darkIntro" | "spectrum" | "darkTriad" | "tactics" | "attachment" | "profiles" | "redFlags" | "faqRel" | "protocol" | "darkClosing";
+type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community" | "tlpDolor" | "clinical" | "resources" | "darkIntro" | "spectrum" | "darkTriad" | "tactics" | "attachment" | "profiles" | "redFlags" | "faqRel" | "protocol" | "darkClosing";
 
 const Panel = ({ children, className = "", laser = false }: { children: ReactNode; className?: string; laser?: boolean }) => (
-  <div className={`reveal ${laser ? "glass-laser" : "glass"} laser-border rounded-3xl p-5 md:p-7 ${className}`}>
+  <div className={`reveal hover-lift ${laser ? "glass-laser" : "glass"} laser-border rounded-3xl p-5 md:p-7 ${className}`}>
     {children}
   </div>
 );
@@ -26,6 +26,7 @@ const SectionTitle = ({ kicker, title, subtitle }: { kicker: string; title: stri
 const Index = () => {
   const { t, lang } = useLang();
   const [section, setSection] = useState<Section>("home");
+  const [wikiMode, setWikiMode] = useState(false);
   const [crossed, setCrossed] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
     return localStorage.getItem("abrazo-crossed") === "1";
@@ -52,6 +53,19 @@ const Index = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const enterWiki = () => {
+    setWikiMode(true);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  };
+  const exitWiki = () => {
+    setWikiMode(false);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  };
+  const openAbrazoFromWiki = () => {
+    setWikiMode(false);
+    goTo("understanding");
+  };
+
   const navItems: { id: Section; label: string; icon: ReactNode }[] = [
     { id: "home", label: t.nav.home, icon: <Heart className="w-3.5 h-3.5" /> },
     { id: "understanding", label: t.nav.understanding, icon: <BookOpen className="w-3.5 h-3.5" /> },
@@ -68,7 +82,6 @@ const Index = () => {
     { id: "tlpDolor", label: t.nav.tlpDolor || "Su dolor", icon: <Heart className="w-3.5 h-3.5" /> },
     { id: "clinical", label: t.nav.clinical || "Clínico", icon: <Stethoscope className="w-3.5 h-3.5" /> },
     { id: "resources", label: t.nav.resources || "Recursos", icon: <LifeBuoy className="w-3.5 h-3.5" /> },
-    { id: "news", label: t.nav.news || "Noticias", icon: <Newspaper className="w-3.5 h-3.5" /> },
   ];
 
   const darkNavItems: { id: Section; label: string }[] = crossed
@@ -89,11 +102,19 @@ const Index = () => {
   const sectionMeta: Record<Section, string> = {
     home: "00", understanding: "01", signs: "02", tools: "03", boundaries: "04",
     forBoth: "05", whatIfMe: "06", story: "07", faq: "08", glossary: "09",
-    farewell: "10", community: "11", tlpDolor: "12", clinical: "13", resources: "14", news: "15",
+    farewell: "10", community: "11", tlpDolor: "12", clinical: "13", resources: "14",
     darkIntro: "X1", spectrum: "X2", darkTriad: "X3", tactics: "X4",
     attachment: "X5", profiles: "X6", redFlags: "X7", faqRel: "X8",
     protocol: "X9", darkClosing: "X0",
   };
+
+  if (wikiMode) {
+    return (
+      <Suspense fallback={<div className="min-h-screen bg-background" />}>
+        <Encyclopedia onExit={exitWiki} onOpenAbrazo={openAbrazoFromWiki} />
+      </Suspense>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
@@ -723,17 +744,6 @@ const Index = () => {
           </div>
         )}
 
-        {/* ─── NEWS ─── */}
-        {section === "news" && t.news && (
-          <div className="space-y-6">
-            <SectionTitle kicker="15 / Pulso" title={t.news.title} subtitle={t.news.subtitle} />
-            <Panel><p className="text-foreground/75 leading-relaxed text-sm md:text-base">{t.news.intro}</p></Panel>
-            <Suspense fallback={<Panel><p className="text-foreground/60 text-sm">…</p></Panel>}>
-              <NewsSection />
-            </Suspense>
-          </div>
-        )}
-
         {/* ─── DARK SIDE SECTIONS ─── */}
         {crossed && t.darkSide && (section === "darkIntro" || section === "spectrum" || section === "darkTriad" || section === "tactics" || section === "attachment" || section === "profiles" || section === "redFlags" || section === "faqRel" || section === "protocol" || section === "darkClosing") && (
           <div className="space-y-6">
@@ -913,6 +923,26 @@ const Index = () => {
           </button>
         </div>
       )}
+
+      {/* ─── Menú al final: Enciclopedia (capa aparte) ─── */}
+      <div className="max-w-5xl mx-auto px-4 pb-4 pt-4 relative z-10">
+        <button onClick={enterWiki} className="w-full text-left group">
+          <div className="reveal hover-lift glass laser-border rounded-3xl p-6 md:p-8 flex items-center justify-between gap-4">
+            <div>
+              <p className="mono text-[10px] tracking-wider-2 text-primary/70 uppercase mb-2 flex items-center gap-2">
+                <Library className="w-3.5 h-3.5" /> Otra capa · Referencia
+              </p>
+              <h3 className="text-xl md:text-2xl font-light text-foreground/95 mb-2">
+                Enciclopedia de dinámicas y salud mental
+              </h3>
+              <p className="text-foreground/55 text-sm leading-relaxed max-w-2xl">
+                Un manual de referencia aparte, super enriquecido: cada trastorno, su dinámica en pareja, amistad, familia y trabajo, y las dudas más grandes separadas por temas.
+              </p>
+            </div>
+            <ArrowRight className="w-5 h-5 text-foreground/40 group-hover:text-laser group-hover:translate-x-1 transition-all flex-shrink-0" />
+          </div>
+        </button>
+      </div>
 
       {/* Footer */}
       <footer className="border-t border-foreground/[0.06] mt-16 py-10 relative z-10">
