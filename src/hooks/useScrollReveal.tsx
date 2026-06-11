@@ -6,7 +6,7 @@ import { useEffect } from "react";
  */
 export const useScrollReveal = (dep?: unknown) => {
   useEffect(() => {
-    const elements = document.querySelectorAll<HTMLElement>(".reveal");
+    const elements = document.querySelectorAll<HTMLElement>(".reveal, .reveal-stagger");
     if (!("IntersectionObserver" in window)) {
       elements.forEach((el) => el.classList.add("is-visible"));
       return;
