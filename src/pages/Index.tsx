@@ -3,14 +3,14 @@ import { useLang } from "@/hooks/useLang";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import AccessibilityPanel from "@/components/AccessibilityPanel";
-import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame, ArrowRight, Stethoscope, LifeBuoy, Newspaper } from "lucide-react";
+import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame, ArrowRight, Stethoscope, LifeBuoy, Library } from "lucide-react";
 
-const NewsSection = lazy(() => import("@/components/NewsSection"));
+const Encyclopedia = lazy(() => import("@/components/Encyclopedia"));
 
-type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community" | "tlpDolor" | "clinical" | "resources" | "news" | "darkIntro" | "spectrum" | "darkTriad" | "tactics" | "attachment" | "profiles" | "redFlags" | "faqRel" | "protocol" | "darkClosing";
+type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community" | "tlpDolor" | "clinical" | "resources" | "darkIntro" | "spectrum" | "darkTriad" | "tactics" | "attachment" | "profiles" | "redFlags" | "faqRel" | "protocol" | "darkClosing";
 
 const Panel = ({ children, className = "", laser = false }: { children: ReactNode; className?: string; laser?: boolean }) => (
-  <div className={`reveal ${laser ? "glass-laser" : "glass"} laser-border rounded-3xl p-5 md:p-7 ${className}`}>
+  <div className={`reveal hover-lift ${laser ? "glass-laser" : "glass"} laser-border rounded-3xl p-5 md:p-7 ${className}`}>
     {children}
   </div>
 );
@@ -26,6 +26,7 @@ const SectionTitle = ({ kicker, title, subtitle }: { kicker: string; title: stri
 const Index = () => {
   const { t, lang } = useLang();
   const [section, setSection] = useState<Section>("home");
+  const [wikiMode, setWikiMode] = useState(false);
   const [crossed, setCrossed] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
     return localStorage.getItem("abrazo-crossed") === "1";
@@ -52,6 +53,19 @@ const Index = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const enterWiki = () => {
+    setWikiMode(true);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  };
+  const exitWiki = () => {
+    setWikiMode(false);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  };
+  const openAbrazoFromWiki = () => {
+    setWikiMode(false);
+    goTo("understanding");
+  };
+
   const navItems: { id: Section; label: string; icon: ReactNode }[] = [
     { id: "home", label: t.nav.home, icon: <Heart className="w-3.5 h-3.5" /> },
     { id: "understanding", label: t.nav.understanding, icon: <BookOpen className="w-3.5 h-3.5" /> },
@@ -68,7 +82,6 @@ const Index = () => {
     { id: "tlpDolor", label: t.nav.tlpDolor || "Su dolor", icon: <Heart className="w-3.5 h-3.5" /> },
     { id: "clinical", label: t.nav.clinical || "Clínico", icon: <Stethoscope className="w-3.5 h-3.5" /> },
     { id: "resources", label: t.nav.resources || "Recursos", icon: <LifeBuoy className="w-3.5 h-3.5" /> },
-    { id: "news", label: t.nav.news || "Noticias", icon: <Newspaper className="w-3.5 h-3.5" /> },
   ];
 
   const darkNavItems: { id: Section; label: string }[] = crossed
@@ -89,11 +102,19 @@ const Index = () => {
   const sectionMeta: Record<Section, string> = {
     home: "00", understanding: "01", signs: "02", tools: "03", boundaries: "04",
     forBoth: "05", whatIfMe: "06", story: "07", faq: "08", glossary: "09",
-    farewell: "10", community: "11", tlpDolor: "12", clinical: "13", resources: "14", news: "15",
+    farewell: "10", community: "11", tlpDolor: "12", clinical: "13", resources: "14",
     darkIntro: "X1", spectrum: "X2", darkTriad: "X3", tactics: "X4",
     attachment: "X5", profiles: "X6", redFlags: "X7", faqRel: "X8",
     protocol: "X9", darkClosing: "X0",
   };
+
+  if (wikiMode) {
+    return (
+      <Suspense fallback={<div className="min-h-screen bg-background" />}>
+        <Encyclopedia onExit={exitWiki} onOpenAbrazo={openAbrazoFromWiki} />
+      </Suspense>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
