@@ -156,6 +156,25 @@
   .tracking-wider-2 {
     letter-spacing: 0.18em;
   }
+
+  /* Micro-interacciones modernas (sin cambiar la paleta) */
+  .hover-lift {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.5s ease;
+    will-change: transform;
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px) scale(1.012);
+    box-shadow: 0 24px 60px -24px hsl(0 0% 0% / 0.7),
+      0 0 30px -12px hsl(var(--primary) / 0.25);
+  }
+  .press-spring {
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .press-spring:active {
+    transform: scale(0.97);
+  }
 }
 
 @layer utilities {
@@ -194,6 +213,23 @@
     transform: translateY(0);
   }
 
+  /* Escalonado suave para grupos de elementos */
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal-stagger.is-visible > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.04s; }
+  .reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.10s; }
+  .reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.16s; }
+  .reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.22s; }
+  .reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.28s; }
+  .reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.34s; }
+
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -201,6 +237,8 @@
   .animate-slide-up { animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
   .animate-float { animation: float 6s ease-in-out infinite; }
   .animate-pulse-laser { animation: pulseLaser 3s ease-in-out infinite; }
+  .animate-drift { animation: drift 22s ease-in-out infinite; }
+  .animate-drift-slow { animation: drift 34s ease-in-out infinite; }
 }
 
 @keyframes fadeIn {
@@ -216,6 +254,12 @@
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(2vw, -2vh) scale(1.05); }
+  66% { transform: translate(-1.5vw, 1.5vh) scale(0.97); }
 }
 
 @keyframes pulseLaser {
