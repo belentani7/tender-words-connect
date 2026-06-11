@@ -744,17 +744,6 @@ const Index = () => {
           </div>
         )}
 
-        {/* ─── NEWS ─── */}
-        {section === "news" && t.news && (
-          <div className="space-y-6">
-            <SectionTitle kicker="15 / Pulso" title={t.news.title} subtitle={t.news.subtitle} />
-            <Panel><p className="text-foreground/75 leading-relaxed text-sm md:text-base">{t.news.intro}</p></Panel>
-            <Suspense fallback={<Panel><p className="text-foreground/60 text-sm">…</p></Panel>}>
-              <NewsSection />
-            </Suspense>
-          </div>
-        )}
-
         {/* ─── DARK SIDE SECTIONS ─── */}
         {crossed && t.darkSide && (section === "darkIntro" || section === "spectrum" || section === "darkTriad" || section === "tactics" || section === "attachment" || section === "profiles" || section === "redFlags" || section === "faqRel" || section === "protocol" || section === "darkClosing") && (
           <div className="space-y-6">
