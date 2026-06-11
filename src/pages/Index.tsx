@@ -930,13 +930,13 @@ const Index = () => {
           <div className="reveal hover-lift glass laser-border rounded-3xl p-6 md:p-8 flex items-center justify-between gap-4">
             <div>
               <p className="mono text-[10px] tracking-wider-2 text-primary/70 uppercase mb-2 flex items-center gap-2">
-                <Library className="w-3.5 h-3.5" /> {t.wikiEntry?.kicker || "Otra capa · Referencia"}
+                <Library className="w-3.5 h-3.5" /> Otra capa · Referencia
               </p>
               <h3 className="text-xl md:text-2xl font-light text-foreground/95 mb-2">
-                {t.wikiEntry?.title || "Enciclopedia de dinámicas y salud mental"}
+                Enciclopedia de dinámicas y salud mental
               </h3>
               <p className="text-foreground/55 text-sm leading-relaxed max-w-2xl">
-                {t.wikiEntry?.desc || "Un manual de referencia aparte, super enriquecido: cada trastorno, su dinámica en pareja, amistad, familia y trabajo, y las dudas más grandes separadas por temas."}
+                Un manual de referencia aparte, super enriquecido: cada trastorno, su dinámica en pareja, amistad, familia y trabajo, y las dudas más grandes separadas por temas.
               </p>
             </div>
             <ArrowRight className="w-5 h-5 text-foreground/40 group-hover:text-laser group-hover:translate-x-1 transition-all flex-shrink-0" />
