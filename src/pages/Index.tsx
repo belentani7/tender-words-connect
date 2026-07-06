@@ -3,11 +3,12 @@ import { useLang } from "@/hooks/useLang";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import AccessibilityPanel from "@/components/AccessibilityPanel";
-import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame, ArrowRight, Stethoscope, LifeBuoy, Library } from "lucide-react";
+import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame, ArrowRight, Stethoscope, LifeBuoy, Library, Sparkles } from "lucide-react";
 
 const Encyclopedia = lazy(() => import("@/components/Encyclopedia"));
+const AgentChat = lazy(() => import("@/components/AgentChat"));
 
-type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community" | "tlpDolor" | "clinical" | "resources" | "darkIntro" | "spectrum" | "darkTriad" | "tactics" | "attachment" | "profiles" | "redFlags" | "faqRel" | "protocol" | "darkClosing";
+type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community" | "tlpDolor" | "clinical" | "resources" | "agents" | "darkIntro" | "spectrum" | "darkTriad" | "tactics" | "attachment" | "profiles" | "redFlags" | "faqRel" | "protocol" | "darkClosing";
 
 const Panel = ({ children, className = "", laser = false }: { children: ReactNode; className?: string; laser?: boolean }) => (
   <div className={`reveal hover-lift ${laser ? "glass-laser" : "glass"} laser-border rounded-3xl p-5 md:p-7 ${className}`}>
@@ -82,6 +83,7 @@ const Index = () => {
     { id: "tlpDolor", label: t.nav.tlpDolor || "Su dolor", icon: <Heart className="w-3.5 h-3.5" /> },
     { id: "clinical", label: t.nav.clinical || "Clínico", icon: <Stethoscope className="w-3.5 h-3.5" /> },
     { id: "resources", label: t.nav.resources || "Recursos", icon: <LifeBuoy className="w-3.5 h-3.5" /> },
+    { id: "agents", label: "Agentes IA", icon: <Sparkles className="w-3.5 h-3.5" /> },
   ];
 
   const darkNavItems: { id: Section; label: string }[] = crossed
@@ -103,6 +105,7 @@ const Index = () => {
     home: "00", understanding: "01", signs: "02", tools: "03", boundaries: "04",
     forBoth: "05", whatIfMe: "06", story: "07", faq: "08", glossary: "09",
     farewell: "10", community: "11", tlpDolor: "12", clinical: "13", resources: "14",
+    agents: "15",
     darkIntro: "X1", spectrum: "X2", darkTriad: "X3", tactics: "X4",
     attachment: "X5", profiles: "X6", redFlags: "X7", faqRel: "X8",
     protocol: "X9", darkClosing: "X0",
