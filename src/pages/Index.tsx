@@ -747,6 +747,20 @@ const Index = () => {
           </div>
         )}
 
+        {/* ─── AGENTES IA ─── */}
+        {section === "agents" && (
+          <div className="space-y-6">
+            <SectionTitle
+              kicker="15 / Tecnología"
+              title="Agentes de IA"
+              subtitle="Tres agentes configurados para acompañarte, entrenar tu empatía y ensayar conversaciones difíciles. Educativos: no diagnostican ni sustituyen a un profesional."
+            />
+            <Suspense fallback={<div className="glass rounded-3xl border border-foreground/[0.06] h-96" />}>
+              <AgentChat />
+            </Suspense>
+          </div>
+        )}
+
         {/* ─── DARK SIDE SECTIONS ─── */}
         {crossed && t.darkSide && (section === "darkIntro" || section === "spectrum" || section === "darkTriad" || section === "tactics" || section === "attachment" || section === "profiles" || section === "redFlags" || section === "faqRel" || section === "protocol" || section === "darkClosing") && (
           <div className="space-y-6">
