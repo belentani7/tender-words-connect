@@ -941,6 +941,26 @@ const Index = () => {
         </div>
       )}
 
+      {/* ─── Menú al final: Agentes IA ─── */}
+      <div className="max-w-5xl mx-auto px-4 pb-2 pt-4 relative z-10">
+        <button onClick={() => goTo("agents")} className="w-full text-left group">
+          <div className="reveal hover-lift glass laser-border rounded-3xl p-6 md:p-8 flex items-center justify-between gap-4">
+            <div>
+              <p className="mono text-[10px] tracking-wider-2 text-primary/70 uppercase mb-2 flex items-center gap-2">
+                <Sparkles className="w-3.5 h-3.5" /> Tecnología · IA
+              </p>
+              <h3 className="text-xl md:text-2xl font-light text-foreground/95 mb-2">
+                Habla con los agentes de IA
+              </h3>
+              <p className="text-foreground/55 text-sm leading-relaxed max-w-2xl">
+                Un asistente terapéutico que valida y da herramientas, un paciente simulador para practicar empatía y una pareja simuladora para ensayar conversaciones difíciles.
+              </p>
+            </div>
+            <ArrowRight className="w-5 h-5 text-foreground/40 group-hover:text-laser group-hover:translate-x-1 transition-all flex-shrink-0" />
+          </div>
+        </button>
+      </div>
+
       {/* ─── Menú al final: Enciclopedia (capa aparte) ─── */}
       <div className="max-w-5xl mx-auto px-4 pb-4 pt-4 relative z-10">
         <button onClick={enterWiki} className="w-full text-left group">
