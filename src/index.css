@@ -318,3 +318,16 @@ body.a11y-dyslexia * {
   letter-spacing: 0.02em !important;
   line-height: 1.7 !important;
 }
+
+/* ── Chat markdown (agents) ── */
+.prose-chat p { margin: 0 0 0.6rem; }
+.prose-chat p:last-child { margin-bottom: 0; }
+.prose-chat ul, .prose-chat ol { margin: 0.3rem 0 0.7rem; padding-left: 1.1rem; }
+.prose-chat li { margin: 0.15rem 0; }
+.prose-chat ul { list-style: disc; }
+.prose-chat ol { list-style: decimal; }
+.prose-chat strong { color: hsl(var(--foreground) / 0.95); font-weight: 500; }
+.prose-chat em { font-style: italic; }
+.prose-chat h1, .prose-chat h2, .prose-chat h3 { font-weight: 400; margin: 0.5rem 0 0.35rem; color: hsl(var(--foreground) / 0.9); }
+.prose-chat a { color: hsl(var(--primary)); text-decoration: underline; text-underline-offset: 2px; }
+.prose-chat code { font-family: var(--font-mono, monospace); font-size: 0.85em; background: hsl(var(--foreground) / 0.06); padding: 0.05rem 0.3rem; border-radius: 0.3rem; }

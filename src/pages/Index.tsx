@@ -3,11 +3,12 @@ import { useLang } from "@/hooks/useLang";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import AccessibilityPanel from "@/components/AccessibilityPanel";
-import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame, ArrowRight, Stethoscope, LifeBuoy, Library } from "lucide-react";
+import { Heart, BookOpen, Eye, Shield, MessageCircleHeart, Scale, Users, ChevronRight, Wind, Handshake, HelpCircle, BookOpenCheck, Flame, ArrowRight, Stethoscope, LifeBuoy, Library, Sparkles } from "lucide-react";
 
 const Encyclopedia = lazy(() => import("@/components/Encyclopedia"));
+const AgentChat = lazy(() => import("@/components/AgentChat"));
 
-type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community" | "tlpDolor" | "clinical" | "resources" | "darkIntro" | "spectrum" | "darkTriad" | "tactics" | "attachment" | "profiles" | "redFlags" | "faqRel" | "protocol" | "darkClosing";
+type Section = "home" | "understanding" | "signs" | "story" | "tools" | "boundaries" | "forBoth" | "whatIfMe" | "faq" | "glossary" | "farewell" | "community" | "tlpDolor" | "clinical" | "resources" | "agents" | "darkIntro" | "spectrum" | "darkTriad" | "tactics" | "attachment" | "profiles" | "redFlags" | "faqRel" | "protocol" | "darkClosing";
 
 const Panel = ({ children, className = "", laser = false }: { children: ReactNode; className?: string; laser?: boolean }) => (
   <div className={`reveal hover-lift ${laser ? "glass-laser" : "glass"} laser-border rounded-3xl p-5 md:p-7 ${className}`}>
@@ -82,6 +83,7 @@ const Index = () => {
     { id: "tlpDolor", label: t.nav.tlpDolor || "Su dolor", icon: <Heart className="w-3.5 h-3.5" /> },
     { id: "clinical", label: t.nav.clinical || "Clínico", icon: <Stethoscope className="w-3.5 h-3.5" /> },
     { id: "resources", label: t.nav.resources || "Recursos", icon: <LifeBuoy className="w-3.5 h-3.5" /> },
+    { id: "agents", label: "Agentes IA", icon: <Sparkles className="w-3.5 h-3.5" /> },
   ];
 
   const darkNavItems: { id: Section; label: string }[] = crossed
@@ -103,6 +105,7 @@ const Index = () => {
     home: "00", understanding: "01", signs: "02", tools: "03", boundaries: "04",
     forBoth: "05", whatIfMe: "06", story: "07", faq: "08", glossary: "09",
     farewell: "10", community: "11", tlpDolor: "12", clinical: "13", resources: "14",
+    agents: "15",
     darkIntro: "X1", spectrum: "X2", darkTriad: "X3", tactics: "X4",
     attachment: "X5", profiles: "X6", redFlags: "X7", faqRel: "X8",
     protocol: "X9", darkClosing: "X0",
@@ -744,6 +747,20 @@ const Index = () => {
           </div>
         )}
 
+        {/* ─── AGENTES IA ─── */}
+        {section === "agents" && (
+          <div className="space-y-6">
+            <SectionTitle
+              kicker="15 / Tecnología"
+              title="Agentes de IA"
+              subtitle="Tres agentes configurados para acompañarte, entrenar tu empatía y ensayar conversaciones difíciles. Educativos: no diagnostican ni sustituyen a un profesional."
+            />
+            <Suspense fallback={<div className="glass rounded-3xl border border-foreground/[0.06] h-96" />}>
+              <AgentChat />
+            </Suspense>
+          </div>
+        )}
+
         {/* ─── DARK SIDE SECTIONS ─── */}
         {crossed && t.darkSide && (section === "darkIntro" || section === "spectrum" || section === "darkTriad" || section === "tactics" || section === "attachment" || section === "profiles" || section === "redFlags" || section === "faqRel" || section === "protocol" || section === "darkClosing") && (
           <div className="space-y-6">
@@ -923,6 +940,26 @@ const Index = () => {
           </button>
         </div>
       )}
+
+      {/* ─── Menú al final: Agentes IA ─── */}
+      <div className="max-w-5xl mx-auto px-4 pb-2 pt-4 relative z-10">
+        <button onClick={() => goTo("agents")} className="w-full text-left group">
+          <div className="reveal hover-lift glass laser-border rounded-3xl p-6 md:p-8 flex items-center justify-between gap-4">
+            <div>
+              <p className="mono text-[10px] tracking-wider-2 text-primary/70 uppercase mb-2 flex items-center gap-2">
+                <Sparkles className="w-3.5 h-3.5" /> Tecnología · IA
+              </p>
+              <h3 className="text-xl md:text-2xl font-light text-foreground/95 mb-2">
+                Habla con los agentes de IA
+              </h3>
+              <p className="text-foreground/55 text-sm leading-relaxed max-w-2xl">
+                Un asistente terapéutico que valida y da herramientas, un paciente simulador para practicar empatía y una pareja simuladora para ensayar conversaciones difíciles.
+              </p>
+            </div>
+            <ArrowRight className="w-5 h-5 text-foreground/40 group-hover:text-laser group-hover:translate-x-1 transition-all flex-shrink-0" />
+          </div>
+        </button>
+      </div>
 
       {/* ─── Menú al final: Enciclopedia (capa aparte) ─── */}
       <div className="max-w-5xl mx-auto px-4 pb-4 pt-4 relative z-10">
