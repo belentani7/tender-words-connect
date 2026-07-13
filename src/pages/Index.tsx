@@ -121,6 +121,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
+      {/* Skip to content (keyboard/screen-reader users) */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:glass-laser focus:laser-border focus:rounded-full focus:px-4 focus:py-2 focus:mono focus:text-xs focus:tracking-wider-2 focus:text-foreground"
+      >
+        Saltar al contenido
+      </a>
       {/* Ambient orbs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-0">
         <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-primary/[0.06] blur-[120px] animate-float" />
@@ -146,13 +153,14 @@ const Index = () => {
       </header>
 
       {/* Navigation */}
-      <nav className="sticky top-[57px] z-40 bg-background/40 backdrop-blur-xl border-b border-foreground/[0.04]">
+      <nav aria-label="Navegación principal" className="sticky top-[57px] z-40 bg-background/40 backdrop-blur-xl border-b border-foreground/[0.04]">
         <div className="max-w-5xl mx-auto px-4 py-2">
           <div className="flex gap-1 overflow-x-auto scrollbar-hide">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => goTo(item.id)}
+                aria-current={section === item.id ? "page" : undefined}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] mono tracking-wider whitespace-nowrap transition-all duration-500 ${
                   section === item.id
                     ? "bg-primary/15 text-primary border border-primary/30"
@@ -170,6 +178,7 @@ const Index = () => {
                   <button
                     key={item.id}
                     onClick={() => goTo(item.id)}
+                    aria-current={section === item.id ? "page" : undefined}
                     className={`px-3 py-1.5 rounded-full text-[11px] mono tracking-wider whitespace-nowrap transition-all duration-500 ${
                       section === item.id
                         ? "bg-foreground/10 text-foreground border border-foreground/30"
@@ -186,7 +195,7 @@ const Index = () => {
       </nav>
 
       {/* Content */}
-      <main className="max-w-5xl mx-auto px-4 py-10 md:py-16 relative z-10">
+      <main id="main" className="max-w-5xl mx-auto px-4 py-10 md:py-16 relative z-10">
 
         {/* ─── HOME ─── */}
         {section === "home" && (
