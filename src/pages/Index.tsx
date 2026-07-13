@@ -126,7 +126,7 @@ const Index = () => {
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:glass-laser focus:laser-border focus:rounded-full focus:px-4 focus:py-2 focus:mono focus:text-xs focus:tracking-wider-2 focus:text-foreground"
       >
-        {t.a11y?.skipToContent || "Saltar al contenido"}
+        Saltar al contenido
       </a>
       {/* Ambient orbs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-0">
@@ -153,7 +153,7 @@ const Index = () => {
       </header>
 
       {/* Navigation */}
-      <nav aria-label={t.a11y?.mainNav || "Navegación principal"} className="sticky top-[57px] z-40 bg-background/40 backdrop-blur-xl border-b border-foreground/[0.04]">
+      <nav aria-label="Navegación principal" className="sticky top-[57px] z-40 bg-background/40 backdrop-blur-xl border-b border-foreground/[0.04]">
         <div className="max-w-5xl mx-auto px-4 py-2">
           <div className="flex gap-1 overflow-x-auto scrollbar-hide">
             {navItems.map((item) => (
