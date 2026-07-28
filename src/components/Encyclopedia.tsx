@@ -7,7 +7,8 @@ import {
   WIKI_DISCLAIMER,
   type DisorderEntry,
 } from "@/content/wiki-data";
-import { ArrowLeft, ArrowRight, Search, BookOpen, HelpCircle, Library, Heart } from "lucide-react";
+import { ArrowLeft, ArrowRight, Search, BookOpen, HelpCircle, Library, Heart, Wrench } from "lucide-react";
+import Toolkit from "./tools/Toolkit";
 
 const WPanel = ({ children, className = "", laser = false }: { children: ReactNode; className?: string; laser?: boolean }) => (
   <div className={`${laser ? "glass-laser" : "glass"} laser-border rounded-3xl p-5 md:p-7 ${className}`}>
@@ -15,7 +16,7 @@ const WPanel = ({ children, className = "", laser = false }: { children: ReactNo
   </div>
 );
 
-type View = "home" | "disorder" | "dudas";
+type View = "home" | "disorder" | "dudas" | "tools";
 
 const Encyclopedia = ({ onExit, onOpenAbrazo }: { onExit: () => void; onOpenAbrazo: () => void }) => {
   const [view, setView] = useState<View>("home");
@@ -75,6 +76,7 @@ const Encyclopedia = ({ onExit, onOpenAbrazo }: { onExit: () => void; onOpenAbra
         <div className="max-w-5xl mx-auto px-4 py-2 flex gap-1">
           {[
             { id: "home" as View, label: "Trastornos", icon: <BookOpen className="w-3.5 h-3.5" /> },
+            { id: "tools" as View, label: "Herramientas", icon: <Wrench className="w-3.5 h-3.5" /> },
             { id: "dudas" as View, label: "Dudas frecuentes", icon: <HelpCircle className="w-3.5 h-3.5" /> },
           ].map((tab) => (
             <button
@@ -231,6 +233,9 @@ const Encyclopedia = ({ onExit, onOpenAbrazo }: { onExit: () => void; onOpenAbra
             <WPanel className="reveal"><p className="text-foreground/55 text-xs italic leading-relaxed">{WIKI_DISCLAIMER}</p></WPanel>
           </div>
         )}
+
+        {/* ─── HERRAMIENTAS ─── */}
+        {view === "tools" && <Toolkit />}
 
         {/* ─── DUDAS ─── */}
         {view === "dudas" && (
