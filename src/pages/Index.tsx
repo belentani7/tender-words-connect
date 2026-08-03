@@ -996,6 +996,20 @@ const Index = () => {
           <p className="text-foreground/50 text-xs leading-relaxed">{t.footer.line1}</p>
           <p className="text-foreground/35 text-xs">{t.footer.line2}</p>
           <p className="mono text-[10px] tracking-wider-2 text-foreground/25 uppercase pt-2">{t.footer.line3}</p>
+          <nav aria-label="Enciclopedia" className="pt-6 flex flex-wrap justify-center gap-x-4 gap-y-2">
+            <a href="/enciclopedia" className="mono text-[10px] tracking-wider-2 text-foreground/40 hover:text-foreground/80 uppercase">
+              Enciclopedia
+            </a>
+            {["tlp", "tept-c", "bipolar", "narcisista", "tdah", "tca", "adicciones", "duelo", "burnout"].map((id) => (
+              <a
+                key={id}
+                href={`/enciclopedia/${id}`}
+                className="mono text-[10px] tracking-wider-2 text-foreground/30 hover:text-foreground/70 uppercase"
+              >
+                {id.replace("-", " ")}
+              </a>
+            ))}
+          </nav>
         </div>
       </footer>
       <AccessibilityPanel />
