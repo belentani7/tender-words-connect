@@ -18,9 +18,19 @@ const WPanel = ({ children, className = "", laser = false }: { children: ReactNo
 
 type View = "home" | "disorder" | "dudas" | "tools";
 
-const Encyclopedia = ({ onExit, onOpenAbrazo }: { onExit: () => void; onOpenAbrazo: () => void }) => {
-  const [view, setView] = useState<View>("home");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+const Encyclopedia = ({
+  onExit,
+  onOpenAbrazo,
+  initialId = null,
+  onSelect,
+}: {
+  onExit: () => void;
+  onOpenAbrazo: () => void;
+  initialId?: string | null;
+  onSelect?: (id: string | null) => void;
+}) => {
+  const [view, setView] = useState<View>(initialId ? "disorder" : "home");
+  const [selectedId, setSelectedId] = useState<string | null>(initialId);
   const [query, setQuery] = useState("");
 
   const selected: DisorderEntry | undefined = WIKI_DATA.find((d) => d.id === selectedId);
@@ -30,12 +40,14 @@ const Encyclopedia = ({ onExit, onOpenAbrazo }: { onExit: () => void; onOpenAbra
   const open = (id: string) => {
     setSelectedId(id);
     setView("disorder");
+    onSelect?.(id);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const go = (v: View) => {
     setView(v);
     setSelectedId(null);
+    onSelect?.(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
