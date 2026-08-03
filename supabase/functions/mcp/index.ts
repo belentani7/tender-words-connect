@@ -555,6 +555,46 @@ var CLINICAL_LEVELS = {
   cl\u00EDnico: "Detalle cl\xEDnico"
 };
 var WIKI_DISCLAIMER = "Esta enciclopedia es educativa y no sustituye una evaluaci\xF3n cl\xEDnica. Nadie debe diagnosticarse a s\xED mismo ni a otros: solo profesionales con experiencia diagnostican. Si est\xE1s en crisis, contacta con l\xEDneas de apoyo o servicios de emergencia.";
+DUDAS.push(
+  {
+    id: "crisis",
+    category: "Crisis y urgencias",
+    icon: "\u{1F6A8}",
+    intro: "Qu\xE9 hacer cuando la situaci\xF3n se desborda y no hay tiempo para pensar.",
+    questions: [
+      { q: "\xBFQu\xE9 hago si me dice que se va a hacer da\xF1o?", a: "T\xF3malo siempre en serio. Qu\xE9date, habla con calma, retira medios de riesgo si puedes y llama a emergencias o a la l\xEDnea de atenci\xF3n a la conducta suicida de tu pa\xEDs (en Espa\xF1a, el 024). No es dramatizar: es proteger una vida." },
+      { q: "\xBFPuedo obligar a alguien a ingresar?", a: "Solo un profesional o una autoridad judicial puede decidir un ingreso involuntario, y \xFAnicamente ante riesgo grave e inminente. Tu papel es avisar a los servicios de emergencia, no valorar cl\xEDnicamente." },
+      { q: "\xBFY si la crisis me pone en peligro a m\xED?", a: "Tu seguridad es la prioridad absoluta y no es negociable. Sal del espacio, llama a emergencias y busca un lugar seguro. No puedes acompa\xF1ar a nadie desde el riesgo f\xEDsico." },
+      { q: "\xBFC\xF3mo hablo despu\xE9s de una crisis?", a: "No en caliente. Espera a que el sistema nervioso de ambos baje, valida lo vivido y luego acordad un plan concreto para la pr\xF3xima vez: se\xF1ales, palabras clave y a qui\xE9n se llama." }
+    ]
+  },
+  {
+    id: "tratamiento",
+    category: "Terapia y tratamiento",
+    icon: "\u{1FA7A}",
+    intro: "C\xF3mo funciona el tratamiento, qu\xE9 esperar y cu\xE1nto tarda.",
+    questions: [
+      { q: "\xBFQu\xE9 terapia tiene m\xE1s evidencia para el TLP?", a: "La terapia dial\xE9ctico-conductual (DBT) es la m\xE1s estudiada, junto con la terapia basada en la mentalizaci\xF3n (MBT), la terapia focalizada en esquemas y la STEPPS. Todas comparten estructura, foco en habilidades y trabajo con la relaci\xF3n terap\xE9utica." },
+      { q: "\xBFHace falta medicaci\xF3n?", a: "No existe un f\xE1rmaco espec\xEDfico para el TLP. Se usa medicaci\xF3n para tratar s\xEDntomas concretos o cuadros asociados (depresi\xF3n, ansiedad, impulsividad), siempre como apoyo a la psicoterapia, nunca como sustituto." },
+      { q: "\xBFCu\xE1nto tarda en verse mejor\xEDa?", a: "Los programas estructurados suelen durar de uno a dos a\xF1os, con mejoras apreciables en los primeros meses. Los estudios longitudinales muestran remisi\xF3n sintom\xE1tica en la mayor\xEDa de los casos a diez a\xF1os." },
+      { q: "\xBFSirve la terapia si la otra persona no quiere ir?", a: "S\xED, para ti. Cambiar tu forma de responder modifica la din\xE1mica completa, reduce tu desgaste y te devuelve criterio, independientemente de lo que decida la otra persona." },
+      { q: "\xBFC\xF3mo elijo profesional?", a: "Busca formaci\xF3n espec\xEDfica en el cuadro concreto, colegiaci\xF3n y transparencia sobre m\xE9todo y duraci\xF3n. Si tras varias sesiones no sientes respeto ni claridad, cambiar de profesional es leg\xEDtimo." }
+    ]
+  },
+  {
+    id: "jovenes",
+    category: "Primeras relaciones",
+    icon: "\u{1F324}\uFE0F",
+    intro: "Para quien est\xE1 empezando y todav\xEDa no tiene con qu\xE9 comparar.",
+    questions: [
+      { q: "\xBFC\xF3mo s\xE9 si esto es amor o dependencia?", a: "El amor ampl\xEDa tu vida: sigues teniendo amigos, planes y opiniones propias. La dependencia la estrecha: todo gira alrededor de la otra persona y su estado de \xE1nimo." },
+      { q: "\xBFLos celos demuestran inter\xE9s?", a: "No. Demuestran inseguridad o deseo de control. El inter\xE9s se demuestra con presencia, cuidado y respeto por tu libertad." },
+      { q: "\xBFEs normal discutir mucho al principio?", a: "Discutir es normal; discutir de forma que salgas humillado, confundido o asustado, no. F\xEDjate en c\xF3mo terminan las discusiones, no en cu\xE1ntas hay." },
+      { q: "\xBFQu\xE9 es un l\xEDmite razonable en una relaci\xF3n?", a: "Cualquiera que proteja tu integridad, tu tiempo y tu intimidad. Un l\xEDmite razonable no necesita justificaci\xF3n extensa ni permiso de la otra persona." },
+      { q: "\xBFPuedo pedir espacio sin que suene a rechazo?", a: "S\xED: nombra el afecto y la necesidad juntos. 'Me importas y necesito una tarde para m\xED' es una frase completa y suficiente." }
+    ]
+  }
+);
 
 // src/lib/mcp/tools/list-disorders.ts
 var list_disorders_default = defineTool({

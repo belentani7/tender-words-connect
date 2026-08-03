@@ -610,3 +610,44 @@ export const CLINICAL_LEVELS: Record<DisorderEntry["clinicalLevel"], string> = {
 
 export const WIKI_DISCLAIMER =
   "Esta enciclopedia es educativa y no sustituye una evaluación clínica. Nadie debe diagnosticarse a sí mismo ni a otros: solo profesionales con experiencia diagnostican. Si estás en crisis, contacta con líneas de apoyo o servicios de emergencia.";
+// ── Bloques de dudas adicionales ────────────────────────────
+DUDAS.push(
+  {
+    id: "crisis",
+    category: "Crisis y urgencias",
+    icon: "🚨",
+    intro: "Qué hacer cuando la situación se desborda y no hay tiempo para pensar.",
+    questions: [
+      { q: "¿Qué hago si me dice que se va a hacer daño?", a: "Tómalo siempre en serio. Quédate, habla con calma, retira medios de riesgo si puedes y llama a emergencias o a la línea de atención a la conducta suicida de tu país (en España, el 024). No es dramatizar: es proteger una vida." },
+      { q: "¿Puedo obligar a alguien a ingresar?", a: "Solo un profesional o una autoridad judicial puede decidir un ingreso involuntario, y únicamente ante riesgo grave e inminente. Tu papel es avisar a los servicios de emergencia, no valorar clínicamente." },
+      { q: "¿Y si la crisis me pone en peligro a mí?", a: "Tu seguridad es la prioridad absoluta y no es negociable. Sal del espacio, llama a emergencias y busca un lugar seguro. No puedes acompañar a nadie desde el riesgo físico." },
+      { q: "¿Cómo hablo después de una crisis?", a: "No en caliente. Espera a que el sistema nervioso de ambos baje, valida lo vivido y luego acordad un plan concreto para la próxima vez: señales, palabras clave y a quién se llama." },
+    ],
+  },
+  {
+    id: "tratamiento",
+    category: "Terapia y tratamiento",
+    icon: "🩺",
+    intro: "Cómo funciona el tratamiento, qué esperar y cuánto tarda.",
+    questions: [
+      { q: "¿Qué terapia tiene más evidencia para el TLP?", a: "La terapia dialéctico-conductual (DBT) es la más estudiada, junto con la terapia basada en la mentalización (MBT), la terapia focalizada en esquemas y la STEPPS. Todas comparten estructura, foco en habilidades y trabajo con la relación terapéutica." },
+      { q: "¿Hace falta medicación?", a: "No existe un fármaco específico para el TLP. Se usa medicación para tratar síntomas concretos o cuadros asociados (depresión, ansiedad, impulsividad), siempre como apoyo a la psicoterapia, nunca como sustituto." },
+      { q: "¿Cuánto tarda en verse mejoría?", a: "Los programas estructurados suelen durar de uno a dos años, con mejoras apreciables en los primeros meses. Los estudios longitudinales muestran remisión sintomática en la mayoría de los casos a diez años." },
+      { q: "¿Sirve la terapia si la otra persona no quiere ir?", a: "Sí, para ti. Cambiar tu forma de responder modifica la dinámica completa, reduce tu desgaste y te devuelve criterio, independientemente de lo que decida la otra persona." },
+      { q: "¿Cómo elijo profesional?", a: "Busca formación específica en el cuadro concreto, colegiación y transparencia sobre método y duración. Si tras varias sesiones no sientes respeto ni claridad, cambiar de profesional es legítimo." },
+    ],
+  },
+  {
+    id: "jovenes",
+    category: "Primeras relaciones",
+    icon: "🌤️",
+    intro: "Para quien está empezando y todavía no tiene con qué comparar.",
+    questions: [
+      { q: "¿Cómo sé si esto es amor o dependencia?", a: "El amor amplía tu vida: sigues teniendo amigos, planes y opiniones propias. La dependencia la estrecha: todo gira alrededor de la otra persona y su estado de ánimo." },
+      { q: "¿Los celos demuestran interés?", a: "No. Demuestran inseguridad o deseo de control. El interés se demuestra con presencia, cuidado y respeto por tu libertad." },
+      { q: "¿Es normal discutir mucho al principio?", a: "Discutir es normal; discutir de forma que salgas humillado, confundido o asustado, no. Fíjate en cómo terminan las discusiones, no en cuántas hay." },
+      { q: "¿Qué es un límite razonable en una relación?", a: "Cualquiera que proteja tu integridad, tu tiempo y tu intimidad. Un límite razonable no necesita justificación extensa ni permiso de la otra persona." },
+      { q: "¿Puedo pedir espacio sin que suene a rechazo?", a: "Sí: nombra el afecto y la necesidad juntos. 'Me importas y necesito una tarde para mí' es una frase completa y suficiente." },
+    ],
+  },
+);
