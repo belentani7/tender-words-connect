@@ -292,6 +292,189 @@ var WIKI_DATA = [
     ]
   }
 ];
+var WIKI_EXTRA = [
+  {
+    id: "histrionico",
+    title: "Trastorno Histri\xF3nico de la Personalidad",
+    short: "THP",
+    summary: "Necesidad intensa de ser visto y sentido. La emoci\xF3n se expresa a gran volumen porque, por dentro, hay miedo a desaparecer si nadie mira.",
+    clinicalLevel: "intermedio",
+    cluster: "Cluster B",
+    tags: ["personalidad", "atenci\xF3n", "v\xEDnculos", "emoci\xF3n"],
+    sections: [
+      { id: "definicion", title: "Qu\xE9 es", content: "Patr\xF3n persistente de emocionalidad excesiva y b\xFAsqueda de atenci\xF3n. Las emociones cambian r\xE1pido y se expresan de forma teatral, pero eso no significa que sean falsas: la persona las siente de verdad mientras duran." },
+      { id: "dentro", title: "C\xF3mo se vive por dentro", content: "Muchas personas describen una sensaci\xF3n de existir solo cuando alguien las mira. La seducci\xF3n, el drama o la exageraci\xF3n no son estrategia fr\xEDa: son intentos aprendidos de asegurar el v\xEDnculo." },
+      { id: "diferencia", title: "No confundir", content: "Con el TLP comparte inestabilidad afectiva, pero el eje del THP es la atenci\xF3n, no el miedo al abandono ni la difusi\xF3n de identidad. Con el narcisismo comparte necesidad de admiraci\xF3n, pero sin desprecio emp\xE1tico de fondo." }
+    ],
+    dynamics: [
+      { context: "Pareja", desc: "Intensidad r\xE1pida y celos frecuentes; la relaci\xF3n puede sentirse cinematogr\xE1fica y luego agotadora. Ayuda pactar ritmos y se\xF1ales concretas de afecto que no dependan del drama." },
+      { context: "Amistad", desc: "Grandes gestos y mucha calidez, con dificultad para sostener la profundidad sin p\xFAblico." },
+      { context: "Colega", desc: "Carisma y capacidad de conectar con equipos; se resiente cuando el reconocimiento no llega." }
+    ],
+    care: [
+      "Reconocer expl\xEDcitamente su presencia cuando est\xE1 en calma, no solo cuando escala.",
+      "No avergonzar la expresividad: reconducirla con claridad y cari\xF1o.",
+      "Pedir hechos concretos cuando el relato se vuelve difuso."
+    ]
+  },
+  {
+    id: "esquizotipico",
+    title: "Trastorno Esquizot\xEDpico de la Personalidad",
+    short: "TEP",
+    summary: "Pensamiento y percepci\xF3n peculiares, con incomodidad intensa en lo social. No es peligrosidad: es una forma distinta y a veces muy solitaria de habitar el mundo.",
+    clinicalLevel: "cl\xEDnico",
+    cluster: "Cluster A",
+    tags: ["personalidad", "aislamiento", "percepci\xF3n", "ansiedad social"],
+    sections: [
+      { id: "definicion", title: "Qu\xE9 es", content: "Incluye ideas de referencia, creencias raras o pensamiento m\xE1gico, experiencias perceptivas inusuales, lenguaje idiosincr\xE1sico, suspicacia y ansiedad social que no baja con la familiaridad." },
+      { id: "diferencia", title: "No confundir", content: "No es esquizofrenia: no hay psicosis franca sostenida. No es autismo: aqu\xED la dificultad social se acompa\xF1a de suspicacia y pensamiento m\xE1gico, no principalmente de diferencias comunicativas y sensoriales." }
+    ],
+    dynamics: [
+      { context: "Pareja", desc: "La cercan\xEDa puede activar desconfianza. La constancia tranquila, sin presi\xF3n, construye seguridad mejor que la insistencia." },
+      { context: "Familia", desc: "Se le puede tildar de 'raro'. El rid\xEDculo aumenta el aislamiento; la curiosidad respetuosa lo reduce." }
+    ],
+    care: [
+      "No discutir frontalmente las creencias: preguntar con curiosidad honesta.",
+      "Ofrecer previsibilidad y contactos breves y frecuentes en lugar de largos.",
+      "Facilitar acceso a evaluaci\xF3n profesional si hay sufrimiento o deterioro."
+    ]
+  },
+  {
+    id: "paranoide",
+    title: "Trastorno Paranoide de la Personalidad",
+    short: "TPP",
+    summary: "Desconfianza generalizada: se interpreta la intenci\xF3n ajena como amenaza. Debajo suele haber una historia donde confiar sali\xF3 caro.",
+    clinicalLevel: "intermedio",
+    cluster: "Cluster A",
+    tags: ["personalidad", "desconfianza", "v\xEDnculos", "conflicto"],
+    sections: [
+      { id: "definicion", title: "Qu\xE9 es", content: "Sospecha persistente de ser explotado o enga\xF1ado, lectura hostil de comentarios neutros, rencor prolongado y reacciones defensivas r\xE1pidas, sin delirios estructurados." },
+      { id: "dinamica", title: "El bucle", content: "La desconfianza genera control, el control genera distancia, y la distancia se lee como confirmaci\xF3n de la sospecha. Romper el bucle exige transparencia radical, no sumisi\xF3n." }
+    ],
+    dynamics: [
+      { context: "Pareja", desc: "Interrogatorios, revisi\xF3n de mensajes, celos. Ceder para calmar suele aumentar la vigilancia; la claridad estable la reduce m\xE1s." },
+      { context: "Colega", desc: "Conflictos por atribuci\xF3n de intenciones. Poner acuerdos por escrito protege a ambas partes." }
+    ],
+    care: [
+      "Ser predecible y transparente sin someterte a vigilancia.",
+      "No entrar en el juicio 'demu\xE9strame que no me enga\xF1as': se\xF1alar el patr\xF3n con calma.",
+      "Mantener tu propia red de apoyo intacta."
+    ]
+  },
+  {
+    id: "tca",
+    title: "Trastornos de la Conducta Alimentaria",
+    short: "TCA",
+    summary: "Anorexia, bulimia y atrac\xF3n: la comida se convierte en el idioma con el que se intenta gestionar el control, la angustia y el valor propio.",
+    clinicalLevel: "cl\xEDnico",
+    tags: ["alimentaci\xF3n", "control", "imagen corporal", "ansiedad"],
+    sections: [
+      { id: "definicion", title: "Qu\xE9 es", content: "Alteraciones persistentes en la conducta alimentaria con impacto en la salud f\xEDsica y el funcionamiento. Ni son vanidad ni una fase: tienen la mortalidad m\xE1s alta entre los trastornos mentales y requieren tratamiento especializado." },
+      { id: "funcion", title: "Qu\xE9 funci\xF3n cumplen", content: "Restringir, purgar o atracarse regula a corto plazo emociones insoportables. Por eso quitar el s\xEDntoma sin construir alternativas de regulaci\xF3n no funciona." },
+      { id: "se\xF1ales", title: "Se\xF1ales tempranas", content: "Rituales con la comida, evitaci\xF3n de comer acompa\xF1ado, uso del ba\xF1o inmediatamente despu\xE9s, ejercicio compulsivo, cambios bruscos de peso, conversaci\xF3n monotem\xE1tica sobre cuerpo o calor\xEDas." }
+    ],
+    dynamics: [
+      { context: "Pareja", desc: "Las comidas se vuelven campo de tensi\xF3n. Comentar el cuerpo, aunque sea con elogio, suele empeorar; acompa\xF1ar sin vigilar ayuda m\xE1s." },
+      { context: "Familia", desc: "La familia oscila entre controlar y no ver. Un tratamiento con enfoque familiar mejora el pron\xF3stico, sobre todo en adolescentes." },
+      { context: "Amistad", desc: "El silencio protege el trastorno. Nombrar la preocupaci\xF3n con hechos concretos y sin juicio abre puertas." }
+    ],
+    care: [
+      "No hablar de peso, dietas ni cuerpos; hablar de c\xF3mo se siente.",
+      "No negociar la comida en la mesa: negociar el tratamiento fuera de ella.",
+      "Buscar unidad especializada en TCA cuanto antes: el tiempo importa."
+    ]
+  },
+  {
+    id: "adicciones",
+    title: "Adicciones y conductas compulsivas",
+    short: "ADIC",
+    summary: "Sustancias, juego, pantallas o sexo compulsivo: el circuito de recompensa aprende un atajo y luego lo exige, aunque destruya lo que importa.",
+    clinicalLevel: "cl\xEDnico",
+    tags: ["adicci\xF3n", "impulsividad", "reca\xEDda", "v\xEDnculos"],
+    sections: [
+      { id: "definicion", title: "Qu\xE9 es", content: "Uso o conducta continuada pese a consecuencias negativas, con tolerancia, craving y p\xE9rdida de control. La voluntad no basta porque la propia maquinaria de decidir est\xE1 afectada." },
+      { id: "recaida", title: "La reca\xEDda no es fracaso", content: "En trastornos cr\xF3nicos, la reca\xEDda forma parte del proceso. Lo relevante es acortar el tiempo hasta retomar el tratamiento, no exigir perfecci\xF3n." },
+      { id: "codependencia", title: "El entorno", content: "Encubrir, pagar deudas o justificar mantiene el sistema. Eso no es amor fallido: es agotamiento intentando evitar el da\xF1o. Los grupos para familiares existen exactamente para eso." }
+    ],
+    dynamics: [
+      { context: "Pareja", desc: "Mentiras, dinero que desaparece y promesas incumplidas erosionan la confianza m\xE1s que la sustancia misma." },
+      { context: "Familia", desc: "Los roles se reorganizan alrededor del consumo; los hijos suelen asumir funciones adultas prematuras." },
+      { context: "Colega", desc: "Bajadas de rendimiento intermitentes y ausencias justificadas de forma cambiante." }
+    ],
+    care: [
+      "Dejar de encubrir consecuencias: no es castigo, es dejar de amortiguar la realidad.",
+      "Poner condiciones concretas y verificables para seguir presente.",
+      "Buscar apoyo tambi\xE9n para ti: Al-Anon, Nar-Anon o terapia familiar."
+    ]
+  },
+  {
+    id: "esquizofrenia",
+    title: "Esquizofrenia y psicosis",
+    short: "PSI",
+    summary: "Cuando la realidad compartida se rompe temporalmente. La persona no elige lo que percibe: para ella, lo que ocurre es real y suele dar mucho miedo.",
+    clinicalLevel: "cl\xEDnico",
+    tags: ["psicosis", "delirios", "alucinaciones", "tratamiento"],
+    sections: [
+      { id: "definicion", title: "Qu\xE9 es", content: "S\xEDntomas positivos (delirios, alucinaciones, desorganizaci\xF3n) y negativos (apat\xEDa, retraimiento, pobreza afectiva). Afecta a cerca del 1% de la poblaci\xF3n y responde a tratamiento farmacol\xF3gico y psicosocial." },
+      { id: "mito", title: "El mito de la peligrosidad", content: "Las personas con psicosis son mucho m\xE1s frecuentemente v\xEDctimas de violencia que autoras. El estigma retrasa la petici\xF3n de ayuda y empeora el pron\xF3stico." },
+      { id: "primeros", title: "Primeros episodios", content: "Intervenir pronto cambia el curso de la enfermedad. Los programas de primeros episodios psic\xF3ticos reducen reca\xEDdas y preservan el funcionamiento." }
+    ],
+    dynamics: [
+      { context: "Pareja", desc: "La desconfianza delirante puede incluirte. No es traici\xF3n: es el s\xEDntoma. Mantener rutina, sue\xF1o y adherencia al tratamiento protege el v\xEDnculo." },
+      { context: "Familia", desc: "La emoci\xF3n expresada alta (cr\xEDticas, sobreimplicaci\xF3n) aumenta reca\xEDdas; el clima calmado y estructurado las reduce." }
+    ],
+    care: [
+      "No discutir el delirio ni fingir creerlo: validar la emoci\xF3n ('debe dar mucho miedo').",
+      "Cuidar el sue\xF1o y la continuidad del tratamiento como prioridades.",
+      "Tener un plan escrito para crisis, con contactos y criterios de urgencia."
+    ]
+  },
+  {
+    id: "duelo",
+    title: "Duelo y duelo prolongado",
+    short: "DUE",
+    summary: "El duelo no es un trastorno. Se vuelve cl\xEDnico cuando pasado m\xE1s de un a\xF1o la vida sigue detenida en la p\xE9rdida.",
+    clinicalLevel: "b\xE1sico",
+    tags: ["p\xE9rdida", "tristeza", "trauma", "acompa\xF1amiento"],
+    sections: [
+      { id: "definicion", title: "Qu\xE9 es", content: "El DSM-5-TR incluye el trastorno de duelo prolongado: a\xF1oranza intensa y persistente, preocupaci\xF3n por el fallecido, dificultad para aceptar la muerte y deterioro funcional m\xE1s all\xE1 de doce meses en adultos." },
+      { id: "fases", title: "No hay fases obligatorias", content: "El duelo no es lineal ni tiene calendario. Va en olas, y las fechas se\xF1aladas reactivan lo que parec\xEDa cerrado." },
+      { id: "ambiguo", title: "Duelo ambiguo", content: "Tambi\xE9n se duela lo que no ha muerto: una relaci\xF3n perdida, un v\xEDnculo con alguien que ya no reconoce, un proyecto de vida. La falta de reconocimiento social lo hace m\xE1s solitario." }
+    ],
+    dynamics: [
+      { context: "Pareja", desc: "Cada persona duela a ritmos distintos, y esa asincron\xEDa genera reproches. Nombrarlo evita que se lea como falta de amor." },
+      { context: "Amistad", desc: "El entorno desaparece a los dos meses, justo cuando empieza lo dif\xEDcil. Estar presente tarde es m\xE1s \xFAtil que estar mucho al principio." }
+    ],
+    care: [
+      "No decir 'ya toca pasar p\xE1gina': preguntar c\xF3mo est\xE1 hoy.",
+      "Ofrecer ayuda concreta (comida, papeleo, compa\xF1\xEDa) en lugar de 'lo que necesites'.",
+      "Recordar fechas se\xF1aladas y aparecer en ellas."
+    ]
+  },
+  {
+    id: "burnout",
+    title: "Burnout y agotamiento del cuidador",
+    short: "BURN",
+    summary: "Agotamiento profundo, distancia emocional y sensaci\xF3n de ineficacia tras sostener demasiado durante demasiado tiempo. Muy frecuente en quien acompa\xF1a a alguien con sufrimiento ps\xEDquico.",
+    clinicalLevel: "b\xE1sico",
+    tags: ["cuidados", "agotamiento", "l\xEDmites", "autocuidado"],
+    sections: [
+      { id: "definicion", title: "Qu\xE9 es", content: "La OMS lo describe como un fen\xF3meno ocupacional con tres ejes: agotamiento energ\xE9tico, distanciamiento mental o cinismo, y reducci\xF3n de la eficacia. En el cuidado informal aparece igual, sin horario ni contrato." },
+      { id: "se\xF1ales", title: "Se\xF1ales de alarma", content: "Irritabilidad nueva, insomnio, enfermar m\xE1s a menudo, resentimiento hacia la persona cuidada seguido de culpa, y la sensaci\xF3n de estar en piloto autom\xE1tico." },
+      { id: "culpa", title: "La culpa del cuidador", content: "Sentir alivio cuando la otra persona no est\xE1 no te hace mala persona: te indica que llevas demasiada carga sin relevos." }
+    ],
+    dynamics: [
+      { context: "Pareja", desc: "El rol de cuidador sustituye al de pareja y la intimidad se apaga. Recuperar espacios donde no se hable de la enfermedad es tratamiento, no lujo." },
+      { context: "Familia", desc: "La carga suele recaer en una sola persona, casi siempre mujer. Repartirla por escrito, con tareas nombradas, funciona mejor que la buena voluntad." }
+    ],
+    care: [
+      "Programar descansos como si fueran citas m\xE9dicas: innegociables.",
+      "Pedir ayuda concreta y delegable, no gen\xE9rica.",
+      "Buscar terapia o grupo propio: acompa\xF1ar tambi\xE9n necesita acompa\xF1amiento."
+    ]
+  }
+];
+WIKI_DATA.push(...WIKI_EXTRA);
 var DUDAS = [
   {
     id: "es-normal",
@@ -372,6 +555,46 @@ var CLINICAL_LEVELS = {
   cl\u00EDnico: "Detalle cl\xEDnico"
 };
 var WIKI_DISCLAIMER = "Esta enciclopedia es educativa y no sustituye una evaluaci\xF3n cl\xEDnica. Nadie debe diagnosticarse a s\xED mismo ni a otros: solo profesionales con experiencia diagnostican. Si est\xE1s en crisis, contacta con l\xEDneas de apoyo o servicios de emergencia.";
+DUDAS.push(
+  {
+    id: "crisis",
+    category: "Crisis y urgencias",
+    icon: "\u{1F6A8}",
+    intro: "Qu\xE9 hacer cuando la situaci\xF3n se desborda y no hay tiempo para pensar.",
+    questions: [
+      { q: "\xBFQu\xE9 hago si me dice que se va a hacer da\xF1o?", a: "T\xF3malo siempre en serio. Qu\xE9date, habla con calma, retira medios de riesgo si puedes y llama a emergencias o a la l\xEDnea de atenci\xF3n a la conducta suicida de tu pa\xEDs (en Espa\xF1a, el 024). No es dramatizar: es proteger una vida." },
+      { q: "\xBFPuedo obligar a alguien a ingresar?", a: "Solo un profesional o una autoridad judicial puede decidir un ingreso involuntario, y \xFAnicamente ante riesgo grave e inminente. Tu papel es avisar a los servicios de emergencia, no valorar cl\xEDnicamente." },
+      { q: "\xBFY si la crisis me pone en peligro a m\xED?", a: "Tu seguridad es la prioridad absoluta y no es negociable. Sal del espacio, llama a emergencias y busca un lugar seguro. No puedes acompa\xF1ar a nadie desde el riesgo f\xEDsico." },
+      { q: "\xBFC\xF3mo hablo despu\xE9s de una crisis?", a: "No en caliente. Espera a que el sistema nervioso de ambos baje, valida lo vivido y luego acordad un plan concreto para la pr\xF3xima vez: se\xF1ales, palabras clave y a qui\xE9n se llama." }
+    ]
+  },
+  {
+    id: "tratamiento",
+    category: "Terapia y tratamiento",
+    icon: "\u{1FA7A}",
+    intro: "C\xF3mo funciona el tratamiento, qu\xE9 esperar y cu\xE1nto tarda.",
+    questions: [
+      { q: "\xBFQu\xE9 terapia tiene m\xE1s evidencia para el TLP?", a: "La terapia dial\xE9ctico-conductual (DBT) es la m\xE1s estudiada, junto con la terapia basada en la mentalizaci\xF3n (MBT), la terapia focalizada en esquemas y la STEPPS. Todas comparten estructura, foco en habilidades y trabajo con la relaci\xF3n terap\xE9utica." },
+      { q: "\xBFHace falta medicaci\xF3n?", a: "No existe un f\xE1rmaco espec\xEDfico para el TLP. Se usa medicaci\xF3n para tratar s\xEDntomas concretos o cuadros asociados (depresi\xF3n, ansiedad, impulsividad), siempre como apoyo a la psicoterapia, nunca como sustituto." },
+      { q: "\xBFCu\xE1nto tarda en verse mejor\xEDa?", a: "Los programas estructurados suelen durar de uno a dos a\xF1os, con mejoras apreciables en los primeros meses. Los estudios longitudinales muestran remisi\xF3n sintom\xE1tica en la mayor\xEDa de los casos a diez a\xF1os." },
+      { q: "\xBFSirve la terapia si la otra persona no quiere ir?", a: "S\xED, para ti. Cambiar tu forma de responder modifica la din\xE1mica completa, reduce tu desgaste y te devuelve criterio, independientemente de lo que decida la otra persona." },
+      { q: "\xBFC\xF3mo elijo profesional?", a: "Busca formaci\xF3n espec\xEDfica en el cuadro concreto, colegiaci\xF3n y transparencia sobre m\xE9todo y duraci\xF3n. Si tras varias sesiones no sientes respeto ni claridad, cambiar de profesional es leg\xEDtimo." }
+    ]
+  },
+  {
+    id: "jovenes",
+    category: "Primeras relaciones",
+    icon: "\u{1F324}\uFE0F",
+    intro: "Para quien est\xE1 empezando y todav\xEDa no tiene con qu\xE9 comparar.",
+    questions: [
+      { q: "\xBFC\xF3mo s\xE9 si esto es amor o dependencia?", a: "El amor ampl\xEDa tu vida: sigues teniendo amigos, planes y opiniones propias. La dependencia la estrecha: todo gira alrededor de la otra persona y su estado de \xE1nimo." },
+      { q: "\xBFLos celos demuestran inter\xE9s?", a: "No. Demuestran inseguridad o deseo de control. El inter\xE9s se demuestra con presencia, cuidado y respeto por tu libertad." },
+      { q: "\xBFEs normal discutir mucho al principio?", a: "Discutir es normal; discutir de forma que salgas humillado, confundido o asustado, no. F\xEDjate en c\xF3mo terminan las discusiones, no en cu\xE1ntas hay." },
+      { q: "\xBFQu\xE9 es un l\xEDmite razonable en una relaci\xF3n?", a: "Cualquiera que proteja tu integridad, tu tiempo y tu intimidad. Un l\xEDmite razonable no necesita justificaci\xF3n extensa ni permiso de la otra persona." },
+      { q: "\xBFPuedo pedir espacio sin que suene a rechazo?", a: "S\xED: nombra el afecto y la necesidad juntos. 'Me importas y necesito una tarde para m\xED' es una frase completa y suficiente." }
+    ]
+  }
+);
 
 // src/lib/mcp/tools/list-disorders.ts
 var list_disorders_default = defineTool({
