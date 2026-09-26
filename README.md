@@ -1,3 +1,5 @@
+[![Open in VS Code](https://img.shields.io/badge/Open_in-VS_Code-007ACC?logo=visualstudiocode&logoColor=white)](https://github.dev/belentani7/tender-words-connect)
+
 # ABRAZO
 
 > *Nacido del dolor. Construido con ternura. Para convertir el dolor en comprensión.*
