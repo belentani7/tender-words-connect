@@ -28,6 +28,9 @@ jobs:
         run: npx vite build --base=./ --outDir=dist --emptyOutDir
         env:
           NODE_ENV: production
+          # URL derivable del supabase/config.toml commiteado (project_id ejkcfwcjreaobffuexsb)
+          VITE_SUPABASE_URL: https://ejkcfwcjreaobffuexsb.supabase.co
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
       - name: SPA fallback (404 -> index)
         run: |
           if [ -f dist/index.html ]; then cp dist/index.html dist/404.html; fi
