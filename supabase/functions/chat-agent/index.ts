@@ -1,5 +1,15 @@
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+// ABRAZO no nació en un despacho. Nació de una historia real: alguien tuvo una
+// experiencia y no supo actuar de la mejor manera. Esta función existe para que
+// quienes lleven hasta aquí no tengan que pasar por lo mismo. Pero a veces uno
+// tiene que decir adiós.
 import { z } from "npm:zod@3";
+import {
+  clientIp,
+  corsFor,
+  createRateLimiter,
+  jsonResponse,
+  parseAllowedHosts,
+} from "../_shared/http.ts";
 
 // ── Configuración de agentes ────────────────────────────────
 const SHARED_SAFETY = `
@@ -88,40 +98,105 @@ ${SHARED_SAFETY}`,
   },
 };
 
-const BodySchema = z.object({
-  agent: z.enum(["terapeuta", "paciente", "pareja"]),
-  messages: z
-    .array(
-      z.object({
-        role: z.enum(["user", "assistant"]),
-        content: z.string().min(1).max(6000),
-      }),
-    )
-    .min(1)
-    .max(40),
+const MAX_MESSAGES = 40;
+const MAX_MESSAGE_CHARS = 6000;
+// Techo de caracteres de la conversación completa. Es muy holgado (una charla
+// larga no llega) y sirve para que nadie use la función como trituradora de
+// texto a costa de los créditos.
+const MAX_TOTAL_CHARS = Number(Deno.env.get("CHAT_MAX_TOTAL_CHARS") ?? 60000);
+
+const BodySchema = z
+  .object({
+    agent: z.enum(["terapeuta", "paciente", "pareja"]),
+    messages: z
+      .array(
+        z.object({
+          role: z.enum(["user", "assistant"]),
+          content: z.string().min(1).max(MAX_MESSAGE_CHARS),
+        }),
+      )
+      .min(1)
+      .max(MAX_MESSAGES),
+  })
+  .refine((body) => body.messages.reduce((total, message) => total + message.content.length, 0) <= MAX_TOTAL_CHARS, {
+    message: `La conversación es demasiado larga (máximo ${MAX_TOTAL_CHARS} caracteres). Empieza una conversación nueva para seguir hablando.`,
+  });
+
+// ── Configuración leída del entorno (panel de Supabase) ──────────────────────
+const ALLOWED_HOSTS = parseAllowedHosts(Deno.env.get("ALLOWED_ORIGINS"));
+const limiter = createRateLimiter({
+  limit: Number(Deno.env.get("CHAT_RATE_LIMIT") ?? 60),
+  windowMs: Number(Deno.env.get("CHAT_RATE_WINDOW_MS") ?? 10 * 60 * 1000),
 });
+const UPSTREAM_TIMEOUT_MS = Number(Deno.env.get("CHAT_UPSTREAM_TIMEOUT_MS") ?? 90000);
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  const cors = corsFor(req.headers.get("origin"), ALLOWED_HOSTS);
 
+  // Preflight del navegador. Si el origen no está permitido se responde sin
+  // cabeceras CORS: el navegador corta ahí y la petición real no llega.
+  if (req.method === "OPTIONS") {
+    // 204 no admite cuerpo: enviar texto aquí rompería el preflight.
+    return new Response(null, { status: 204, headers: cors.headers });
+  }
+  if (req.method !== "POST") {
+    return jsonResponse({ error: "method_not_allowed" }, {
+      status: 405,
+      headers: { ...cors.headers, Allow: "POST, OPTIONS" },
+    });
+  }
+  if (!cors.allowed) {
+    console.warn("chat-agent: origen no permitido:", req.headers.get("origin"));
+    return jsonResponse({ error: "origin_not_allowed" }, { status: 403, headers: cors.headers });
+  }
+
+  // Freno de abuso antes de tocar nada más caro.
+  const gate = limiter.check(clientIp(req), Date.now());
+  if (!gate.ok) {
+    return jsonResponse({ error: "rate_limit" }, {
+      status: 429,
+      headers: { ...cors.headers, "Retry-After": String(gate.retryAfterSeconds) },
+    });
+  }
+
+  let payload: unknown;
   try {
-    const parsed = BodySchema.safeParse(await req.json());
-    if (!parsed.success) {
-      return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-    const { agent, messages } = parsed.data;
-    const apiKey = Deno.env.get("LOVABLE_API_KEY");
-    if (!apiKey) {
-      return new Response(JSON.stringify({ error: "Missing LOVABLE_API_KEY" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    payload = await req.json();
+  } catch {
+    return jsonResponse({ error: "invalid_json" }, { status: 400, headers: cors.headers });
+  }
 
-    const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const parsed = BodySchema.safeParse(payload);
+  if (!parsed.success) {
+    const { fieldErrors, formErrors } = parsed.error.flatten();
+    console.warn("chat-agent: cuerpo rechazado", formErrors);
+    return jsonResponse(
+      {
+        error: "invalid_body",
+        fields: fieldErrors,
+        // El refine de longitud total cae aquí, fuera de los campos: se
+        // devuelve su mensaje, que está escrito para quien escribe.
+        ...(formErrors.length > 0 ? { detail: formErrors[0] } : {}),
+      },
+      { status: 400, headers: cors.headers },
+    );
+  }
+  const { agent, messages } = parsed.data;
+
+  const apiKey = Deno.env.get("LOVABLE_API_KEY");
+  if (!apiKey) {
+    console.error("chat-agent: falta la variable de entorno LOVABLE_API_KEY");
+    // No se le dice al cliente qué variable falta: es información del servidor.
+    return jsonResponse({ error: "not_configured" }, { status: 500, headers: cors.headers });
+  }
+
+  // Sin tiempo máximo, una pasarela colgada dejaba al navegador esperando sin
+  // fin. Ahora se aborta y se responde.
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
+  let resp: Response;
+  try {
+    resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -129,35 +204,36 @@ Deno.serve(async (req) => {
         stream: true,
         messages: [{ role: "system", content: AGENTS[agent].system }, ...messages],
       }),
+      signal: controller.signal,
     });
-
-    if (resp.status === 429) {
-      return new Response(JSON.stringify({ error: "rate_limit" }), {
-        status: 429,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-    if (resp.status === 402) {
-      return new Response(JSON.stringify({ error: "credits" }), {
-        status: 402,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-    if (!resp.ok) {
-      const text = await resp.text();
-      return new Response(JSON.stringify({ error: "gateway", detail: text }), {
-        status: 502,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    return new Response(resp.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
-    });
-  } catch (e) {
-    return new Response(JSON.stringify({ error: "internal", detail: String(e) }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+  } catch (error) {
+    console.error("chat-agent: la pasarela no ha respondido", error);
+    return jsonResponse({ error: "gateway_unreachable" }, { status: 504, headers: cors.headers });
+  } finally {
+    clearTimeout(timer);
   }
+
+  if (resp.status === 429) {
+    return jsonResponse({ error: "rate_limit" }, { status: 429, headers: cors.headers });
+  }
+  if (resp.status === 402) {
+    return jsonResponse({ error: "credits" }, { status: 402, headers: cors.headers });
+  }
+  if (!resp.ok) {
+    // El detalle de la pasarela se registra en el servidor, no se reenvía: no
+    // hay razón para enseñarle la tubería interna a quien está pidiendo ayuda.
+    console.error("chat-agent: la pasarela devolvió", resp.status, await resp.text().catch(() => ""));
+    return jsonResponse({ error: "gateway" }, { status: 502, headers: cors.headers });
+  }
+
+  return new Response(resp.body, {
+    headers: {
+      ...cors.headers,
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      // Evita que un proxy intermedio acumule la respuesta y la suelte de
+      // golpe al final, que es justo lo que rompe el flujo token a token.
+      "X-Accel-Buffering": "no",
+    },
+  });
 });

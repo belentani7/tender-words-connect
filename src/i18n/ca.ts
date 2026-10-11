@@ -243,5 +243,9 @@ export const ca: Translations = {
     line1: "ABRAZO va ser creat des del dolor viscut, transformat en comprensió per a altres.",
     line2: "Basat en experiència real. Per convertir el dolor en comprensió.",
     line3: "© 2026 ABRAZO · Aquest lloc no substitueix teràpia professional.",
+    originNote: "Això està fet en base a una història real: la d'algú que va viure una experiència i no va saber actuar de la millor manera. Espero que aquesta eina serveixi al màxim a qui no vulgui passar pel mateix. Però a vegades cal dir adéu.",
   },
+  untranslated:
+    "Alguns blocs avançats —la mirada clínica, els recursos i 'l'altre costat'— només estan traduïts a espanyol i anglès. En altres idiomes es mostren en espanyol mentre acabem la traducció.",
+  skipToContent: "Saltar al contingut",
 };

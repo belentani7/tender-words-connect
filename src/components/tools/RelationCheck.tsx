@@ -9,7 +9,8 @@ const RelationCheck = () => {
 
   const toggle = (i: number) => {
     const next = new Set(marked);
-    next.has(i) ? next.delete(i) : next.add(i);
+    if (next.has(i)) next.delete(i);
+    else next.add(i);
     setMarked(next);
   };
 
@@ -30,7 +31,15 @@ const RelationCheck = () => {
         {RELATION_CHECK.map((item, i) => {
           const on = marked.has(i);
           return (
-            <button key={i} onClick={() => toggle(i)} className="w-full text-left">
+            // role="checkbox" + aria-checked: es un interruptor de dos estados,
+            // no un botón de acción. Así lo anuncia el lector de pantalla.
+            <button
+              key={i}
+              role="checkbox"
+              aria-checked={on}
+              onClick={() => toggle(i)}
+              className="w-full text-left"
+            >
               <TPanel className={`hover-lift transition-all ${on ? "border-primary/30" : ""}`} laser={on}>
                 <div className="flex items-start gap-3">
                   <span

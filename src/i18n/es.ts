@@ -243,5 +243,9 @@ export const es: Translations = {
     line1: "ABRAZO fue creado desde el dolor vivido, transformado en comprensión para otros.",
     line2: "Basado en experiencia real. Para convertir el dolor en comprensión.",
     line3: "© 2026 ABRAZO · Este sitio no reemplaza terapia profesional.",
+    originNote: "Esto está hecho en base a una historia real: la de una persona que tuvo una experiencia y no supo actuar de la mejor manera. Espero que esta herramienta sirva al máximo a quienes no quieran pasar por lo mismo. Pero a veces uno tiene que decir adiós.",
   },
+  untranslated:
+    "Algunos bloques avanzados —mirada clínica, recursos y «el otro lado»— están traducidos a español e inglés. En otros idiomas se muestran en español mientras terminamos la traducción.",
+  skipToContent: "Saltar al contenido",
 };

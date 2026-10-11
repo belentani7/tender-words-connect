@@ -69,19 +69,24 @@ const AgentChat = () => {
         body: JSON.stringify({ agent, messages: next }),
       });
 
+      // Si algo falla se conserva el mensaje escrito y se devuelve al campo de
+      // texto: borraba lo que la persona habia contado justo cuando peor lo
+      // estaba pasando, y tenia que volver a escribirlo todo.
+      const fail = (msg: string) => {
+        toast.error(msg);
+        setInput(text);
+      };
+
       if (resp.status === 429) {
-        toast.error("Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.");
-        setMessages(messages);
+        fail("Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.");
         return;
       }
       if (resp.status === 402) {
-        toast.error("Se agotaron los créditos de IA. Añade créditos para continuar.");
-        setMessages(messages);
+        fail("Se agotaron los créditos de IA. Añade créditos para continuar.");
         return;
       }
       if (!resp.ok || !resp.body) {
-        toast.error("No se pudo conectar con el agente. Inténtalo de nuevo.");
-        setMessages(messages);
+        fail("No se pudo conectar con el agente. Inténtalo de nuevo.");
         return;
       }
 
@@ -120,7 +125,7 @@ const AgentChat = () => {
       }
     } catch {
       toast.error("Error de red. Revisa tu conexión.");
-      setMessages(messages);
+      setInput(text);
     } finally {
       setLoading(false);
     }
@@ -186,7 +191,13 @@ const AgentChat = () => {
           )}
         </div>
 
-        <div ref={scrollRef} className="flex-1 overflow-y-auto scrollbar-hide px-5 py-5 space-y-4">
+        <div
+          ref={scrollRef}
+          role="log"
+          aria-live="polite"
+          aria-label="Conversación con el agente"
+          className="flex-1 overflow-y-auto scrollbar-hide px-5 py-5 space-y-4"
+        >
           {messages.length === 0 && (
             <div className="h-full flex items-center justify-center text-center px-4">
               <p className="text-foreground/45 text-sm leading-relaxed max-w-md">{active.opener}</p>
@@ -227,6 +238,7 @@ const AgentChat = () => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
               rows={1}
+              aria-label="Escribe tu mensaje al agente"
               placeholder="Escribe aquí…"
               className="flex-1 resize-none bg-transparent text-foreground/90 text-sm placeholder:text-foreground/30 focus:outline-none px-3 py-2 max-h-32 scrollbar-hide"
             />

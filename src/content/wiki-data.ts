@@ -110,6 +110,7 @@ export const WIKI_DATA: DisorderEntry[] = [
       { context: "Pareja", desc: "La intimidad puede activar alarmas antiguas. La seguridad se construye con previsibilidad, consentimiento y paciencia, no con presión." },
       { context: "Amistad", desc: "Puede haber distancia protectora o, al revés, apego intenso por miedo a la pérdida. Respetar el ritmo es clave." },
       { context: "Familia", desc: "Cuando el trauma viene del propio sistema familiar, poner distancia puede ser un acto de salud, no de traición." },
+      { context: "Colega / trabajo", desc: "En el trabajo, los plazos y las reuniones pueden resultar abrumadores. Avisar de lo que necesitas y negociar entornos tranquilos no es pedir un favor: es autocuidado." },
     ],
     care: [
       "No fuerces el relato del trauma; acompaña el presente.",
@@ -131,7 +132,9 @@ export const WIKI_DATA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "La estabilidad de rutinas (sueño, medicación) protege el vínculo. Aprender a reconocer señales tempranas de un episodio es protección mutua." },
+      { context: "Amistad", desc: "Las amistades necesitan saber qué esperar sin convertirse en cuidadoras. Explicar con calma qué ayuda en un episodio evita que la gente se aleje por miedo a hacerlo mal." },
       { context: "Familia", desc: "La psicoeducación familiar reduce recaídas. Diferenciar 'la persona' de 'el episodio' evita resentimientos." },
+      { context: "Colega / trabajo", desc: "En el trabajo manda la previsibilidad: horarios estables y avisos de cambios con tiempo. Un equipo informado responde mejor que uno que improvisa." },
     ],
     care: [
       "El sueño regular es un estabilizador del ánimo.",
@@ -154,8 +157,9 @@ export const WIKI_DATA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Ciclo de love bombing, control sutil y devaluación. Recuperar criterio propio y red externa es esencial." },
-      { context: "Colega", desc: "Tiende a apropiarse de logros y a desviar culpas. Documentar y poner límites claros protege tu trabajo." },
+      { context: "Amistad", desc: "En la amistad puede haber encanto inicial y después comparaciones constantes. La amistad sana no es una competición: si siempre pierdes, date cuenta." },
       { context: "Familia", desc: "Roles asignados (el 'dorado', el 'chivo expiatorio') generan dinámicas dañinas entre hermanos." },
+      { context: "Colega / trabajo", desc: "Tiende a apropiarse de logros y a desviar culpas. Documentar y poner límites claros protege tu trabajo." },
     ],
     care: [
       "Confía en lo que ves, no solo en lo que te dicen.",
@@ -177,6 +181,9 @@ export const WIKI_DATA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "El encanto inicial puede ocultar control y explotación. La seguridad pasa por planes de salida y apoyo profesional." },
+      { context: "Amistad", desc: "La amistad suele girar alrededor de lo que se puede conseguir de ti. Observa si aparece cuando hay algo que repartir y desaparece cuando no." },
+      { context: "Familia", desc: "En la familia puede normalizar el engaño y la transgresión como «así somos». Que algo sea costumbre no lo convierte en aceptable." },
+      { context: "Colega / trabajo", desc: "En el trabajo conviene dejar todo por escrito y no quedarte a solas con decisiones importantes. La documentación es tu mejor defensa." },
       { context: "Vecino / entorno", desc: "Transgresión de límites comunes sin culpa aparente. No personalices: protege tus espacios." },
     ],
     care: [
@@ -199,7 +206,9 @@ export const WIKI_DATA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Olvidos y desorganización pueden leerse como desamor cuando no lo son. Sistemas externos (recordatorios, rutinas) ayudan más que los reproches." },
-      { context: "Colega", desc: "Creatividad y foco intenso en lo que motiva; dificultad con lo tedioso. Acuerdos claros y plazos visibles funcionan." },
+      { context: "Amistad", desc: "Las amistades funcionan mejor con planes concretos y recordatorios compartidos. Que se olviden de escribir no significa que no importes." },
+      { context: "Familia", desc: "En la familia, el desorden y los olvidos se leen como desinterés y no como síntomas. Repartir la carga mental con acuerdos explícitos quita tensión." },
+      { context: "Colega / trabajo", desc: "Creatividad y foco intenso en lo que motiva; dificultad con lo tedioso. Acuerdos claros y plazos visibles funcionan." },
     ],
     care: [
       "Estructura externa > fuerza de voluntad.",
@@ -221,6 +230,8 @@ export const WIKI_DATA: DisorderEntry[] = [
     dynamics: [
       { context: "Pareja", desc: "El retraimiento no es rechazo. Acompañar sin presionar y cuidar el propio desgaste sostiene el vínculo." },
       { context: "Amistad", desc: "La presencia constante y sin exigencias vale más que los consejos. Invitar sin condicionar la respuesta." },
+      { context: "Familia", desc: "En la familia, un «no tienes nada» o «anímate» empeora el aislamiento. Acompañar sin exigir mejoras es el regalo más útil." },
+      { context: "Colega / trabajo", desc: "En el trabajo, la depresión se disfraza de lentitud o de perfeccionismo. Reducir la carga y fraccionar las tareas ayuda más que presionar." },
     ],
     care: [
       "Pequeños pasos diarios antes que grandes metas.",
@@ -241,7 +252,9 @@ export const WIKI_DATA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Pedir reaseguro constante puede agotar. Acompañar sin reforzar la evitación es el equilibrio sano." },
-      { context: "Colega", desc: "El perfeccionismo ansioso rinde pero desgasta. Normalizar el error reduce la presión." },
+      { context: "Amistad", desc: "En la amistad, los planes generan una anticipación agotadora. Quedar en formatos cortos y conocidos baja muchísimo el coste de socializar." },
+      { context: "Familia", desc: "En la familia, la preocupación se contagia y se amplifica. Hablar de los miedos con criterio, sin burlarse ni exagerarlos, ayuda a todos." },
+      { context: "Colega / trabajo", desc: "El perfeccionismo ansioso rinde pero desgasta. Normalizar el error reduce la presión." },
     ],
     care: [
       "Respiración lenta y exposición gradual, no evitación.",
@@ -262,6 +275,9 @@ export const WIKI_DATA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "La familia puede quedar 'acomodando' los rituales sin querer. Dejar de acomodarlos, con apoyo terapéutico, ayuda a romper el ciclo." },
+      { context: "Amistad", desc: "En la amistad, los rituales y las dudas pueden alargar cualquier plan. Explicar qué te pasa sin vergüenza suele aliviar más que esconderlo." },
+      { context: "Familia", desc: "En la familia es fácil que todos acaben participando de las rutinas para evitar el malestar. Negociar límites amables protege a todos." },
+      { context: "Colega / trabajo", desc: "En el trabajo, la revisión repetida puede comerse el día. Acordar plazos realistas y evitar la doble comprobación excesiva reduce el desgaste." },
     ],
     care: [
       "No discutas con la obsesión: trabaja la respuesta al malestar.",
@@ -283,6 +299,9 @@ export const WIKI_DATA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Necesitan garantías de aceptación incondicional antes de abrirse. La presión los aleja; la paciencia los acerca." },
+      { context: "Amistad", desc: "En la amistad, la distancia no es desinterés: es protección. Los vínculos que respetan el ritmo sin tomárselo como algo personal son los que duran." },
+      { context: "Familia", desc: "En la familia, la cercanía intensa puede sentirse como invasión. Respetar los tiempos y los espacios propios es la base de todo." },
+      { context: "Colega / trabajo", desc: "En el trabajo rinde bien con autonomía y reuniones breves. El teletrabajo o el silencio no son rarezas: son condiciones de funcionamiento." },
     ],
     care: [
       "Avances pequeños y seguros en exposición social.",
@@ -303,6 +322,9 @@ export const WIKI_DATA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Riesgo de relaciones desequilibradas o de quedar atrapado en vínculos dañinos por miedo a la soledad. Recuperar autonomía gradual es el camino." },
+      { context: "Amistad", desc: "En la amistad, cuida que haya espacio para disentir y para otros vínculos. Una amistad que solo funciona si estás de acuerdo no es amistad." },
+      { context: "Familia", desc: "En la familia, la sobreprotección refuerza la dependencia. Animar la autonomía, aunque dé un poco de miedo, es un acto de cariño." },
+      { context: "Colega / trabajo", desc: "En el trabajo, practica decidir cosas pequeñas sin consultar. Pedir feedback está bien; necesitarlo para todo bloquea tu crecimiento." },
     ],
     care: [
       "Fomentar pequeñas decisiones propias cada día.",
@@ -322,7 +344,9 @@ export const WIKI_DATA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "La literalidad y la honestidad pueden malinterpretarse como frialdad. La comunicación explícita y clara evita malentendidos." },
-      { context: "Colega", desc: "Foco profundo y rigor; necesita instrucciones claras y entornos sensorialmente amables." },
+      { context: "Amistad", desc: "Las amistades profundas y pocas suelen ser la norma. Los intereses compartidos conectan más que las quedadas improvisadas." },
+      { context: "Familia", desc: "En la familia, la previsibilidad y la información clara reducen muchísimo el conflicto. Los cambios anunciados con tiempo se toleran mejor." },
+      { context: "Colega / trabajo", desc: "Foco profundo y rigor; necesita instrucciones claras y entornos sensorialmente amables." },
     ],
     care: [
       "Comunicación directa, concreta y sin dobles sentidos.",
@@ -351,7 +375,8 @@ const WIKI_EXTRA: DisorderEntry[] = [
     dynamics: [
       { context: "Pareja", desc: "Intensidad rápida y celos frecuentes; la relación puede sentirse cinematográfica y luego agotadora. Ayuda pactar ritmos y señales concretas de afecto que no dependan del drama." },
       { context: "Amistad", desc: "Grandes gestos y mucha calidez, con dificultad para sostener la profundidad sin público." },
-      { context: "Colega", desc: "Carisma y capacidad de conectar con equipos; se resiente cuando el reconocimiento no llega." },
+      { context: "Familia", desc: "En la familia, la intensidad puede volverse el idioma de la casa. Aprender a comunicar las necesidades sin dramatizarlas cambia el clima de todos." },
+      { context: "Colega / trabajo", desc: "Carisma y capacidad de conectar con equipos; se resiente cuando el reconocimiento no llega." },
     ],
     care: [
       "Reconocer explícitamente su presencia cuando está en calma, no solo cuando escala.",
@@ -374,7 +399,9 @@ const WIKI_EXTRA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "La cercanía puede activar desconfianza. La constancia tranquila, sin presión, construye seguridad mejor que la insistencia." },
+      { context: "Amistad", desc: "Las amistades suelen ser pocas y muy escogidas. El aislamiento puede ser una elección, no solo un síntoma: preguntar antes de suponer." },
       { context: "Familia", desc: "Se le puede tildar de 'raro'. El ridículo aumenta el aislamiento; la curiosidad respetuosa lo reduce." },
+      { context: "Colega / trabajo", desc: "En el trabajo, los entornos ruidosos y muy sociales agotan. Respetar los momentos de concentración y soledad es lo que permite rendir." },
     ],
     care: [
       "No discutir frontalmente las creencias: preguntar con curiosidad honesta.",
@@ -397,7 +424,9 @@ const WIKI_EXTRA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Interrogatorios, revisión de mensajes, celos. Ceder para calmar suele aumentar la vigilancia; la claridad estable la reduce más." },
-      { context: "Colega", desc: "Conflictos por atribución de intenciones. Poner acuerdos por escrito protege a ambas partes." },
+      { context: "Amistad", desc: "En la amistad, la desconfianza se alimenta de la ambigüedad. Las señales claras y constantes calan más que las grandes declaraciones." },
+      { context: "Familia", desc: "En la familia, la sospecha repetida cansa a quien la recibe. Negociar acuerdos verificables evita discusiones circulares." },
+      { context: "Colega / trabajo", desc: "Conflictos por atribución de intenciones. Poner acuerdos por escrito protege a ambas partes." },
     ],
     care: [
       "Ser predecible y transparente sin someterte a vigilancia.",
@@ -420,8 +449,9 @@ const WIKI_EXTRA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Las comidas se vuelven campo de tensión. Comentar el cuerpo, aunque sea con elogio, suele empeorar; acompañar sin vigilar ayuda más." },
-      { context: "Familia", desc: "La familia oscila entre controlar y no ver. Un tratamiento con enfoque familiar mejora el pronóstico, sobre todo en adolescentes." },
       { context: "Amistad", desc: "El silencio protege el trastorno. Nombrar la preocupación con hechos concretos y sin juicio abre puertas." },
+      { context: "Familia", desc: "La familia oscila entre controlar y no ver. Un tratamiento con enfoque familiar mejora el pronóstico, sobre todo en adolescentes." },
+      { context: "Colega / trabajo", desc: "En el trabajo, los comentarios sobre el cuerpo y la comida hacen mucho daño. Los equipos que no bromean con eso son equipos más sanos." },
     ],
     care: [
       "No hablar de peso, dietas ni cuerpos; hablar de cómo se siente.",
@@ -444,8 +474,9 @@ const WIKI_EXTRA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Mentiras, dinero que desaparece y promesas incumplidas erosionan la confianza más que la sustancia misma." },
+      { context: "Amistad", desc: "Las amistades ligadas al consumo se sostienen mientras se consume. Buscar amistades fuera de ese circuito es, a menudo, el paso que más cambia." },
       { context: "Familia", desc: "Los roles se reorganizan alrededor del consumo; los hijos suelen asumir funciones adultas prematuras." },
-      { context: "Colega", desc: "Bajadas de rendimiento intermitentes y ausencias justificadas de forma cambiante." },
+      { context: "Colega / trabajo", desc: "Bajadas de rendimiento intermitentes y ausencias justificadas de forma cambiante." },
     ],
     care: [
       "Dejar de encubrir consecuencias: no es castigo, es dejar de amortiguar la realidad.",
@@ -468,7 +499,9 @@ const WIKI_EXTRA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "La desconfianza delirante puede incluirte. No es traición: es el síntoma. Mantener rutina, sueño y adherencia al tratamiento protege el vínculo." },
+      { context: "Amistad", desc: "Las amistades estables y sin exigencias son un ancla. No hace falta entenderlo todo para acompañar bien." },
       { context: "Familia", desc: "La emoción expresada alta (críticas, sobreimplicación) aumenta recaídas; el clima calmado y estructurado las reduce." },
+      { context: "Colega / trabajo", desc: "En el trabajo, la información clara y los entornos tranquilos ayudan. Evitar interpretar como desinterés lo que es sobrecarga sensorial." },
     ],
     care: [
       "No discutir el delirio ni fingir creerlo: validar la emoción ('debe dar mucho miedo').",
@@ -492,6 +525,8 @@ const WIKI_EXTRA: DisorderEntry[] = [
     dynamics: [
       { context: "Pareja", desc: "Cada persona duela a ritmos distintos, y esa asincronía genera reproches. Nombrarlo evita que se lea como falta de amor." },
       { context: "Amistad", desc: "El entorno desaparece a los dos meses, justo cuando empieza lo difícil. Estar presente tarde es más útil que estar mucho al principio." },
+      { context: "Familia", desc: "En la familia, cada persona vive el duelo a su ritmo y con su forma. Respetar los tiempos distintos evita ropes innecesarios." },
+      { context: "Colega / trabajo", desc: "En el trabajo, el duelo no se avisa con antelación ni tiene fecha de fin. La flexibilidad real y un poco de humanidad ayudan más que las prisas." },
     ],
     care: [
       "No decir 'ya toca pasar página': preguntar cómo está hoy.",
@@ -514,7 +549,9 @@ const WIKI_EXTRA: DisorderEntry[] = [
     ],
     dynamics: [
       { context: "Pareja", desc: "El rol de cuidador sustituye al de pareja y la intimidad se apaga. Recuperar espacios donde no se hable de la enfermedad es tratamiento, no lujo." },
+      { context: "Amistad", desc: "Las amistades se resienten cuando el día ya está ocupado entero. Un mensaje corto y honesto («estoy fundido, no te he olvidado») mantiene el vínculo." },
       { context: "Familia", desc: "La carga suele recaer en una sola persona, casi siempre mujer. Repartirla por escrito, con tareas nombradas, funciona mejor que la buena voluntad." },
+      { context: "Colega / trabajo", desc: "En el trabajo, el desgaste se acumula en silencio hasta que estalla. Recuperar tiempo de descanso no es un lujo: es la condición para volver a funcionar." },
     ],
     care: [
       "Programar descansos como si fueran citas médicas: innegociables.",

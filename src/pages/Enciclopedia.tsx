@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { WIKI_DATA, DUDAS } from "@/content/wiki-data";
@@ -11,6 +11,13 @@ const Enciclopedia = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const entry = id ? WIKI_DATA.find((d) => d.id === id) : undefined;
+
+  // Una direccion como /enciclopedia/no-existe dejaba la pagina en el indice
+  // con una URL que no correspondia a lo que se veia. Se corrige la direccion
+  // (sin anadir entrada al historial) para que compartir el enlace tenga sentido.
+  useEffect(() => {
+    if (id && !entry) navigate("/enciclopedia", { replace: true });
+  }, [id, entry, navigate]);
 
   const url = entry ? `${SITE}/enciclopedia/${entry.id}` : `${SITE}/enciclopedia`;
   const title = entry

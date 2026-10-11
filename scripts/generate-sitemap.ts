@@ -1,7 +1,7 @@
 // Runs before `vite dev` and `vite build` (predev/prebuild hooks); writes public/sitemap.xml.
 import { writeFileSync } from "fs";
 import { resolve } from "path";
-import { WIKI_DATA } from "../src/content/wiki-data";
+import { WIKI_DATA } from "../src/content/wiki-data.ts";
 
 const BASE_URL = "https://tender-words-connect.lovable.app";
 

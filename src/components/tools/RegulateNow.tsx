@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Play, Pause, RotateCcw, Wind, Snowflake, Anchor } from "lucide-react";
 import { TPanel, Btn, Label } from "./ui";
 import { SKILL_CARDS } from "@/content/toolkit-data";
@@ -20,41 +20,41 @@ const GROUNDING = [
 const RegulateNow = () => {
   const [patternId, setPatternId] = useState("coherente");
   const [running, setRunning] = useState(false);
-  const [phase, setPhase] = useState(0);
-  const [left, setLeft] = useState(PATTERNS[0].phases[0][1]);
-  const [cycles, setCycles] = useState(0);
+  // Segundos acumulados respirando. La fase, la cuenta atrás y los ciclos se
+  // DERIVAN de este número: un solo estado que sincronizar en lugar de tres, y
+  // ningún setState dentro de otro setState (eso era lo que podía contar los
+  // ciclos dos veces y dejar el contador desfasado de la animación).
+  const [elapsed, setElapsed] = useState(0);
   const [step, setStep] = useState(0);
-  const timer = useRef<number | null>(null);
 
   const pattern = PATTERNS.find((p) => p.id === patternId)!;
-  const [phaseName, phaseLen] = pattern.phases[phase];
+
+  const cycleLen = pattern.phases.reduce((s, [, len]) => s + len, 0);
+  const pos = elapsed % cycleLen;
+  let phaseIndex = 0;
+  let left = pattern.phases[0][1];
+  let acc = 0;
+  for (let i = 0; i < pattern.phases.length; i++) {
+    acc += pattern.phases[i][1];
+    if (pos < acc) {
+      phaseIndex = i;
+      left = acc - pos;
+      break;
+    }
+  }
+  const cycles = Math.floor(elapsed / cycleLen);
+  const [phaseName, phaseLen] = pattern.phases[phaseIndex];
 
   useEffect(() => {
     if (!running) return;
-    timer.current = window.setInterval(() => {
-      setLeft((l) => {
-        if (l > 1) return l - 1;
-        setPhase((p) => {
-          const next = (p + 1) % pattern.phases.length;
-          if (next === 0) setCycles((c) => c + 1);
-          setLeft(pattern.phases[next][1]);
-          return next;
-        });
-        return pattern.phases[(phase + 1) % pattern.phases.length][1];
-      });
-    }, 1000);
-    return () => {
-      if (timer.current) window.clearInterval(timer.current);
-    };
-  }, [running, pattern, phase]);
+    const id = window.setInterval(() => setElapsed((e) => e + 1), 1000);
+    return () => window.clearInterval(id);
+  }, [running]);
 
   const reset = (id = patternId) => {
     setRunning(false);
     setPatternId(id);
-    setPhase(0);
-    setCycles(0);
-    const p = PATTERNS.find((x) => x.id === id)!;
-    setLeft(p.phases[0][1]);
+    setElapsed(0);
   };
 
   const expanding = phaseName === "Inspira";
