@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { Plus, Trash2, Download, LineChart } from "lucide-react";
-import { TPanel, Btn, Label, Field, useLocalState } from "./ui";
+import { TPanel, Btn, Label, Field, useLocalState, newId } from "./ui";
 
 type Entry = {
   id: string;
@@ -21,7 +21,7 @@ const EMOTIONS = [
 ];
 
 const empty = (): Entry => ({
-  id: crypto.randomUUID(),
+  id: newId(),
   date: new Date().toISOString(),
   emotion: "Miedo",
   intensity: 6,
@@ -33,13 +33,47 @@ const empty = (): Entry => ({
   after: 4,
 });
 
+/** Intensidad 0-10 tolerante: si lo guardado es un número razonable se respeta. */
+const clamp10 = (v: unknown, fallback: number) => {
+  const n = typeof v === "number" ? v : Number(v);
+  return Number.isFinite(n) ? Math.min(10, Math.max(0, Math.round(n))) : fallback;
+};
+
+/**
+ * Relee los registros guardados con los valores por defecto para todo lo que
+ * falte. Un diario de hace meses no debe impedir que la herramienta se abra hoy.
+ */
+const reviveEntries = (raw: unknown): Entry[] | null => {
+  if (!Array.isArray(raw)) return null;
+  return raw
+    .filter((e): e is Record<string, unknown> => typeof e === "object" && e !== null)
+    .map((e) => {
+      const base = empty();
+      return {
+        ...base,
+        ...e,
+        id: typeof e.id === "string" && e.id ? e.id : base.id,
+        date: typeof e.date === "string" && e.date ? e.date : base.date,
+        emotion: typeof e.emotion === "string" && e.emotion ? e.emotion : base.emotion,
+        intensity: clamp10(e.intensity, base.intensity),
+        after: clamp10(e.after, base.after),
+        trigger: typeof e.trigger === "string" ? e.trigger : "",
+        thought: typeof e.thought === "string" ? e.thought : "",
+        body: typeof e.body === "string" ? e.body : "",
+        action: typeof e.action === "string" ? e.action : "",
+        skill: typeof e.skill === "string" ? e.skill : "",
+      } satisfies Entry;
+    });
+};
+
 const fmt = (iso: string) =>
   new Date(iso).toLocaleDateString("es-ES", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
 
 const Journal = () => {
-  const [entries, setEntries] = useLocalState<Entry[]>("abrazo-journal", []);
+  const [entries, setEntries] = useLocalState<Entry[]>("abrazo-journal", [], reviveEntries);
   const [draft, setDraft] = useState<Entry>(empty);
   const [open, setOpen] = useState(false);
+  const rangesId = useId();
 
   const stats = useMemo(() => {
     if (entries.length === 0) return null;
@@ -54,7 +88,7 @@ const Journal = () => {
 
   const save = () => {
     if (!draft.trigger.trim() && !draft.thought.trim()) return;
-    setEntries([{ ...draft, id: crypto.randomUUID(), date: new Date().toISOString() }, ...entries]);
+    setEntries([{ ...draft, id: newId(), date: new Date().toISOString() }, ...entries]);
     setDraft(empty());
     setOpen(false);
   };
@@ -71,8 +105,11 @@ const Journal = () => {
     const a = document.createElement("a");
     a.href = url;
     a.download = "diario-emocional.txt";
+    // Firefox no descarga un enlace que no está en el documento.
+    document.body.appendChild(a);
     a.click();
-    URL.revokeObjectURL(url);
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
   };
 
   return (
@@ -147,10 +184,12 @@ const Journal = () => {
           <div className="grid sm:grid-cols-2 gap-4">
             {([["intensity", "Intensidad en el pico"], ["after", "Intensidad después"]] as const).map(([k, label]) => (
               <div key={k}>
-                <label className="block text-sm font-light text-foreground/90 mb-2">
+                {/* htmlFor + id: sin ellos el deslizador no tenia etiqueta anunciable. */}
+                <label htmlFor={`${rangesId}-${k}`} className="block text-sm font-light text-foreground/90 mb-2">
                   {label} · <span className="text-laser mono">{draft[k]}/10</span>
                 </label>
                 <input
+                  id={`${rangesId}-${k}`}
                   type="range"
                   min={0}
                   max={10}

@@ -9,6 +9,11 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    // El servidor de desarrollo se abre también desde dominios de vista previa
+    // (Arena, Lovable, túneles). Vite rechaza por defecto cualquier Host que no
+    // conozca con un 403, así que se permite cualquiera: en desarrollo da igual
+    // y en producción esto no se aplica.
+    allowedHosts: true,
     hmr: {
       overlay: false,
     },
@@ -19,5 +24,18 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
     dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime", "@tanstack/react-query", "@tanstack/query-core"],
+  },
+  build: {
+    // React y el router cambian mucho menos que el contenido, así que se empaquetan
+    // aparte: el bundle principal baja de tamaño y el navegador puede reutilizar
+    // ese caché entre despliegues. No afecta ni al diseño ni al comportamiento.
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ["react", "react-dom", "react-dom/client"],
+          router: ["react-router-dom"],
+        },
+      },
+    },
   },
 }));

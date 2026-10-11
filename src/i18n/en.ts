@@ -244,4 +244,7 @@ export const en: Translations = {
     line2: "Based on real experience. To turn pain into understanding.",
     line3: "© 2026 ABRAZO · This site does not replace professional therapy.",
   },
+  untranslated:
+    "Some advanced sections —the clinical view, the resources and 'the other side'— are translated into Spanish and English only. In other languages they appear in Spanish while we finish translating them.",
+  skipToContent: "Skip to content",
 };

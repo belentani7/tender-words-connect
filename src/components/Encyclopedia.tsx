@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import {
   WIKI_DATA,
@@ -35,6 +35,14 @@ const Encyclopedia = ({
 
   const selected: DisorderEntry | undefined = WIKI_DATA.find((d) => d.id === selectedId);
 
+  // `initialId` llega de la URL. Sin este efecto, los botones de atras/adelante
+  // cambiaban la direccion pero la pantalla se quedaba en la entrada anterior:
+  // el estado interno solo se leia la primera vez.
+  useEffect(() => {
+    setSelectedId(initialId);
+    setView(initialId ? "disorder" : "home");
+  }, [initialId]);
+
   useScrollReveal(`${view}-${selectedId}-${query}`);
 
   const open = (id: string) => {
@@ -51,14 +59,22 @@ const Encyclopedia = ({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // Buscar sin acentos: «limite» debe encontrar «límite». Mismo criterio que
+  // usa la herramienta MCP de búsqueda, para que no haya dos comportamientos.
+  const plain = (s: string) =>
+    s
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
   const filtered = WIKI_DATA.filter((d) => {
-    const q = query.trim().toLowerCase();
+    const q = plain(query.trim());
     if (!q) return true;
     return (
-      d.title.toLowerCase().includes(q) ||
-      d.short.toLowerCase().includes(q) ||
-      d.summary.toLowerCase().includes(q) ||
-      d.tags.some((t) => t.toLowerCase().includes(q))
+      plain(d.title).includes(q) ||
+      plain(d.short).includes(q) ||
+      plain(d.summary).includes(q) ||
+      d.tags.some((t) => plain(t).includes(q))
     );
   });
 
@@ -127,6 +143,8 @@ const Encyclopedia = ({
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                type="search"
+                aria-label="Buscar en la enciclopedia"
                 placeholder="Buscar trastorno, rasgo o dinámica…"
                 className="w-full glass laser-border rounded-full pl-11 pr-4 py-3 bg-transparent text-sm text-foreground/90 placeholder:text-foreground/35 mono tracking-wide focus:outline-none focus:border-primary/40"
               />

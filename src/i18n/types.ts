@@ -265,6 +265,14 @@ export interface Translations {
     line2: string;
     line3: string;
   };
+  /**
+   * Aviso honesto para los idiomas que todavía no tienen traducidos todos los
+   * bloques (portugués y catalán comparten ahora mismo la mirada clínica, los
+   * recursos y «el otro lado» con el español).
+   */
+  untranslated: string;
+  /** Enlace de salto al contenido, para teclado y lectores de pantalla. */
+  skipToContent: string;
   clinical?: {
     title: string;
     subtitle: string;

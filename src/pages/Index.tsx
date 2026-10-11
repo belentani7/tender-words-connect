@@ -24,6 +24,21 @@ const SectionTitle = ({ kicker, title, subtitle }: { kicker: string; title: stri
   </div>
 );
 
+/**
+ * Aviso para portugues y catalan: los bloques avanzados se muestran en espanol
+ * hasta terminar la traduccion. Se dice claro, en lugar de dejar que parezca un
+ * fallo de la aplicacion.
+ */
+const PartialNotice = () => {
+  const { lang, t } = useLang();
+  if (lang === "es" || lang === "en") return null;
+  return (
+    <p className="reveal text-foreground/40 text-[11px] leading-relaxed border border-foreground/10 rounded-2xl px-4 py-3">
+      {t.untranslated}
+    </p>
+  );
+};
+
 const Index = () => {
   const { t, lang } = useLang();
   const [section, setSection] = useState<Section>("home");
@@ -51,7 +66,12 @@ const Index = () => {
 
   const goTo = (s: Section) => {
     setSection(s);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Quien ha pedido menos movimiento (en el sistema o en el panel de
+    // accesibilidad) no deberia recibir un desplazamiento suave de un segundo.
+    const reduceMotion =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ||
+      document.body.classList.contains("a11y-reduce-motion");
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   };
 
   const enterWiki = () => {
@@ -126,7 +146,7 @@ const Index = () => {
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:glass-laser focus:laser-border focus:rounded-full focus:px-4 focus:py-2 focus:mono focus:text-xs focus:tracking-wider-2 focus:text-foreground"
       >
-        Saltar al contenido
+        {t.skipToContent}
       </a>
       {/* Ambient orbs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-0">
@@ -623,6 +643,7 @@ const Index = () => {
         {section === "clinical" && t.clinical && (
           <div className="space-y-6">
             <SectionTitle kicker="13 / Clínico" title={t.clinical.title} subtitle={t.clinical.subtitle} />
+            <PartialNotice />
             <Panel><p className="text-foreground/75 leading-relaxed text-sm md:text-base">{t.clinical.intro}</p></Panel>
 
             <h3 className="reveal text-base font-light text-foreground/90 pt-2">{t.clinical.dsmTitle}</h3>
@@ -711,6 +732,7 @@ const Index = () => {
         {section === "resources" && t.resources && (
           <div className="space-y-6">
             <SectionTitle kicker="14 / Recursos" title={t.resources.title} subtitle={t.resources.subtitle} />
+            <PartialNotice />
             <Panel><p className="text-foreground/75 leading-relaxed text-sm md:text-base">{t.resources.intro}</p></Panel>
 
             <Panel laser>
@@ -774,6 +796,7 @@ const Index = () => {
         {crossed && t.darkSide && (section === "darkIntro" || section === "spectrum" || section === "darkTriad" || section === "tactics" || section === "attachment" || section === "profiles" || section === "redFlags" || section === "faqRel" || section === "protocol" || section === "darkClosing") && (
           <div className="space-y-6">
             <p className="reveal mono text-[10px] tracking-wider-2 text-foreground/50 uppercase">— {t.darkSide.sectionLabel}</p>
+            <PartialNotice />
 
             {section === "darkIntro" && (
               <>
@@ -933,6 +956,7 @@ const Index = () => {
             <p className="mono text-[10px] tracking-wider-2 text-foreground/40 uppercase mb-4">⚠ {t.threshold.warning}</p>
             <p className="text-foreground/65 text-sm leading-relaxed mb-3">{t.threshold.body}</p>
             <p className="text-foreground/55 text-sm leading-relaxed mb-5 italic">{t.threshold.bodyP2}</p>
+            <PartialNotice />
             <button
               onClick={cross}
               className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 mono text-xs tracking-wider-2 border border-foreground/30 text-foreground/80 hover:text-foreground hover:border-foreground/60 transition-all"

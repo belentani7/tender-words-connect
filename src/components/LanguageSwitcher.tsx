@@ -1,4 +1,5 @@
-import { useLang, langLabels, Lang } from "@/hooks/useLang";
+import { useLang } from "@/hooks/useLang";
+import { langLabels, type Lang } from "@/i18n/translations";
 
 const langs: Lang[] = ["es", "en", "pt", "ca"];
 const codeLabels: Record<Lang, string> = { es: "ES", en: "EN", pt: "PT", ca: "CA" };

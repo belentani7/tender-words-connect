@@ -80,7 +80,8 @@ var WIKI_DATA = [
     dynamics: [
       { context: "Pareja", desc: "La intimidad puede activar alarmas antiguas. La seguridad se construye con previsibilidad, consentimiento y paciencia, no con presi\xF3n." },
       { context: "Amistad", desc: "Puede haber distancia protectora o, al rev\xE9s, apego intenso por miedo a la p\xE9rdida. Respetar el ritmo es clave." },
-      { context: "Familia", desc: "Cuando el trauma viene del propio sistema familiar, poner distancia puede ser un acto de salud, no de traici\xF3n." }
+      { context: "Familia", desc: "Cuando el trauma viene del propio sistema familiar, poner distancia puede ser un acto de salud, no de traici\xF3n." },
+      { context: "Colega / trabajo", desc: "En el trabajo, los plazos y las reuniones pueden resultar abrumadores. Avisar de lo que necesitas y negociar entornos tranquilos no es pedir un favor: es autocuidado." }
     ],
     care: [
       "No fuerces el relato del trauma; acompa\xF1a el presente.",
@@ -101,7 +102,9 @@ var WIKI_DATA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "La estabilidad de rutinas (sue\xF1o, medicaci\xF3n) protege el v\xEDnculo. Aprender a reconocer se\xF1ales tempranas de un episodio es protecci\xF3n mutua." },
-      { context: "Familia", desc: "La psicoeducaci\xF3n familiar reduce reca\xEDdas. Diferenciar 'la persona' de 'el episodio' evita resentimientos." }
+      { context: "Amistad", desc: "Las amistades necesitan saber qu\xE9 esperar sin convertirse en cuidadoras. Explicar con calma qu\xE9 ayuda en un episodio evita que la gente se aleje por miedo a hacerlo mal." },
+      { context: "Familia", desc: "La psicoeducaci\xF3n familiar reduce reca\xEDdas. Diferenciar 'la persona' de 'el episodio' evita resentimientos." },
+      { context: "Colega / trabajo", desc: "En el trabajo manda la previsibilidad: horarios estables y avisos de cambios con tiempo. Un equipo informado responde mejor que uno que improvisa." }
     ],
     care: [
       "El sue\xF1o regular es un estabilizador del \xE1nimo.",
@@ -123,8 +126,9 @@ var WIKI_DATA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Ciclo de love bombing, control sutil y devaluaci\xF3n. Recuperar criterio propio y red externa es esencial." },
-      { context: "Colega", desc: "Tiende a apropiarse de logros y a desviar culpas. Documentar y poner l\xEDmites claros protege tu trabajo." },
-      { context: "Familia", desc: "Roles asignados (el 'dorado', el 'chivo expiatorio') generan din\xE1micas da\xF1inas entre hermanos." }
+      { context: "Amistad", desc: "En la amistad puede haber encanto inicial y despu\xE9s comparaciones constantes. La amistad sana no es una competici\xF3n: si siempre pierdes, date cuenta." },
+      { context: "Familia", desc: "Roles asignados (el 'dorado', el 'chivo expiatorio') generan din\xE1micas da\xF1inas entre hermanos." },
+      { context: "Colega / trabajo", desc: "Tiende a apropiarse de logros y a desviar culpas. Documentar y poner l\xEDmites claros protege tu trabajo." }
     ],
     care: [
       "Conf\xEDa en lo que ves, no solo en lo que te dicen.",
@@ -145,6 +149,9 @@ var WIKI_DATA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "El encanto inicial puede ocultar control y explotaci\xF3n. La seguridad pasa por planes de salida y apoyo profesional." },
+      { context: "Amistad", desc: "La amistad suele girar alrededor de lo que se puede conseguir de ti. Observa si aparece cuando hay algo que repartir y desaparece cuando no." },
+      { context: "Familia", desc: "En la familia puede normalizar el enga\xF1o y la transgresi\xF3n como \xABas\xED somos\xBB. Que algo sea costumbre no lo convierte en aceptable." },
+      { context: "Colega / trabajo", desc: "En el trabajo conviene dejar todo por escrito y no quedarte a solas con decisiones importantes. La documentaci\xF3n es tu mejor defensa." },
       { context: "Vecino / entorno", desc: "Transgresi\xF3n de l\xEDmites comunes sin culpa aparente. No personalices: protege tus espacios." }
     ],
     care: [
@@ -166,7 +173,9 @@ var WIKI_DATA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Olvidos y desorganizaci\xF3n pueden leerse como desamor cuando no lo son. Sistemas externos (recordatorios, rutinas) ayudan m\xE1s que los reproches." },
-      { context: "Colega", desc: "Creatividad y foco intenso en lo que motiva; dificultad con lo tedioso. Acuerdos claros y plazos visibles funcionan." }
+      { context: "Amistad", desc: "Las amistades funcionan mejor con planes concretos y recordatorios compartidos. Que se olviden de escribir no significa que no importes." },
+      { context: "Familia", desc: "En la familia, el desorden y los olvidos se leen como desinter\xE9s y no como s\xEDntomas. Repartir la carga mental con acuerdos expl\xEDcitos quita tensi\xF3n." },
+      { context: "Colega / trabajo", desc: "Creatividad y foco intenso en lo que motiva; dificultad con lo tedioso. Acuerdos claros y plazos visibles funcionan." }
     ],
     care: [
       "Estructura externa > fuerza de voluntad.",
@@ -186,7 +195,9 @@ var WIKI_DATA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "El retraimiento no es rechazo. Acompa\xF1ar sin presionar y cuidar el propio desgaste sostiene el v\xEDnculo." },
-      { context: "Amistad", desc: "La presencia constante y sin exigencias vale m\xE1s que los consejos. Invitar sin condicionar la respuesta." }
+      { context: "Amistad", desc: "La presencia constante y sin exigencias vale m\xE1s que los consejos. Invitar sin condicionar la respuesta." },
+      { context: "Familia", desc: "En la familia, un \xABno tienes nada\xBB o \xABan\xEDmate\xBB empeora el aislamiento. Acompa\xF1ar sin exigir mejoras es el regalo m\xE1s \xFAtil." },
+      { context: "Colega / trabajo", desc: "En el trabajo, la depresi\xF3n se disfraza de lentitud o de perfeccionismo. Reducir la carga y fraccionar las tareas ayuda m\xE1s que presionar." }
     ],
     care: [
       "Peque\xF1os pasos diarios antes que grandes metas.",
@@ -206,7 +217,9 @@ var WIKI_DATA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Pedir reaseguro constante puede agotar. Acompa\xF1ar sin reforzar la evitaci\xF3n es el equilibrio sano." },
-      { context: "Colega", desc: "El perfeccionismo ansioso rinde pero desgasta. Normalizar el error reduce la presi\xF3n." }
+      { context: "Amistad", desc: "En la amistad, los planes generan una anticipaci\xF3n agotadora. Quedar en formatos cortos y conocidos baja much\xEDsimo el coste de socializar." },
+      { context: "Familia", desc: "En la familia, la preocupaci\xF3n se contagia y se amplifica. Hablar de los miedos con criterio, sin burlarse ni exagerarlos, ayuda a todos." },
+      { context: "Colega / trabajo", desc: "El perfeccionismo ansioso rinde pero desgasta. Normalizar el error reduce la presi\xF3n." }
     ],
     care: [
       "Respiraci\xF3n lenta y exposici\xF3n gradual, no evitaci\xF3n.",
@@ -225,7 +238,10 @@ var WIKI_DATA = [
       { id: "definicion", title: "Qu\xE9 es", content: "No es ser ordenado o meticuloso. Es un ciclo agotador: un pensamiento intrusivo (contaminaci\xF3n, da\xF1o, duda) dispara angustia, y un ritual (lavado, comprobaci\xF3n, repetici\xF3n mental) la calma un momento... y la refuerza para la pr\xF3xima vez." }
     ],
     dynamics: [
-      { context: "Pareja", desc: "La familia puede quedar 'acomodando' los rituales sin querer. Dejar de acomodarlos, con apoyo terap\xE9utico, ayuda a romper el ciclo." }
+      { context: "Pareja", desc: "La familia puede quedar 'acomodando' los rituales sin querer. Dejar de acomodarlos, con apoyo terap\xE9utico, ayuda a romper el ciclo." },
+      { context: "Amistad", desc: "En la amistad, los rituales y las dudas pueden alargar cualquier plan. Explicar qu\xE9 te pasa sin verg\xFCenza suele aliviar m\xE1s que esconderlo." },
+      { context: "Familia", desc: "En la familia es f\xE1cil que todos acaben participando de las rutinas para evitar el malestar. Negociar l\xEDmites amables protege a todos." },
+      { context: "Colega / trabajo", desc: "En el trabajo, la revisi\xF3n repetida puede comerse el d\xEDa. Acordar plazos realistas y evitar la doble comprobaci\xF3n excesiva reduce el desgaste." }
     ],
     care: [
       "No discutas con la obsesi\xF3n: trabaja la respuesta al malestar.",
@@ -245,7 +261,10 @@ var WIKI_DATA = [
       { id: "definicion", title: "Qu\xE9 es", content: "Quieren cercan\xEDa pero la evitan por miedo al rechazo y a la humillaci\xF3n. No es desinter\xE9s: es protecci\xF3n. Se diferencia de la fobia social por ser un patr\xF3n m\xE1s profundo y estable de autoimagen de inadecuaci\xF3n." }
     ],
     dynamics: [
-      { context: "Pareja", desc: "Necesitan garant\xEDas de aceptaci\xF3n incondicional antes de abrirse. La presi\xF3n los aleja; la paciencia los acerca." }
+      { context: "Pareja", desc: "Necesitan garant\xEDas de aceptaci\xF3n incondicional antes de abrirse. La presi\xF3n los aleja; la paciencia los acerca." },
+      { context: "Amistad", desc: "En la amistad, la distancia no es desinter\xE9s: es protecci\xF3n. Los v\xEDnculos que respetan el ritmo sin tom\xE1rselo como algo personal son los que duran." },
+      { context: "Familia", desc: "En la familia, la cercan\xEDa intensa puede sentirse como invasi\xF3n. Respetar los tiempos y los espacios propios es la base de todo." },
+      { context: "Colega / trabajo", desc: "En el trabajo rinde bien con autonom\xEDa y reuniones breves. El teletrabajo o el silencio no son rarezas: son condiciones de funcionamiento." }
     ],
     care: [
       "Avances peque\xF1os y seguros en exposici\xF3n social.",
@@ -264,7 +283,10 @@ var WIKI_DATA = [
       { id: "definicion", title: "Qu\xE9 es", content: "El temor a quedarse solo lleva a ceder, complacer y delegar decisiones vitales en otros. Puede confundirse con amor entregado, pero el eje es el miedo, no el cuidado libre." }
     ],
     dynamics: [
-      { context: "Pareja", desc: "Riesgo de relaciones desequilibradas o de quedar atrapado en v\xEDnculos da\xF1inos por miedo a la soledad. Recuperar autonom\xEDa gradual es el camino." }
+      { context: "Pareja", desc: "Riesgo de relaciones desequilibradas o de quedar atrapado en v\xEDnculos da\xF1inos por miedo a la soledad. Recuperar autonom\xEDa gradual es el camino." },
+      { context: "Amistad", desc: "En la amistad, cuida que haya espacio para disentir y para otros v\xEDnculos. Una amistad que solo funciona si est\xE1s de acuerdo no es amistad." },
+      { context: "Familia", desc: "En la familia, la sobreprotecci\xF3n refuerza la dependencia. Animar la autonom\xEDa, aunque d\xE9 un poco de miedo, es un acto de cari\xF1o." },
+      { context: "Colega / trabajo", desc: "En el trabajo, practica decidir cosas peque\xF1as sin consultar. Pedir feedback est\xE1 bien; necesitarlo para todo bloquea tu crecimiento." }
     ],
     care: [
       "Fomentar peque\xF1as decisiones propias cada d\xEDa.",
@@ -283,7 +305,9 @@ var WIKI_DATA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "La literalidad y la honestidad pueden malinterpretarse como frialdad. La comunicaci\xF3n expl\xEDcita y clara evita malentendidos." },
-      { context: "Colega", desc: "Foco profundo y rigor; necesita instrucciones claras y entornos sensorialmente amables." }
+      { context: "Amistad", desc: "Las amistades profundas y pocas suelen ser la norma. Los intereses compartidos conectan m\xE1s que las quedadas improvisadas." },
+      { context: "Familia", desc: "En la familia, la previsibilidad y la informaci\xF3n clara reducen much\xEDsimo el conflicto. Los cambios anunciados con tiempo se toleran mejor." },
+      { context: "Colega / trabajo", desc: "Foco profundo y rigor; necesita instrucciones claras y entornos sensorialmente amables." }
     ],
     care: [
       "Comunicaci\xF3n directa, concreta y sin dobles sentidos.",
@@ -309,7 +333,8 @@ var WIKI_EXTRA = [
     dynamics: [
       { context: "Pareja", desc: "Intensidad r\xE1pida y celos frecuentes; la relaci\xF3n puede sentirse cinematogr\xE1fica y luego agotadora. Ayuda pactar ritmos y se\xF1ales concretas de afecto que no dependan del drama." },
       { context: "Amistad", desc: "Grandes gestos y mucha calidez, con dificultad para sostener la profundidad sin p\xFAblico." },
-      { context: "Colega", desc: "Carisma y capacidad de conectar con equipos; se resiente cuando el reconocimiento no llega." }
+      { context: "Familia", desc: "En la familia, la intensidad puede volverse el idioma de la casa. Aprender a comunicar las necesidades sin dramatizarlas cambia el clima de todos." },
+      { context: "Colega / trabajo", desc: "Carisma y capacidad de conectar con equipos; se resiente cuando el reconocimiento no llega." }
     ],
     care: [
       "Reconocer expl\xEDcitamente su presencia cuando est\xE1 en calma, no solo cuando escala.",
@@ -331,7 +356,9 @@ var WIKI_EXTRA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "La cercan\xEDa puede activar desconfianza. La constancia tranquila, sin presi\xF3n, construye seguridad mejor que la insistencia." },
-      { context: "Familia", desc: "Se le puede tildar de 'raro'. El rid\xEDculo aumenta el aislamiento; la curiosidad respetuosa lo reduce." }
+      { context: "Amistad", desc: "Las amistades suelen ser pocas y muy escogidas. El aislamiento puede ser una elecci\xF3n, no solo un s\xEDntoma: preguntar antes de suponer." },
+      { context: "Familia", desc: "Se le puede tildar de 'raro'. El rid\xEDculo aumenta el aislamiento; la curiosidad respetuosa lo reduce." },
+      { context: "Colega / trabajo", desc: "En el trabajo, los entornos ruidosos y muy sociales agotan. Respetar los momentos de concentraci\xF3n y soledad es lo que permite rendir." }
     ],
     care: [
       "No discutir frontalmente las creencias: preguntar con curiosidad honesta.",
@@ -353,7 +380,9 @@ var WIKI_EXTRA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Interrogatorios, revisi\xF3n de mensajes, celos. Ceder para calmar suele aumentar la vigilancia; la claridad estable la reduce m\xE1s." },
-      { context: "Colega", desc: "Conflictos por atribuci\xF3n de intenciones. Poner acuerdos por escrito protege a ambas partes." }
+      { context: "Amistad", desc: "En la amistad, la desconfianza se alimenta de la ambig\xFCedad. Las se\xF1ales claras y constantes calan m\xE1s que las grandes declaraciones." },
+      { context: "Familia", desc: "En la familia, la sospecha repetida cansa a quien la recibe. Negociar acuerdos verificables evita discusiones circulares." },
+      { context: "Colega / trabajo", desc: "Conflictos por atribuci\xF3n de intenciones. Poner acuerdos por escrito protege a ambas partes." }
     ],
     care: [
       "Ser predecible y transparente sin someterte a vigilancia.",
@@ -375,8 +404,9 @@ var WIKI_EXTRA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Las comidas se vuelven campo de tensi\xF3n. Comentar el cuerpo, aunque sea con elogio, suele empeorar; acompa\xF1ar sin vigilar ayuda m\xE1s." },
+      { context: "Amistad", desc: "El silencio protege el trastorno. Nombrar la preocupaci\xF3n con hechos concretos y sin juicio abre puertas." },
       { context: "Familia", desc: "La familia oscila entre controlar y no ver. Un tratamiento con enfoque familiar mejora el pron\xF3stico, sobre todo en adolescentes." },
-      { context: "Amistad", desc: "El silencio protege el trastorno. Nombrar la preocupaci\xF3n con hechos concretos y sin juicio abre puertas." }
+      { context: "Colega / trabajo", desc: "En el trabajo, los comentarios sobre el cuerpo y la comida hacen mucho da\xF1o. Los equipos que no bromean con eso son equipos m\xE1s sanos." }
     ],
     care: [
       "No hablar de peso, dietas ni cuerpos; hablar de c\xF3mo se siente.",
@@ -398,8 +428,9 @@ var WIKI_EXTRA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Mentiras, dinero que desaparece y promesas incumplidas erosionan la confianza m\xE1s que la sustancia misma." },
+      { context: "Amistad", desc: "Las amistades ligadas al consumo se sostienen mientras se consume. Buscar amistades fuera de ese circuito es, a menudo, el paso que m\xE1s cambia." },
       { context: "Familia", desc: "Los roles se reorganizan alrededor del consumo; los hijos suelen asumir funciones adultas prematuras." },
-      { context: "Colega", desc: "Bajadas de rendimiento intermitentes y ausencias justificadas de forma cambiante." }
+      { context: "Colega / trabajo", desc: "Bajadas de rendimiento intermitentes y ausencias justificadas de forma cambiante." }
     ],
     care: [
       "Dejar de encubrir consecuencias: no es castigo, es dejar de amortiguar la realidad.",
@@ -421,7 +452,9 @@ var WIKI_EXTRA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "La desconfianza delirante puede incluirte. No es traici\xF3n: es el s\xEDntoma. Mantener rutina, sue\xF1o y adherencia al tratamiento protege el v\xEDnculo." },
-      { context: "Familia", desc: "La emoci\xF3n expresada alta (cr\xEDticas, sobreimplicaci\xF3n) aumenta reca\xEDdas; el clima calmado y estructurado las reduce." }
+      { context: "Amistad", desc: "Las amistades estables y sin exigencias son un ancla. No hace falta entenderlo todo para acompa\xF1ar bien." },
+      { context: "Familia", desc: "La emoci\xF3n expresada alta (cr\xEDticas, sobreimplicaci\xF3n) aumenta reca\xEDdas; el clima calmado y estructurado las reduce." },
+      { context: "Colega / trabajo", desc: "En el trabajo, la informaci\xF3n clara y los entornos tranquilos ayudan. Evitar interpretar como desinter\xE9s lo que es sobrecarga sensorial." }
     ],
     care: [
       "No discutir el delirio ni fingir creerlo: validar la emoci\xF3n ('debe dar mucho miedo').",
@@ -443,7 +476,9 @@ var WIKI_EXTRA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "Cada persona duela a ritmos distintos, y esa asincron\xEDa genera reproches. Nombrarlo evita que se lea como falta de amor." },
-      { context: "Amistad", desc: "El entorno desaparece a los dos meses, justo cuando empieza lo dif\xEDcil. Estar presente tarde es m\xE1s \xFAtil que estar mucho al principio." }
+      { context: "Amistad", desc: "El entorno desaparece a los dos meses, justo cuando empieza lo dif\xEDcil. Estar presente tarde es m\xE1s \xFAtil que estar mucho al principio." },
+      { context: "Familia", desc: "En la familia, cada persona vive el duelo a su ritmo y con su forma. Respetar los tiempos distintos evita ropes innecesarios." },
+      { context: "Colega / trabajo", desc: "En el trabajo, el duelo no se avisa con antelaci\xF3n ni tiene fecha de fin. La flexibilidad real y un poco de humanidad ayudan m\xE1s que las prisas." }
     ],
     care: [
       "No decir 'ya toca pasar p\xE1gina': preguntar c\xF3mo est\xE1 hoy.",
@@ -465,7 +500,9 @@ var WIKI_EXTRA = [
     ],
     dynamics: [
       { context: "Pareja", desc: "El rol de cuidador sustituye al de pareja y la intimidad se apaga. Recuperar espacios donde no se hable de la enfermedad es tratamiento, no lujo." },
-      { context: "Familia", desc: "La carga suele recaer en una sola persona, casi siempre mujer. Repartirla por escrito, con tareas nombradas, funciona mejor que la buena voluntad." }
+      { context: "Amistad", desc: "Las amistades se resienten cuando el d\xEDa ya est\xE1 ocupado entero. Un mensaje corto y honesto (\xABestoy fundido, no te he olvidado\xBB) mantiene el v\xEDnculo." },
+      { context: "Familia", desc: "La carga suele recaer en una sola persona, casi siempre mujer. Repartirla por escrito, con tareas nombradas, funciona mejor que la buena voluntad." },
+      { context: "Colega / trabajo", desc: "En el trabajo, el desgaste se acumula en silencio hasta que estalla. Recuperar tiempo de descanso no es un lujo: es la condici\xF3n para volver a funcionar." }
     ],
     care: [
       "Programar descansos como si fueran citas m\xE9dicas: innegociables.",
@@ -685,10 +722,11 @@ var search_encyclopedia_default = defineTool3({
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: ({ query, limit }) => {
-    const q = query.trim().toLowerCase();
+    const plain = (s) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const q = plain(query.trim());
     const terms = q.split(/\s+/).filter(Boolean);
     const score = (haystack) => {
-      const h = haystack.toLowerCase();
+      const h = plain(haystack);
       return terms.reduce((n, t) => h.includes(t) ? n + 1 : n, 0);
     };
     const disorderHits = WIKI_DATA.map((d) => {

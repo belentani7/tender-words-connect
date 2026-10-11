@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useId, useState } from "react";
 
 export const TPanel = ({
   children,
@@ -32,19 +32,34 @@ export const Field = ({
   onChange: (v: string) => void;
   rows?: number;
   placeholder?: string;
-}) => (
-  <div>
-    <label className="block text-sm font-light text-foreground/90 mb-1">{label}</label>
-    {hint && <p className="text-foreground/40 text-xs leading-relaxed mb-2">{hint}</p>}
-    <textarea
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      rows={rows}
-      placeholder={placeholder}
-      className="w-full glass rounded-2xl border border-foreground/10 bg-transparent px-4 py-3 text-sm text-foreground/90 placeholder:text-foreground/30 leading-relaxed focus:outline-none focus:border-primary/40 transition-colors resize-y"
-    />
-  </div>
-);
+}) => {
+  // El <label> envuelve el texto pero NO el textarea, así que sin htmlFor un
+  // lector de pantalla anunciaba el campo como «edición en blanco» y no decía
+  // qué hay que escribir. useId evita colisiones si hay varios formularios.
+  const id = useId();
+  const hintId = `${id}-hint`;
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-light text-foreground/90 mb-1">
+        {label}
+      </label>
+      {hint && (
+        <p id={hintId} className="text-foreground/40 text-xs leading-relaxed mb-2">
+          {hint}
+        </p>
+      )}
+      <textarea
+        id={id}
+        aria-describedby={hint ? hintId : undefined}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        rows={rows}
+        placeholder={placeholder}
+        className="w-full glass rounded-2xl border border-foreground/10 bg-transparent px-4 py-3 text-sm text-foreground/90 placeholder:text-foreground/30 leading-relaxed focus:outline-none focus:border-primary/40 transition-colors resize-y"
+      />
+    </div>
+  );
+};
 
 export const Btn = ({
   children,
@@ -73,12 +88,35 @@ export const Btn = ({
   </button>
 );
 
-/** Persistencia local: nada sale del dispositivo. */
-export function useLocalState<T>(key: string, initial: T) {
+/**
+ * Identificador único que no depende de `crypto.randomUUID`: esa API solo existe
+ * en contextos seguros (https o localhost) y la app puede abrirse en http simple
+ * desde un móvil en la misma red. Sin ella, `crypto.randomUUID()` lanzaría y la
+ * herramienta se quedaría inservible.
+ */
+export const newId = () =>
+  typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+    ? crypto.randomUUID()
+    : `id-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+
+/**
+ * Persistencia local: nada sale del dispositivo.
+ *
+ * `revive` normaliza lo que haya guardado una versión anterior de la herramienta.
+ * Sin él, un registro viejo al que le falte un campo llegaría a la interfaz como
+ * `undefined` y podía romper el render (por ejemplo `e.trigger.trim()`).
+ */
+export function useLocalState<T>(key: string, initial: T, revive?: (raw: unknown) => T | null) {
   const [value, setValue] = useState<T>(() => {
     try {
       const raw = localStorage.getItem(key);
-      return raw ? (JSON.parse(raw) as T) : initial;
+      if (raw === null) return initial;
+      const parsed = JSON.parse(raw) as unknown;
+      if (revive) {
+        const revived = revive(parsed);
+        return revived === null ? initial : revived;
+      }
+      return parsed as T;
     } catch {
       return initial;
     }

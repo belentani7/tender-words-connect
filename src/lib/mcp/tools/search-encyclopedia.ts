@@ -13,10 +13,18 @@ export default defineTool({
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: ({ query, limit }) => {
-    const q = query.trim().toLowerCase();
+    // Sin acentos: casi nadie escribe «límite» o «vínculo» con tilde al buscar,
+    // y sin normalizar esas búsquedas no encontraban nada.
+    const plain = (s: string) =>
+      s
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+    const q = plain(query.trim());
     const terms = q.split(/\s+/).filter(Boolean);
     const score = (haystack: string) => {
-      const h = haystack.toLowerCase();
+      const h = plain(haystack);
       return terms.reduce((n, t) => (h.includes(t) ? n + 1 : n), 0);
     };
 

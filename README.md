@@ -43,6 +43,25 @@ Este repositorio está estructurado para ser leído, adaptado y consultado como 
 
 
 
+ 🛠️ Desarrollo
+
+Requiere **Node 22.18 o superior** (el generador del sitemap usa el soporte nativo de TypeScript de Node; si no está disponible, se mantiene el `sitemap.xml` ya commiteado y el arranque no se interrumpe).
+
+```bash
+npm install        # dependencias
+npm run dev        # servidor de desarrollo (http://localhost:8080)
+npm run typecheck  # tipos de app y de configuración
+npm run lint       # eslint
+npm test           # vitest (contenido, i18n, herramientas y páginas)
+npm run build      # build de producción
+```
+
+Cada `dev` y cada `build` regeneran `public/sitemap.xml` a partir del contenido de la enciclopedia.
+
+Los tests no son adornos: comprueban que los cuatro idiomas tengan las mismas claves, que cada trastorno cubra pareja, amistad, familia y trabajo, que los formularios tengan etiqueta accesible y que el panel de accesibilidad se comporte como un diálogo. Si rompes algo de eso, `npm test` lo dice antes de que lo note quien llega a la web.
+
+
+
  📄 Licencia
 
 Este proyecto se comparte bajo los principios de apertura y soberanía personal. Consulta el archivo de licencia para más detalles sobre su uso y redistribución.

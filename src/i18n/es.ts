@@ -244,4 +244,7 @@ export const es: Translations = {
     line2: "Basado en experiencia real. Para convertir el dolor en comprensión.",
     line3: "© 2026 ABRAZO · Este sitio no reemplaza terapia profesional.",
   },
+  untranslated:
+    "Algunos bloques avanzados —mirada clínica, recursos y «el otro lado»— están traducidos a español e inglés. En otros idiomas se muestran en español mientras terminamos la traducción.",
+  skipToContent: "Saltar al contenido",
 };

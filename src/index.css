@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&family=Atkinson+Hyperlegible:wght@400;700&display=swap');
+/* Las tipografías (Inter, JetBrains Mono, Atkinson Hyperlegible) se cargan desde
+   index.html con <link rel="stylesheet">. Un @import aquí provocaba el aviso
+   "@import must precede all other statements" y retrasaba la descarga de las
+   fuentes hasta que el CSS entero había llegado. */
 
 @layer base {
   :root {
