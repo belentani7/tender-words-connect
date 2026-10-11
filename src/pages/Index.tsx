@@ -1019,6 +1019,12 @@ const Index = () => {
         <div className="max-w-5xl mx-auto px-4 text-center space-y-2">
           <p className="text-foreground/50 text-xs leading-relaxed">{t.footer.line1}</p>
           <p className="text-foreground/35 text-xs">{t.footer.line2}</p>
+          {/* La nota de origen, en primera persona: por qué existe ABRAZO.
+              Va en cursiva y un paso por encima del resto para que se lea,
+              pero sin gritar: el pie sigue siendo el pie. */}
+          <p className="text-foreground/45 text-xs leading-relaxed italic max-w-xl mx-auto pt-2">
+            {t.footer.originNote}
+          </p>
           <p className="mono text-[10px] tracking-wider-2 text-foreground/25 uppercase pt-2">{t.footer.line3}</p>
           <nav aria-label="Enciclopedia" className="pt-6 flex flex-wrap justify-center gap-x-4 gap-y-2">
             <a href="/enciclopedia" className="mono text-[10px] tracking-wider-2 text-foreground/40 hover:text-foreground/80 uppercase">

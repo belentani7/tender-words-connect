@@ -46,10 +46,11 @@ en **cero avisos** (partía de 46).
 - **La enciclopedia prometía dinámica en pareja, amistad, familia y trabajo, pero 15 de las 20 entradas tenían entre 1 y 3 contextos.** Se han escrito los 37 contextos que faltaban, en el mismo tono (sin diagnóstico, cálido, concreto) y se han unificado las etiquetas («Colega» → «Colega / trabajo»).
 - **Portugués y catalán heredan del español** la mirada clínica, los recursos y «el otro lado». Antes eso era invisible: parecía un fallo. Ahora hay un aviso honesto (`untranslated`) en el panel de accesibilidad, en el umbral y al entrar en esas secciones.
 - **Idioma recordado**: la elección se guarda y sobrevive a la recarga; si no hay elección previa se respeta el idioma del navegador cuando es uno de los cuatro.
+- **Nota de origen en el pie**, en primera persona y traducida a los cuatro idiomas: *«Está hecho en base a una historia real: la de una persona que tuvo una experiencia y no supo actuar de la mejor manera. Espero que esta herramienta sirva al máximo a quienes no quieran pasar por lo mismo. Pero a veces uno tiene que decir adiós.»* Es la frase que explica por qué existe ABRAZO, y ahora también está escrita en la cabecera de la función de chat, para que quien mantenga el backend sepa qué está cuidando.
 
 ## Tests
 
-Antes: 1 test de plantilla (`expect(true).toBe(true)`). Ahora **69 tests** que protegen lo que se ha arreglado:
+Antes: 1 test de plantilla (`expect(true).toBe(true)`). Ahora **70 tests** que protegen lo que se ha arreglado:
 
 - `src/i18n/translations.test.ts` — los cuatro idiomas tienen exactamente las mismas claves (si falta una, esa parte de la interfaz se queda en blanco) y los bloques heredados son los que se avisan.
 - `src/content/content.test.ts` — integridad del contenido: ids úicos y con formato de URL, los cuatro contextos relacionales por entrada, preguntas con respuesta, disclaimers presentes.

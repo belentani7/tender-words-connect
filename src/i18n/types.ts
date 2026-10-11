@@ -264,6 +264,11 @@ export interface Translations {
     line1: string;
     line2: string;
     line3: string;
+    /**
+     * Nota de origen, en primera persona: de dónde nace ABRAZO y por qué
+     * existe. Va en el pie de todas las páginas.
+     */
+    originNote: string;
   };
   /**
    * Aviso honesto para los idiomas que todavía no tienen traducidos todos los

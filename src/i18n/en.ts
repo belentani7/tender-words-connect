@@ -243,6 +243,7 @@ export const en: Translations = {
     line1: "ABRAZO was created from lived pain, transformed into understanding for others.",
     line2: "Based on real experience. To turn pain into understanding.",
     line3: "© 2026 ABRAZO · This site does not replace professional therapy.",
+    originNote: "This is built on a real story: that of someone who lived an experience and did not know how to act in the best way. I hope this tool helps as much as possible those who do not want to go through the same thing. But sometimes one has to say goodbye.",
   },
   untranslated:
     "Some advanced sections —the clinical view, the resources and 'the other side'— are translated into Spanish and English only. In other languages they appear in Spanish while we finish translating them.",

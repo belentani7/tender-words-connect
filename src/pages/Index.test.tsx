@@ -102,4 +102,18 @@ describe("Index", () => {
     expect(error).not.toHaveBeenCalled();
     error.mockRestore();
   });
+
+  it("el pie cuenta de dónde nace ABRAZO, en el idioma elegido", () => {
+    localStorage.setItem("abrazo-lang", "es");
+    render(
+      <LangProvider>
+        <Index />
+      </LangProvider>,
+    );
+
+    // La nota de origen es personal y tiene que estar en todos los idiomas:
+    // si falta en uno, esa persona lee un pie vacío.
+    expect(screen.getByText(/Esto está hecho en base a una historia real/)).toBeInTheDocument();
+    expect(screen.getByText(/Pero a veces uno tiene que decir adiós/)).toBeInTheDocument();
+  });
 });

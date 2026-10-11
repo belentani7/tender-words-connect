@@ -1,3 +1,7 @@
+// ABRAZO no nació en un despacho. Nació de una historia real: alguien tuvo una
+// experiencia y no supo actuar de la mejor manera. Esta función existe para que
+// quienes lleven hasta aquí no tengan que pasar por lo mismo. Pero a veces uno
+// tiene que decir adiós.
 import { z } from "npm:zod@3";
 import {
   clientIp,
