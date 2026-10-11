@@ -60,7 +60,9 @@ Cada `dev` y cada `build` regeneran `public/sitemap.xml` a partir del contenido 
 
 Las dependencias están al día en seguridad: `npm audit` queda en cero avisos. El stack actual es **Tailwind CSS 4**, **Vite 8**, **Vitest 4**, **React Router 7** y **ESLint 9**; el detalle de la migración y de lo que se sacrificó para llegar ahí está en [`AUDIT.md`](./AUDIT.md).
 
-Los tests no son adornos: comprueban que los cuatro idiomas tengan las mismas claves, que cada trastorno cubra pareja, amistad, familia y trabajo, que los formularios tengan etiqueta accesible y que el panel de accesibilidad se comporte como un diálogo. Si rompes algo de eso, `npm test` lo dice antes de que lo note quien llega a la web.
+Los tests no son adornos: comprueban que los cuatro idiomas tengan las mismas claves, que cada trastorno cubra pareja, amistad, familia y trabajo, que los formularios tengan etiqueta accesible, que el panel de accesibilidad se comporte como un diálogo y que la tabla de rutas y las utilidades HTTP de las funciones de Supabase hagan lo que deben. Si rompes algo de eso, `npm test` lo dice antes de que lo note quien llega a la web.
+
+Las funciones de Supabase (`supabase/functions`) se configuran con variables de entorno en el panel, no en el `.env`: `LOVABLE_API_KEY`, `ALLOWED_ORIGINS`, `CHAT_RATE_LIMIT` y compañía están documentadas en `.env.example`.
 
 
 

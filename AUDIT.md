@@ -49,7 +49,7 @@ en **cero avisos** (partía de 46).
 
 ## Tests
 
-Antes: 1 test de plantilla (`expect(true).toBe(true)`). Ahora **52 tests** que protegen lo que se ha arreglado:
+Antes: 1 test de plantilla (`expect(true).toBe(true)`). Ahora **69 tests** que protegen lo que se ha arreglado:
 
 - `src/i18n/translations.test.ts` — los cuatro idiomas tienen exactamente las mismas claves (si falta una, esa parte de la interfaz se queda en blanco) y los bloques heredados son los que se avisan.
 - `src/content/content.test.ts` — integridad del contenido: ids úicos y con formato de URL, los cuatro contextos relacionales por entrada, preguntas con respuesta, disclaimers presentes.
@@ -59,6 +59,7 @@ Antes: 1 test de plantilla (`expect(true).toBe(true)`). Ahora **52 tests** que p
 - `src/hooks/useLang.test.tsx` — memoria del idioma, atributo `lang` y valores corruptos.
 - `src/pages/Index.test.tsx` — recorrido por todas las secciones, cambio de idioma sin perder la sección, umbral que solo se cruza a propósito y consola limpia de errores de React.
 - `src/pages/routes.test.tsx` — la tabla de rutas real: índice de la enciclopedia, entrada con dirección propia, dirección con id inventado que se corrige sola y página 404.
+- `supabase/functions/_shared/http.test.ts` — las utilidades HTTP de las funciones: CORS con lista de hosts, límite de abuso, IP del cliente y respuestas.
 
 ## Dependencias y seguridad
 
@@ -73,6 +74,48 @@ Antes: 1 test de plantilla (`expect(true).toBe(true)`). Ahora **52 tests** que p
 
 Lo que **no** cambia: el lenguaje visual, el comportamiento de cada sección y el troceado del bundle. El precio del parche del router son unos 20 kB más en su chunk (React Router 7 trae su capa de datos incluida); es el coste de cerrar los dos avisos moderados.
 
+## Backend (funciones de Supabase)
+
+`chat-agent` es la única puerta a la pasarela de IA y era la parte con menos
+cuidado del proyecto. Se ha revisado y endurecido **sin tocar ni una palabra de
+los prompts**: `SHARED_SAFETY` y los tres agentes son byte a byte los mismos
+(se comprobó con un diff antes de escribir el cambio).
+
+- **CORS con lista de hosts** en lugar de `Access-Control-Allow-Origin: *`.
+  Cualquier otra página web podía gastar los créditos de IA del proyecto desde
+  el navegador de quien la visitara. Ahora solo responden el dominio de
+  producción, las vistas previas de Lovable y de Arena y localhost; el resto
+  recibe 403. Si la app se publica en otro dominio se añade en
+  `ALLOWED_ORIGINS` (documentado en `.env.example`), sin tocar código.
+- **405 para lo que no es POST**: antes un `GET` reventaba en el `req.json()` y
+  devolvía un 500 que no explicaba nada.
+- **Freno de abuso**: 60 peticiones por cliente y 10 minutos, configurable.
+  Deno levanta varias instancias de la misma función, así que esto es un freno
+  y no una cuota; la cuota de verdad la sigue poniendo la pasarela con sus 402
+  y 429, que la aplicación ya explica con cariño.
+- **Techo de caracteres** a la conversación completa (60 000, muy holgado) con
+  un mensaje escrito para quien escribe, no un error de validación.
+- **Tiempo de espera a la pasarela** (90 s): una pasarela colgada dejaba al
+  navegador esperando sin fin. Ahora se aborta y se responde 504.
+- **Se deja de filtrar la tubería interna**: el detalle de error de la pasarela
+  y el nombre de la variable de entorno que falta ya no viajan al cliente; se
+  registran en el servidor.
+- **`X-Accel-Buffering: no`** en la respuesta en streaming, para que un proxy
+  intermedio no acumule la respuesta y la suelte de golpe al final.
+
+Las utilidades HTTP viven en `supabase/functions/_shared/http.ts`, sin
+dependencias externas a propósito, y se prueban como cualquier otro módulo.
+La función completa se verificó además empaquetándola como hace
+`supabase functions deploy` y ejecutándola con un `Deno` simulado: 21
+comprobaciones sobre CORS, métodos, validación, pasarela y límite de abuso.
+Esa pasada pilló un fallo real —un preflight con cuerpo en un 204, que habría
+roto el chat en todos los navegadores— que ahora está corregido.
+
+El servidor MCP **ya venía con el ajuste seguro**: `defineMcp` sin
+`allowedOrigins` solo acepta peticiones del mismo origen y de clientes que no
+son navegadores. Se ha dejado anotado en el código para que nadie añada
+`"any"` por error.
+
 ## Rendimiento y despliegue
 
 - El bundle principal baja de **614 kB a 466 kB** separando React y el router en sus propios *chunks* (mejor caché entre despliegues). El build ya no muestra avisos.
@@ -86,6 +129,8 @@ Lo que **no** cambia: el lenguaje visual, el comportamiento de cada sección y e
 - El CSS generado pasa de 75,8 kB a 98,2 kB (16 kB tras *gzip*) con Tailwind 4, que emite más utilidades base y declaraciones `@property`. Todo lo que usa la app sigue saliendo, pero adelgazar ese CSS (podar lo no utilizado) es el siguiente paso de rendimiento.
 - Vite 8 sugiere cambiar `@vitejs/plugin-react-swc` por `@vitejs/plugin-react`: el proyecto no usa plugins de SWC, así que es un cambio seguro y algo más rápido. Se deja anotado para no tocarlo en la misma pasada que la migración.
 - `recharts` marca su versión 2.x como obsoleta (aviso de mantenimiento, no de seguridad). Migrar a la 3 cambia la API de los gráficos: mejor hacerlo en una pasada propia.
+- Las funciones Deno no se typechequean en local (`tsconfig` no las incluye y faltan los tipos de Deno). Las utilidades de `_shared` sí se comprueban; la función en sí se verificó empaquetándola y ejecutándola con un `Deno` simulado. Añadir `deno check` al flujo sería el paso siguiente.
+- El límite de abuso es por instancia, no global. Para una cuota real haría falta un almacén compartido (KV o una tabla de Supabase); hoy la cuota efectiva la pone la pasarela de IA.
 - La búsqueda de la enciclopedia es textual simple (sin ranking por relevancia ni resaltado). Funciona y ya ignora acentos, pero no es un motor de búsqueda.
 - «El otro lado», la mirada clínica y los recursos siguen sin traducir a portugués y catalán. El aviso ya lo dice; la traducción es trabajo de contenido, no de código.
 

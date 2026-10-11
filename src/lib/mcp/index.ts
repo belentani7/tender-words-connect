@@ -4,6 +4,11 @@ import getDisorderTool from "./tools/get-disorder";
 import searchEncyclopediaTool from "./tools/search-encyclopedia";
 import listFaqsTool from "./tools/list-faqs";
 
+// `allowedOrigins` se omite a propósito: el valor por omisión solo admite
+// peticiones del mismo origen y de clientes que no son navegadores, que es lo
+// que queremos para un servidor MCP público. Escribir "any" aquí abriría el
+// servidor a cualquier página web que hable con él desde el navegador de quien
+// la visita.
 export default defineMcp({
   name: "abrazo-encyclopedia-mcp",
   title: "ABRAZO · Encyclopedia of Dynamics",

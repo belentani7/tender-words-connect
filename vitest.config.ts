@@ -8,7 +8,9 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: ["./src/test/setup.ts"],
-    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    // Las funciones de Supabase también se prueban: sus utilidades viven en
+    // `supabase/functions/_shared` y no dependen de Deno.
+    include: ["src/**/*.{test,spec}.{ts,tsx}", "supabase/**/*.{test,spec}.{ts,tsx}"],
   },
   resolve: {
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
