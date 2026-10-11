@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { componentTagger } from "lovable-tagger";
+import { fileURLToPath } from "node:url";
+import tailwindcss from "@tailwindcss/vite";
 import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
 
 // https://vitejs.dev/config/
@@ -18,10 +18,10 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react(), mcpPlugin(), mode === "development" && componentTagger()].filter(Boolean),
+  plugins: [react(), tailwindcss(), mcpPlugin()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
     dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime", "@tanstack/react-query", "@tanstack/query-core"],
   },
@@ -31,9 +31,13 @@ export default defineConfig(({ mode }) => ({
     // ese caché entre despliegues. No afecta ni al diseño ni al comportamiento.
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ["react", "react-dom", "react-dom/client"],
-          router: ["react-router-dom"],
+        // Vite 8 usa rolldown, que solo acepta manualChunks como funcion.
+        // React y el router cambian mucho menos que el contenido: van en su
+        // propio chunk para que el navegador los reutilice entre despliegues.
+        manualChunks(id) {
+          if (/node_modules\/(react|react-dom|scheduler)\//.test(id)) return "react";
+          if (/node_modules\/(react-router|@remix-run\/router)\//.test(id)) return "router";
+          return undefined;
         },
       },
     },

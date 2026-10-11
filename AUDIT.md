@@ -8,7 +8,8 @@ llega aquí en un mal momento y lo que hacía difícil mantener el proyecto.
 
 Cómo se hizo: `npm run typecheck`, `npm run lint`, `npm test` y `npm run build` antes y
 después. Al terminar, los cuatro pasan limpios (el lint deja 10 avisos benignos de
-*fast refresh* en componentes de UI vendidos que la app no usa).
+*fast refresh* en componentes de UI vendidos que la app no usa) y `npm audit` queda
+en **cero avisos** (partía de 46).
 
 ---
 
@@ -48,7 +49,7 @@ después. Al terminar, los cuatro pasan limpios (el lint deja 10 avisos benignos
 
 ## Tests
 
-Antes: 1 test de plantilla (`expect(true).toBe(true)`). Ahora **49 tests** que protegen lo que se ha arreglado:
+Antes: 1 test de plantilla (`expect(true).toBe(true)`). Ahora **52 tests** que protegen lo que se ha arreglado:
 
 - `src/i18n/translations.test.ts` — los cuatro idiomas tienen exactamente las mismas claves (si falta una, esa parte de la interfaz se queda en blanco) y los bloques heredados son los que se avisan.
 - `src/content/content.test.ts` — integridad del contenido: ids úicos y con formato de URL, los cuatro contextos relacionales por entrada, preguntas con respuesta, disclaimers presentes.
@@ -57,6 +58,20 @@ Antes: 1 test de plantilla (`expect(true).toBe(true)`). Ahora **49 tests** que p
 - `src/components/AccessibilityPanel.test.tsx` — el diálogo, el `Escape`, el `aria-pressed` y el aviso de idioma.
 - `src/hooks/useLang.test.tsx` — memoria del idioma, atributo `lang` y valores corruptos.
 - `src/pages/Index.test.tsx` — recorrido por todas las secciones, cambio de idioma sin perder la sección, umbral que solo se cruza a propósito y consola limpia de errores de React.
+- `src/pages/routes.test.tsx` — la tabla de rutas real: índice de la enciclopedia, entrada con dirección propia, dirección con id inventado que se corrige sola y página 404.
+
+## Dependencias y seguridad
+
+`npm audit` pasó de **46 avisos (3 críticas y 34 altas)** a **cero**. El arreglo fue de fondo, no de parches cosméticos:
+
+- **Tailwind CSS 3 → 4** (con `@tailwindcss/vite`): las tres críticas venían de `braces`, que solo se resuelven en la línea 4. La migración respeta el diseño al pie de la letra: los mismos tokens (`--primary: 350 100% 51%`, `--laser`, …), las mismas utilidades (`.glass`, `.glass-laser`, `.laser-border`, `.reveal`, `.reveal-stagger`, `.hover-lift`, `.press-spring`, `.mono`, `.tracking-wider-2`, `.scrollbar-hide`, `.prose-chat`, `.text-gradient-primary`, `.shadow-tender`, `.bg-gradient-hero`), los mismos `keyframes` y las mismas adaptaciones `a11y-*` y `prefers-reduced-motion`. El CSS construido se revisó clase a clase: las 415 clases que usa `src/` siguen saliendo.
+- **Vite 5 → 8**, **Vitest 3 → 4**, **ESLint 9** y **TypeScript-ESLint 8**: hacían falta para cerrar las alertas altas de `vite`, `esbuild` y del cargador de tests.
+- **React Router 6 → 7**: dos avisos moderados (redirección abierta por barra invertida e inyección de constructor en la hidratación SSR) afectan a toda la línea 6 y no tienen parche; el salto es la única salida. La app solo usa `BrowserRouter`, `Routes`, `Route`, `NavLink`, `useNavigate`, `useParams` y `useLocation`, que mantienen su firma, y ahora `src/pages/routes.test.tsx` monta la misma tabla de rutas que `App.tsx` para que un futuro salto no pase en silencio.
+- **`esbuild` fijado en 0.28.2** y **`@modelcontextprotocol/sdk` fijado en 1.32.1** mediante `overrides`: el aviso de `esbuild` (lectura arbitraria de ficheros con el servidor de desarrollo, solo en Windows) afecta a `>=0.27.3 <0.28.1`, y `@lovable.dev/mcp-js` clavaba el SDK en 1.28.0, dentro del rango con aviso alto. El servidor MCP sigue funcionando: sus 8 tests pasan y el bundle de `supabase/functions/mcp` se regenera igual.
+- **Fuera**: `lovable-tagger` (etiquetaba el DOM para el editor de Lovable y depende de Tailwind 3), `@tailwindcss/typography`, `postcss` y `autoprefixer` (Tailwind 4 ya hace ese trabajo). `postcss.config.js` se borró: sobraba.
+- El `package-lock.json` se regeneró entero desde el registro público; las URL internas que impedían instalar en limpio desaparecieron.
+
+Lo que **no** cambia: el lenguaje visual, el comportamiento de cada sección y el troceado del bundle. El precio del parche del router son unos 20 kB más en su chunk (React Router 7 trae su capa de datos incluida); es el coste de cerrar los dos avisos moderados.
 
 ## Rendimiento y despliegue
 
@@ -68,6 +83,9 @@ Antes: 1 test de plantilla (`expect(true).toBe(true)`). Ahora **49 tests** que p
 ## Pendiente honesto
 
 - Quedan 10 avisos de *fast refresh* en componentes de UI vendidos (`src/components/ui/*`) que la aplicación no utiliza. Tocarlos es ruido; se pueden borrar los que no se usen cuando alguien quiera.
+- El CSS generado pasa de 75,8 kB a 98,2 kB (16 kB tras *gzip*) con Tailwind 4, que emite más utilidades base y declaraciones `@property`. Todo lo que usa la app sigue saliendo, pero adelgazar ese CSS (podar lo no utilizado) es el siguiente paso de rendimiento.
+- Vite 8 sugiere cambiar `@vitejs/plugin-react-swc` por `@vitejs/plugin-react`: el proyecto no usa plugins de SWC, así que es un cambio seguro y algo más rápido. Se deja anotado para no tocarlo en la misma pasada que la migración.
+- `recharts` marca su versión 2.x como obsoleta (aviso de mantenimiento, no de seguridad). Migrar a la 3 cambia la API de los gráficos: mejor hacerlo en una pasada propia.
 - La búsqueda de la enciclopedia es textual simple (sin ranking por relevancia ni resaltado). Funciona y ya ignora acentos, pero no es un motor de búsqueda.
 - «El otro lado», la mirada clínica y los recursos siguen sin traducir a portugués y catalán. El aviso ya lo dice; la traducción es trabajo de contenido, no de código.
 

@@ -1,6 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+/* Tailwind 4 busca las fuentes solo. Se acota a src/ a proposito: es el mismo
+   alcance que tenia el `content` de la version 3, y asi el CSS generado no
+   depende de que haya otros archivos HTML en la raiz del repositorio. */
+@source "./**/*.{ts,tsx}";
 
 /* Las tipografías (Inter, JetBrains Mono, Atkinson Hyperlegible) se cargan desde
    index.html con <link rel="stylesheet">. Un @import aquí provocaba el aviso

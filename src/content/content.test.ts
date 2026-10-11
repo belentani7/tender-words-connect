@@ -106,7 +106,7 @@ describe("toolkit-data", () => {
   it("los niveles del autochequeo son progresivos y cubren cualquier marcado", () => {
     const maxes = CHECK_TIERS.map((t) => t.max);
     expect([...maxes].sort((a, b) => a - b)).toEqual(maxes); // ordenados
-    expect(maxes.at(-1)).toBeGreaterThanOrEqual(RELATION_CHECK.length); // siempre hay nivel
+    expect(maxes[maxes.length - 1]).toBeGreaterThanOrEqual(RELATION_CHECK.length); // siempre hay nivel
     for (const marked of [0, 1, 5, 12, 99]) {
       expect(CHECK_TIERS.find((t) => marked <= t.max)).toBeDefined();
     }
