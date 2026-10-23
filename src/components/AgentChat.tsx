@@ -40,6 +40,7 @@ const AgentChat = () => {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [interrupted, setInterrupted] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<AbortController | null>(null);
   const pendingTextRef = useRef<string | null>(null);
@@ -60,18 +61,20 @@ const AgentChat = () => {
     setLoading(false);
     // Switching roles or clearing a stalled chat must never erase a long
     // message that was already submitted but has not finished processing.
-    if (unsent) setInput((current) => current.trim() ? current : unsent);
+    if (unsent) setInput((current) => current.trim() && current.trim() !== unsent ? `${unsent}\n\n${current}` : unsent);
   };
 
   const changeAgent = (next: AgentId) => {
     if (next === agent) return;
     stopRequest();
     setMessages([]);
+    setInterrupted(false);
     setAgent(next);
   };
 
   const resetChat = () => {
     stopRequest();
+    setInterrupted(false);
     setMessages([]);
   };
 
@@ -85,6 +88,7 @@ const AgentChat = () => {
     setMessages(next);
     setInput("");
     setLoading(true);
+    setInterrupted(false);
     let hasReply = false;
 
     try {
@@ -123,6 +127,7 @@ const AgentChat = () => {
       if (hasReply) {
         // Keep the partial response visibly marked by the toast. Retrying
         // will retain the existing conversation instead of losing context.
+        setInterrupted(true);
         toast.error("Respuesta interrumpida. Lo recibido se ha conservado.");
       } else {
         // A failed request is not a sent message: restore the draft without
@@ -132,7 +137,7 @@ const AgentChat = () => {
             ? current.slice(0, -1)
             : current,
         );
-        setInput((current) => current.trim() ? current : text);
+        setInput((current) => current.trim() && current.trim() !== text ? `${text}\n\n${current}` : text);
         const known = error instanceof Error && [
           "Demasiadas solicitudes. Vuelve a intentarlo en un momento.",
           "El servicio de IA no tiene créditos disponibles.",
@@ -259,6 +264,12 @@ const AgentChat = () => {
         </div>
 
         <div className="border-t border-foreground/[0.06] p-3">
+          {interrupted && (
+            <p role="alert" className="mb-2 rounded-xl border border-amber-400/30 p-3 text-xs text-amber-200">
+              La respuesta anterior quedó incompleta por un corte de conexión. El texto recibido permanece visible.
+              Puedes volver a enviar un mensaje para continuar.
+            </p>
+          )}
           <div className="flex items-end gap-2">
             <textarea
               value={input}
