@@ -8,6 +8,8 @@ import { readChatStream } from "@/lib/chatStream";
 type AgentId = "terapeuta" | "paciente" | "pareja";
 type Msg = { role: "user" | "assistant"; content: string };
 
+const MAX_REQUEST_MESSAGES = 40;
+
 const AGENTS: { id: AgentId; name: string; tagline: string; icon: typeof Brain; opener: string }[] = [
   {
     id: "terapeuta",
@@ -53,15 +55,24 @@ const AgentChat = () => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
 
+  const restorePendingDraft = (submitted: string | null) => {
+    if (!submitted) return;
+    setInput((current) => {
+      const draft = current.trim();
+      if (!draft || draft === submitted) return submitted;
+      return submitted + "\n\n" + draft;
+    });
+  };
+
   const stopRequest = () => {
-    const unsent = pendingTextRef.current;
+    const submitted = pendingTextRef.current;
     requestRef.current?.abort();
     requestRef.current = null;
     pendingTextRef.current = null;
     setLoading(false);
-    // Switching roles or clearing a stalled chat must never erase a long
-    // message that was already submitted but has not finished processing.
-    if (unsent) setInput((current) => current.trim() && current.trim() !== unsent ? `${unsent}\n\n${current}` : unsent);
+    // Keep the submitted text and any newer draft together when a request is
+    // cancelled by reset or an agent change.
+    restorePendingDraft(submitted);
   };
 
   const changeAgent = (next: AgentId) => {
@@ -82,13 +93,16 @@ const AgentChat = () => {
     const text = input.trim();
     if (!text || loading || requestRef.current) return;
     const next: Msg[] = [...messages, { role: "user", content: text }];
+    // The edge function accepts at most 40 messages. Keep the full transcript
+    // in the UI but send the most recent window instead of triggering a
+    // predictable 400 after twenty complete exchanges.
+    const requestMessages = next.slice(-MAX_REQUEST_MESSAGES);
     const controller = new AbortController();
     requestRef.current = controller;
     pendingTextRef.current = text;
     setMessages(next);
     setInput("");
     setLoading(true);
-    setInterrupted(false);
     let hasReply = false;
 
     try {
@@ -98,13 +112,25 @@ const AgentChat = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: JSON.stringify({ agent, messages: next }),
+        body: JSON.stringify({ agent, messages: requestMessages }),
         signal: controller.signal,
       });
 
       if (resp.status === 429) throw new Error("Demasiadas solicitudes. Vuelve a intentarlo en un momento.");
       if (resp.status === 402) throw new Error("El servicio de IA no tiene créditos disponibles.");
-      if (resp.status === 400) throw new Error("El mensaje no se pudo procesar. Prueba con un texto más corto.");
+      if (resp.status === 400) {
+        let detail = "";
+        try {
+          const payload = await resp.clone().json() as { detail?: unknown };
+          detail = typeof payload.detail === "string" ? payload.detail : "";
+        } catch {
+          // Keep the generic message when the gateway does not return JSON.
+        }
+        if (/conversación|conversation|40 mensajes|demasiado larga/i.test(detail)) {
+          throw new Error("La conversación ha alcanzado su límite. Reinicia el chat para continuar.");
+        }
+        throw new Error("El mensaje no se pudo procesar. Prueba con un texto más corto.");
+      }
       if (resp.status === 503) throw new Error("El servicio de IA no está disponible en este momento.");
       if (!resp.ok || !resp.body) throw new Error("No se pudo conectar con el agente.");
 
@@ -122,6 +148,8 @@ const AgentChat = () => {
         });
       }, controller.signal);
       if (!hasReply) throw new Error("El agente no ha generado una respuesta. Inténtalo de nuevo.");
+      // Clear an interruption warning only after a complete retry succeeds.
+      setInterrupted(false);
     } catch (error) {
       if (controller.signal.aborted) return;
       if (hasReply) {
@@ -142,6 +170,7 @@ const AgentChat = () => {
           "Demasiadas solicitudes. Vuelve a intentarlo en un momento.",
           "El servicio de IA no tiene créditos disponibles.",
           "El mensaje no se pudo procesar. Prueba con un texto más corto.",
+          "La conversación ha alcanzado su límite. Reinicia el chat para continuar.",
           "El servicio de IA no está disponible en este momento.",
           "No se pudo conectar con el agente.",
           "El agente no ha generado una respuesta. Inténtalo de nuevo.",
