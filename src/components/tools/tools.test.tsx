@@ -85,6 +85,29 @@ describe("CrisisPlan", () => {
   });
 });
 
+describe("CrisisPlan · conservación segura", () => {
+  it("requiere una segunda confirmación antes de borrar un plan personal", () => {
+    render(<CrisisPlan />);
+    const field = screen.getByLabelText(CRISIS_FIELDS[0].label);
+    fireEvent.change(field, { target: { value: "Llamar a mi persona de confianza" } });
+    fireEvent.click(screen.getByRole("button", { name: /^borrar$/i }));
+    expect(field).toHaveValue("Llamar a mi persona de confianza");
+    expect(screen.getByRole("button", { name: /confirmar borrado/i })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /cancelar borrado/i }));
+    expect(field).toHaveValue("Llamar a mi persona de confianza");
+    fireEvent.click(screen.getByRole("button", { name: /^borrar$/i }));
+    fireEvent.click(screen.getByRole("button", { name: /confirmar borrado/i }));
+    expect(field).toHaveValue("");
+  });
+
+  it("recupera un plan aunque el almacenamiento local contenga datos inválidos", () => {
+    localStorage.setItem("abrazo-crisis-plan", JSON.stringify({ contact: 7, ignored: ["invalid"] }));
+    render(<CrisisPlan />);
+    expect(screen.getAllByRole("textbox")).toHaveLength(CRISIS_FIELDS.length);
+    expect(screen.getByText(`0 / ${CRISIS_FIELDS.length}`)).toBeInTheDocument();
+  });
+});
+
 describe("Journal", () => {
   it("guarda un registro y muestra sus datos", () => {
     render(<Journal />);
