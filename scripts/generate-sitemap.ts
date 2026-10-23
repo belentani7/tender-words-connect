@@ -3,7 +3,14 @@ import { writeFileSync } from "fs";
 import { resolve } from "path";
 import { WIKI_DATA } from "../src/content/wiki-data.ts";
 
-const BASE_URL = "https://tender-words-connect.lovable.app";
+// Override for the actual deployment; reject invalid origins rather than publishing
+// sitemap links to a malformed or unintended hostname.
+const configuredSiteUrl = process.env.SITE_URL || "https://tender-words-connect.lovable.app";
+const siteUrl = new URL(configuredSiteUrl);
+if (siteUrl.protocol !== "https:" || siteUrl.username || siteUrl.password || siteUrl.search || siteUrl.hash) {
+  throw new Error("SITE_URL must be an HTTPS site origin without credentials, query or fragment");
+}
+const BASE_URL = siteUrl.origin;
 
 type Entry = { path: string; changefreq?: string; priority?: string };
 
@@ -19,7 +26,7 @@ const xml = [
   ...entries.map((e) =>
     [
       `  <url>`,
-      `    <loc>${BASE_URL}${e.path}</loc>`,
+      `    <loc>${BASE_URL}${encodeURI(e.path).replace(/&/g, "&amp;")}</loc>`,
       e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
       e.priority ? `    <priority>${e.priority}</priority>` : null,
       `  </url>`,
