@@ -36,6 +36,25 @@ describe("ABRAZO chat SSE reader", () => {
     expect(await readChatStream(streamed([encoder.encode(event("Hola") + "data: [DONE]")]), () => {})).toBe("Hola");
   });
 
+  it("accepts lone CR line endings in SSE events", async () => {
+    const response = event("Hola").replace(/\n/g, "\r") + "data: [DONE]\r\r";
+    expect(await readChatStream(streamed([encoder.encode(response)]), () => {})).toBe("Hola");
+  });
+
+  it("cancels the reader when event parsing fails", async () => {
+    let cancelled = false;
+    const stream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(encoder.encode("data: {\\n\\n"));
+      },
+      cancel() {
+        cancelled = true;
+      },
+    });
+    await expect(readChatStream(stream, () => {})).rejects.toThrow("invalid_chat_event");
+    expect(cancelled).toBe(true);
+  });
+
   it("rejects truncated streams rather than treating a partial reply as complete", async () => {
     const receive = vi.fn();
     await expect(readChatStream(streamed([encoder.encode(event("Mitad"))]), receive))
