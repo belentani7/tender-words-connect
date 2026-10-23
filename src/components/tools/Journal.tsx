@@ -73,6 +73,7 @@ const Journal = () => {
   const [entries, setEntries] = useLocalState<Entry[]>("abrazo-journal", [], reviveEntries);
   const [draft, setDraft] = useState<Entry>(empty);
   const [open, setOpen] = useState(false);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const rangesId = useId();
 
   const stats = useMemo(() => {
@@ -230,13 +231,31 @@ const Journal = () => {
                 <p className="mono text-[10px] text-foreground/30 mt-0.5">{fmt(e.date)}</p>
               </div>
               <button
-                onClick={() => setEntries(entries.filter((x) => x.id !== e.id))}
+                onClick={() => setPendingDeleteId(e.id)}
                 className="text-foreground/30 hover:text-primary transition-colors"
                 aria-label="Borrar registro"
               >
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
             </div>
+            {pendingDeleteId === e.id && (
+              <div role="group" aria-label="Confirmar eliminación del registro" className="mb-4 rounded-xl border border-primary/30 p-3">
+                <p className="text-sm text-foreground/75 mb-3">
+                  ¿Eliminar definitivamente este registro? Esta acción no se puede deshacer.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Btn
+                    onClick={() => {
+                      setEntries((current) => current.filter((entry) => entry.id !== e.id));
+                      setPendingDeleteId(null);
+                    }}
+                  >
+                    Confirmar borrado
+                  </Btn>
+                  <Btn onClick={() => setPendingDeleteId(null)}>Cancelar borrado</Btn>
+                </div>
+              </div>
+            )}
             <div className="space-y-1.5 text-sm">
               {([["Disparador", e.trigger], ["Pensamiento", e.thought], ["Cuerpo", e.body], ["Qué hice", e.action], ["Habilidad", e.skill]] as const)
                 .filter(([, v]) => v.trim())
