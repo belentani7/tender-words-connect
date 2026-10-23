@@ -30,6 +30,9 @@ export async function readChatStream(
     } catch {
       throw new Error("La respuesta de IA llegó dañada o incompleta.");
     }
+    if (!event || typeof event !== "object") {
+      throw new Error("La respuesta de IA llegó dañada o incompleta.");
+    }
     if (event.error) throw new Error("El proveedor de IA interrumpió la respuesta.");
     const delta = event.choices?.[0]?.delta?.content;
     if (typeof delta === "string" && delta.length > 0) {
@@ -75,7 +78,9 @@ export async function readChatStream(
     return fullText;
   } finally {
     signal?.removeEventListener("abort", onAbort);
-    if (completed) await reader.cancel().catch(() => undefined);
+    // Si hay un error a mitad del flujo, cierra también el stream y libera la
+    // conexión; no dejes una lectura de datos sensibles abierta en segundo plano.
+    await reader.cancel().catch(() => undefined);
     reader.releaseLock();
   }
 }
