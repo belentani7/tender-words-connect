@@ -122,6 +122,27 @@ describe("Journal", () => {
     expect(JSON.parse(localStorage.getItem("abrazo-journal")!)).toHaveLength(1);
   });
 
+  it("no elimina un registro hasta confirmación explícita, permite cancelar y persiste el borrado", () => {
+    render(<Journal />);
+    fireEvent.click(screen.getByRole("button", { name: /nuevo registro/i }));
+    fireEvent.change(screen.getByLabelText(/Disparador/), {
+      target: { value: "Un recuerdo personal" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /guardar registro/i }));
+
+    fireEvent.click(screen.getByRole("button", { name: /borrar registro/i }));
+    expect(screen.getByText(/Un recuerdo personal/)).toBeInTheDocument();
+    expect(JSON.parse(localStorage.getItem("abrazo-journal")!)).toHaveLength(1);
+
+    fireEvent.click(screen.getByRole("button", { name: /cancelar borrado/i }));
+    expect(screen.getByText(/Un recuerdo personal/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /borrar registro/i }));
+    fireEvent.click(screen.getByRole("button", { name: /confirmar borrado/i }));
+    expect(screen.queryByText(/Un recuerdo personal/)).not.toBeInTheDocument();
+    expect(JSON.parse(localStorage.getItem("abrazo-journal")!)).toHaveLength(0);
+  });
+
   it("abre aunque el guardado sea de una versión antigua e incompleta", () => {
     localStorage.setItem(
       "abrazo-journal",
