@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Copy, Printer, Trash2, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { TPanel, Btn, Label, Field, useLocalState } from "./ui";
@@ -5,8 +6,19 @@ import { CRISIS_FIELDS } from "@/content/toolkit-data";
 
 type Plan = Record<string, string>;
 
+// A corrupted or older localStorage value must not make an emergency plan
+// inaccessible; only known text fields are restored.
+const revivePlan = (stored: unknown): Plan | null => {
+  if (typeof stored !== "object" || stored === null || Array.isArray(stored)) return null;
+  const values = stored as Record<string, unknown>;
+  return Object.fromEntries(
+    CRISIS_FIELDS.map(({ id }) => [id, typeof values[id] === "string" ? values[id] : ""]),
+  );
+};
+
 const CrisisPlan = () => {
-  const [plan, setPlan] = useLocalState<Plan>("abrazo-crisis-plan", {});
+  const [plan, setPlan] = useLocalState<Plan>("abrazo-crisis-plan", {}, revivePlan);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const asText = () =>
     `MI PLAN DE CRISIS\n\n${CRISIS_FIELDS.map(
@@ -82,12 +94,20 @@ const CrisisPlan = () => {
         </Btn>
         <Btn
           onClick={() => {
+            if (!confirmDelete) {
+              setConfirmDelete(true);
+              return;
+            }
             setPlan({});
+            setConfirmDelete(false);
             toast.success("Plan borrado de este dispositivo.");
           }}
         >
-          <Trash2 className="w-3.5 h-3.5" /> Borrar
+          <Trash2 className="w-3.5 h-3.5" /> {confirmDelete ? "Confirmar borrado" : "Borrar"}
         </Btn>
+        {confirmDelete && (
+          <Btn onClick={() => setConfirmDelete(false)}>Cancelar borrado</Btn>
+        )}
       </div>
 
       <TPanel className="reveal">
