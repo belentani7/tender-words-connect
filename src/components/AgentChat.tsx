@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Brain, HeartHandshake, Send, Sparkles, User2, AlertTriangle, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { readChatStream } from "@/lib/chat-stream";
 
 type AgentId = "terapeuta" | "paciente" | "pareja";
 type Msg = { role: "user" | "assistant"; content: string };
@@ -40,12 +41,37 @@ const AgentChat = () => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inFlight = useRef<AbortController | null>(null);
+  const requestVersion = useRef(0);
   const active = AGENTS.find((a) => a.id === agent)!;
 
-  useEffect(() => {
+  // Every reset invalidates the old stream; a late chunk must never appear in
+  // a different simulated role or resurrect a conversation that was deleted.
+  const cancelPending = () => {
+    requestVersion.current += 1;
+    inFlight.current?.abort();
+    inFlight.current = null;
+    setLoading(false);
+  };
+
+  const selectAgent = (id: AgentId) => {
+    if (id === agent) return;
+    cancelPending();
+    setAgent(id);
     setMessages([]);
     setInput("");
-  }, [agent]);
+  };
+
+  const resetChat = () => {
+    cancelPending();
+    setMessages([]);
+    setInput("");
+  };
+
+  useEffect(() => () => {
+    requestVersion.current += 1;
+    inFlight.current?.abort();
+  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -53,11 +79,23 @@ const AgentChat = () => {
 
   const send = async () => {
     const text = input.trim();
-    if (!text || loading) return;
+    if (!text || loading || inFlight.current) return;
     const next: Msg[] = [...messages, { role: "user", content: text }];
+    const controller = new AbortController();
+    const version = ++requestVersion.current;
+    inFlight.current = controller;
     setMessages(next);
     setInput("");
     setLoading(true);
+
+    // A failed request must not leave an empty AI bubble or duplicate the
+    // user's message in the next request's history.
+    const fail = (message: string) => {
+      if (version !== requestVersion.current) return;
+      setMessages(next.slice(0, -1));
+      setInput((draft) => draft.trim() ? `${text}\n\n${draft}` : text);
+      toast.error(message);
+    };
 
     try {
       const resp = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-agent`, {
@@ -67,22 +105,20 @@ const AgentChat = () => {
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({ agent, messages: next }),
+        signal: controller.signal,
       });
 
-      // Si algo falla se conserva el mensaje escrito y se devuelve al campo de
-      // texto: borraba lo que la persona habia contado justo cuando peor lo
-      // estaba pasando, y tenia que volver a escribirlo todo.
-      const fail = (msg: string) => {
-        toast.error(msg);
-        setInput(text);
-      };
-
+      if (version !== requestVersion.current) return;
       if (resp.status === 429) {
         fail("Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.");
         return;
       }
       if (resp.status === 402) {
-        fail("Se agotaron los créditos de IA. Añade créditos para continuar.");
+        fail("El servicio de IA no tiene créditos disponibles en este momento.");
+        return;
+      }
+      if (resp.status === 400) {
+        fail("La conversación no pudo procesarse. Prueba con un mensaje más breve o reiníciala.");
         return;
       }
       if (!resp.ok || !resp.body) {
@@ -90,44 +126,21 @@ const AgentChat = () => {
         return;
       }
 
-      setMessages((m) => [...m, { role: "assistant", content: "" }]);
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let acc = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-        let idx: number;
-        while ((idx = buffer.indexOf("\n")) !== -1) {
-          const line = buffer.slice(0, idx).trim();
-          buffer = buffer.slice(idx + 1);
-          if (!line.startsWith("data:")) continue;
-          const data = line.slice(5).trim();
-          if (data === "[DONE]") continue;
-          try {
-            const json = JSON.parse(data);
-            const delta = json.choices?.[0]?.delta?.content;
-            if (delta) {
-              acc += delta;
-              setMessages((m) => {
-                const copy = [...m];
-                copy[copy.length - 1] = { role: "assistant", content: acc };
-                return copy;
-              });
-            }
-          } catch {
-            // partial JSON, wait for more
-          }
-        }
+      let answer = "";
+      await readChatStream(resp.body, (delta) => {
+        if (version !== requestVersion.current) return;
+        answer += delta;
+        setMessages([...next, { role: "assistant", content: answer }]);
+      }, controller.signal);
+    } catch (error) {
+      if (version === requestVersion.current && !controller.signal.aborted) {
+        fail(error instanceof Error ? error.message : "Error de red. Revisa tu conexión.");
       }
-    } catch {
-      toast.error("Error de red. Revisa tu conexión.");
-      setInput(text);
     } finally {
-      setLoading(false);
+      if (version === requestVersion.current) {
+        inFlight.current = null;
+        setLoading(false);
+      }
     }
   };
 
@@ -146,7 +159,7 @@ const AgentChat = () => {
         <p className="text-foreground/70 text-xs leading-relaxed">
           Estos agentes usan IA con fines educativos y de práctica. <strong className="text-foreground/90">No diagnostican
           ni sustituyen a un profesional</strong>. Si hay riesgo de autolesión o suicidio, llama al <strong className="text-laser">024</strong> (España)
-          o a tus servicios de emergencia locales.
+          o a tus servicios de emergencia locales. Los mensajes enviados a este chat se procesan mediante un proveedor externo de IA; evita incluir datos identificativos.
         </p>
       </div>
 
@@ -158,7 +171,7 @@ const AgentChat = () => {
           return (
             <button
               key={a.id}
-              onClick={() => setAgent(a.id)}
+              onClick={() => selectAgent(a.id)}
               className={`reveal-stagger hover-lift press-spring text-left rounded-2xl p-4 border transition-all duration-500 ${
                 on
                   ? "glass-laser laser-border"
@@ -182,7 +195,7 @@ const AgentChat = () => {
           </p>
           {messages.length > 0 && (
             <button
-              onClick={() => setMessages([])}
+              onClick={resetChat}
               className="text-foreground/40 hover:text-foreground/80 transition-colors"
               aria-label="Reiniciar conversación"
             >
