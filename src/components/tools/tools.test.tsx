@@ -122,6 +122,37 @@ describe("Journal", () => {
     expect(JSON.parse(localStorage.getItem("abrazo-journal")!)).toHaveLength(1);
   });
 
+  it("no elimina un registro sin confirmar y permite cancelar", () => {
+    render(<Journal />);
+    fireEvent.click(screen.getByRole("button", { name: /nuevo registro/i }));
+    fireEvent.change(screen.getByLabelText(/Disparador/), {
+      target: { value: "Una conversación importante" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /guardar registro/i }));
+    expect(JSON.parse(localStorage.getItem("abrazo-journal")!)).toHaveLength(1);
+
+    fireEvent.click(screen.getByRole("button", { name: /borrar registro/i }));
+    expect(screen.getByText("Una conversación importante")).toBeInTheDocument();
+    expect(JSON.parse(localStorage.getItem("abrazo-journal")!)).toHaveLength(1);
+    fireEvent.click(screen.getByRole("button", { name: /cancelar/i }));
+    expect(screen.getByText("Una conversación importante")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /borrar registro/i }));
+    fireEvent.click(screen.getByRole("button", { name: /sí, borrar registro/i }));
+    expect(screen.queryByText("Una conversación importante")).not.toBeInTheDocument();
+    expect(JSON.parse(localStorage.getItem("abrazo-journal")!)).toHaveLength(0);
+  });
+
+  it("recupera una fecha inválida sin bloquear el diario", () => {
+    localStorage.setItem(
+      "abrazo-journal",
+      JSON.stringify([{ id: "legacy", date: "no-es-fecha", emotion: "Calma", trigger: "Recuerdo" }]),
+    );
+    render(<Journal />);
+    expect(screen.getByText("Recuerdo")).toBeInTheDocument();
+    expect(screen.queryByText("Invalid Date")).not.toBeInTheDocument();
+  });
+
   it("abre aunque el guardado sea de una versión antigua e incompleta", () => {
     localStorage.setItem(
       "abrazo-journal",

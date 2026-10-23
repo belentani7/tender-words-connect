@@ -53,7 +53,7 @@ const reviveEntries = (raw: unknown): Entry[] | null => {
         ...base,
         ...e,
         id: typeof e.id === "string" && e.id ? e.id : base.id,
-        date: typeof e.date === "string" && e.date ? e.date : base.date,
+        date: typeof e.date === "string" && !Number.isNaN(Date.parse(e.date)) ? e.date : base.date,
         emotion: typeof e.emotion === "string" && e.emotion ? e.emotion : base.emotion,
         intensity: clamp10(e.intensity, base.intensity),
         after: clamp10(e.after, base.after),
@@ -73,6 +73,7 @@ const Journal = () => {
   const [entries, setEntries] = useLocalState<Entry[]>("abrazo-journal", [], reviveEntries);
   const [draft, setDraft] = useState<Entry>(empty);
   const [open, setOpen] = useState(false);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const rangesId = useId();
 
   const stats = useMemo(() => {
@@ -230,12 +231,34 @@ const Journal = () => {
                 <p className="mono text-[10px] text-foreground/30 mt-0.5">{fmt(e.date)}</p>
               </div>
               <button
-                onClick={() => setEntries(entries.filter((x) => x.id !== e.id))}
+                onClick={() => setPendingDeleteId(e.id)}
                 className="text-foreground/30 hover:text-primary transition-colors"
                 aria-label="Borrar registro"
               >
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
+              {pendingDeleteId === e.id && (
+                <div role="group" aria-label="Confirmar borrado de registro" className="flex flex-wrap items-center gap-2 text-xs">
+                  <span className="text-foreground/70">¿Borrar definitivamente este registro?</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEntries((current) => current.filter((item) => item.id !== e.id));
+                      setPendingDeleteId(null);
+                    }}
+                    className="rounded border border-primary/40 px-2 py-1 text-primary"
+                  >
+                    Sí, borrar registro
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPendingDeleteId(null)}
+                    className="rounded border border-foreground/20 px-2 py-1 text-foreground/70"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              )}
             </div>
             <div className="space-y-1.5 text-sm">
               {([["Disparador", e.trigger], ["Pensamiento", e.thought], ["Cuerpo", e.body], ["Qué hice", e.action], ["Habilidad", e.skill]] as const)
