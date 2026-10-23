@@ -45,7 +45,7 @@ describe("ABRAZO chat SSE reader", () => {
     let cancelled = false;
     const stream = new ReadableStream<Uint8Array>({
       start(controller) {
-        controller.enqueue(encoder.encode("data: {\\n\\n"));
+        controller.enqueue(encoder.encode("data: {\n\n"));
       },
       cancel() {
         cancelled = true;
