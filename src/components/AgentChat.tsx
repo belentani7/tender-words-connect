@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Brain, HeartHandshake, Send, Sparkles, User2, AlertTriangle, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { readChatStream } from "@/lib/chat-stream";
 
 type AgentId = "terapeuta" | "paciente" | "pareja";
 type Msg = { role: "user" | "assistant"; content: string };
@@ -40,12 +41,27 @@ const AgentChat = () => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const requestRef = useRef<AbortController | null>(null);
   const active = AGENTS.find((a) => a.id === agent)!;
 
+  const cancelPending = () => {
+    requestRef.current?.abort();
+    requestRef.current = null;
+    setLoading(false);
+  };
+
   useEffect(() => {
+    requestRef.current?.abort();
+    requestRef.current = null;
+    setLoading(false);
     setMessages([]);
     setInput("");
   }, [agent]);
+
+  useEffect(() => () => {
+    requestRef.current?.abort();
+    requestRef.current = null;
+  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -53,12 +69,20 @@ const AgentChat = () => {
 
   const send = async () => {
     const text = input.trim();
-    if (!text || loading) return;
+    if (!text || loading || requestRef.current) return;
     const next: Msg[] = [...messages, { role: "user", content: text }];
+    // El backend acepta como máximo 40 mensajes. No borrar ni enviar un
+    // mensaje que sabemos que será rechazado sin ofrecer una salida.
+    if (next.length > 40) {
+      toast.error("Esta conversación alcanzó su límite. Reiníciala para continuar.");
+      return;
+    }
+
+    const controller = new AbortController();
+    requestRef.current = controller;
     setMessages(next);
     setInput("");
     setLoading(true);
-
     try {
       const resp = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-agent`, {
         method: "POST",
@@ -67,67 +91,34 @@ const AgentChat = () => {
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({ agent, messages: next }),
+        signal: controller.signal,
       });
 
-      // Si algo falla se conserva el mensaje escrito y se devuelve al campo de
-      // texto: borraba lo que la persona habia contado justo cuando peor lo
-      // estaba pasando, y tenia que volver a escribirlo todo.
-      const fail = (msg: string) => {
-        toast.error(msg);
-        setInput(text);
-      };
+      if (resp.status === 429) throw new Error("Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.");
+      if (resp.status === 402) throw new Error("Se agotaron los créditos de IA. Inténtalo más tarde.");
+      if (resp.status === 400) throw new Error("El mensaje o la conversación son demasiado largos. Acórtalos o reinicia.");
+      if (!resp.ok || !resp.body) throw new Error("No se pudo conectar con el agente. Inténtalo de nuevo.");
 
-      if (resp.status === 429) {
-        fail("Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.");
-        return;
-      }
-      if (resp.status === 402) {
-        fail("Se agotaron los créditos de IA. Añade créditos para continuar.");
-        return;
-      }
-      if (!resp.ok || !resp.body) {
-        fail("No se pudo conectar con el agente. Inténtalo de nuevo.");
-        return;
-      }
-
-      setMessages((m) => [...m, { role: "assistant", content: "" }]);
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let acc = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-        let idx: number;
-        while ((idx = buffer.indexOf("\n")) !== -1) {
-          const line = buffer.slice(0, idx).trim();
-          buffer = buffer.slice(idx + 1);
-          if (!line.startsWith("data:")) continue;
-          const data = line.slice(5).trim();
-          if (data === "[DONE]") continue;
-          try {
-            const json = JSON.parse(data);
-            const delta = json.choices?.[0]?.delta?.content;
-            if (delta) {
-              acc += delta;
-              setMessages((m) => {
-                const copy = [...m];
-                copy[copy.length - 1] = { role: "assistant", content: acc };
-                return copy;
-              });
-            }
-          } catch {
-            // partial JSON, wait for more
-          }
+      setMessages([...next, { role: "assistant", content: "" }]);
+      await readChatStream(resp.body, (fullText) => {
+        if (requestRef.current === controller && !controller.signal.aborted) {
+          setMessages([...next, { role: "assistant", content: fullText }]);
         }
-      }
-    } catch {
-      toast.error("Error de red. Revisa tu conexión.");
-      setInput(text);
+      }, controller.signal);
+    } catch (error) {
+      // Un cambio de modo, un reinicio o un desmontaje invalida por completo
+      // la petición anterior: su respuesta no debe aparecer en el nuevo chat.
+      if (requestRef.current !== controller || controller.signal.aborted) return;
+      // Restaura el borrador y cualquier texto nuevo sin duplicar el mensaje
+      // en el historial. Incluso los cortes a mitad del streaming son recuperables.
+      setMessages(messages);
+      setInput((draft) => draft.trim() ? `${text}\n${draft}` : text);
+      toast.error(error instanceof Error ? error.message : "Error de red. Revisa tu conexión.");
     } finally {
-      setLoading(false);
+      if (requestRef.current === controller) {
+        requestRef.current = null;
+        setLoading(false);
+      }
     }
   };
 
@@ -150,6 +141,12 @@ const AgentChat = () => {
         </p>
       </div>
 
+      <p className="text-foreground/50 text-xs leading-relaxed">
+        Al enviar un mensaje, su contenido y el historial de este chat se procesan mediante un
+        proveedor externo de IA. No incluyas información que no desees compartir con ese servicio.
+        Esta conversación no se guarda en el diario local.
+      </p>
+
       {/* Agent selector */}
       <div className="grid sm:grid-cols-3 gap-3">
         {AGENTS.map((a) => {
@@ -158,7 +155,7 @@ const AgentChat = () => {
           return (
             <button
               key={a.id}
-              onClick={() => setAgent(a.id)}
+              onClick={() => { cancelPending(); setAgent(a.id); }}
               className={`reveal-stagger hover-lift press-spring text-left rounded-2xl p-4 border transition-all duration-500 ${
                 on
                   ? "glass-laser laser-border"
@@ -182,7 +179,7 @@ const AgentChat = () => {
           </p>
           {messages.length > 0 && (
             <button
-              onClick={() => setMessages([])}
+              onClick={() => { cancelPending(); setMessages([]); setInput(""); }}
               className="text-foreground/40 hover:text-foreground/80 transition-colors"
               aria-label="Reiniciar conversación"
             >
