@@ -66,6 +66,19 @@ describe("ABRAZO AgentChat reliability", () => {
     expect(screen.queryByText("Mi experiencia")).not.toBeInTheDocument();
   });
 
+  it("keeps the submitted message and a newer draft when reset cancels loading", () => {
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(() => new Promise(() => {})));
+    render(<AgentChat />);
+    typeAndSend("Primer mensaje");
+    fireEvent.change(screen.getByRole("textbox", { name: /escribe tu mensaje/i }), {
+      target: { value: "Borrador nuevo" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /reiniciar conversación/i }));
+
+    expect(screen.getByRole("textbox", { name: /escribe tu mensaje/i }))
+      .toHaveValue("Primer mensaje\n\nBorrador nuevo");
+  });
+
   it("cancels the previous role's request when switching role", () => {
     let requestSignal: AbortSignal | undefined;
     vi.stubGlobal("fetch", vi.fn().mockImplementation((_url, options: RequestInit) => {
