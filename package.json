@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "predev": "node scripts/generate-sitemap.ts || echo \"· sitemap.xml no regenerado (se mantiene el commiteado)\"",
-    "prebuild": "node scripts/generate-sitemap.ts || echo \"· sitemap.xml no regenerado (se mantiene el commiteado)\""
+    "prebuild": "node scripts/generate-sitemap.ts",
+    "quality:check": "npm run typecheck && npm run lint && npm test && npm run build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
