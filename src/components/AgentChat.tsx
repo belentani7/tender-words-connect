@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Brain, HeartHandshake, Send, Sparkles, User2, AlertTriangle, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { readChatStream } from "@/lib/chatStream";
 
 type AgentId = "terapeuta" | "paciente" | "pareja";
 type Msg = { role: "user" | "assistant"; content: string };
@@ -40,24 +41,51 @@ const AgentChat = () => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const requestRef = useRef<AbortController | null>(null);
+  const pendingTextRef = useRef<string | null>(null);
   const active = AGENTS.find((a) => a.id === agent)!;
 
-  useEffect(() => {
-    setMessages([]);
-    setInput("");
-  }, [agent]);
+  // A response must not keep writing into an unmounted conversation.
+  useEffect(() => () => requestRef.current?.abort(), []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
 
+  const stopRequest = () => {
+    const unsent = pendingTextRef.current;
+    requestRef.current?.abort();
+    requestRef.current = null;
+    pendingTextRef.current = null;
+    setLoading(false);
+    // Switching roles or clearing a stalled chat must never erase a long
+    // message that was already submitted but has not finished processing.
+    if (unsent) setInput((current) => current.trim() ? current : unsent);
+  };
+
+  const changeAgent = (next: AgentId) => {
+    if (next === agent) return;
+    stopRequest();
+    setMessages([]);
+    setAgent(next);
+  };
+
+  const resetChat = () => {
+    stopRequest();
+    setMessages([]);
+  };
+
   const send = async () => {
     const text = input.trim();
-    if (!text || loading) return;
+    if (!text || loading || requestRef.current) return;
     const next: Msg[] = [...messages, { role: "user", content: text }];
+    const controller = new AbortController();
+    requestRef.current = controller;
+    pendingTextRef.current = text;
     setMessages(next);
     setInput("");
     setLoading(true);
+    let hasReply = false;
 
     try {
       const resp = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-agent`, {
@@ -67,67 +95,60 @@ const AgentChat = () => {
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({ agent, messages: next }),
+        signal: controller.signal,
       });
 
-      // Si algo falla se conserva el mensaje escrito y se devuelve al campo de
-      // texto: borraba lo que la persona habia contado justo cuando peor lo
-      // estaba pasando, y tenia que volver a escribirlo todo.
-      const fail = (msg: string) => {
-        toast.error(msg);
-        setInput(text);
-      };
+      if (resp.status === 429) throw new Error("Demasiadas solicitudes. Vuelve a intentarlo en un momento.");
+      if (resp.status === 402) throw new Error("El servicio de IA no tiene créditos disponibles.");
+      if (resp.status === 400) throw new Error("El mensaje no se pudo procesar. Prueba con un texto más corto.");
+      if (resp.status === 503) throw new Error("El servicio de IA no está disponible en este momento.");
+      if (!resp.ok || !resp.body) throw new Error("No se pudo conectar con el agente.");
 
-      if (resp.status === 429) {
-        fail("Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.");
-        return;
-      }
-      if (resp.status === 402) {
-        fail("Se agotaron los créditos de IA. Añade créditos para continuar.");
-        return;
-      }
-      if (!resp.ok || !resp.body) {
-        fail("No se pudo conectar con el agente. Inténtalo de nuevo.");
-        return;
-      }
-
-      setMessages((m) => [...m, { role: "assistant", content: "" }]);
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let acc = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-        let idx: number;
-        while ((idx = buffer.indexOf("\n")) !== -1) {
-          const line = buffer.slice(0, idx).trim();
-          buffer = buffer.slice(idx + 1);
-          if (!line.startsWith("data:")) continue;
-          const data = line.slice(5).trim();
-          if (data === "[DONE]") continue;
-          try {
-            const json = JSON.parse(data);
-            const delta = json.choices?.[0]?.delta?.content;
-            if (delta) {
-              acc += delta;
-              setMessages((m) => {
-                const copy = [...m];
-                copy[copy.length - 1] = { role: "assistant", content: acc };
-                return copy;
-              });
-            }
-          } catch {
-            // partial JSON, wait for more
+      await readChatStream(resp.body, (reply) => {
+        if (controller.signal.aborted) return;
+        hasReply = true;
+        setMessages((current) => {
+          const updated = [...current];
+          if (updated[updated.length - 1]?.role === "assistant") {
+            updated[updated.length - 1] = { role: "assistant", content: reply };
+          } else {
+            updated.push({ role: "assistant", content: reply });
           }
-        }
+          return updated;
+        });
+      }, controller.signal);
+      if (!hasReply) throw new Error("El agente no ha generado una respuesta. Inténtalo de nuevo.");
+    } catch (error) {
+      if (controller.signal.aborted) return;
+      if (hasReply) {
+        // Keep the partial response visibly marked by the toast. Retrying
+        // will retain the existing conversation instead of losing context.
+        toast.error("Respuesta interrumpida. Lo recibido se ha conservado.");
+      } else {
+        // A failed request is not a sent message: restore the draft without
+        // creating duplicates on the next attempt. Do not overwrite new typing.
+        setMessages((current) =>
+          current[current.length - 1]?.role === "user"
+            ? current.slice(0, -1)
+            : current,
+        );
+        setInput((current) => current.trim() ? current : text);
+        const known = error instanceof Error && [
+          "Demasiadas solicitudes. Vuelve a intentarlo en un momento.",
+          "El servicio de IA no tiene créditos disponibles.",
+          "El mensaje no se pudo procesar. Prueba con un texto más corto.",
+          "El servicio de IA no está disponible en este momento.",
+          "No se pudo conectar con el agente.",
+          "El agente no ha generado una respuesta. Inténtalo de nuevo.",
+        ].includes(error.message);
+        toast.error(known ? (error as Error).message : "Error de red o respuesta incompleta. Inténtalo de nuevo.");
       }
-    } catch {
-      toast.error("Error de red. Revisa tu conexión.");
-      setInput(text);
     } finally {
-      setLoading(false);
+      if (requestRef.current === controller) {
+        requestRef.current = null;
+        pendingTextRef.current = null;
+        setLoading(false);
+      }
     }
   };
 
@@ -150,6 +171,11 @@ const AgentChat = () => {
         </p>
       </div>
 
+      <p role="note" className="text-foreground/55 text-xs leading-relaxed">
+        Privacidad: los mensajes enviados al agente se procesan mediante un servicio externo de IA.
+        Evita incluir información que te identifique. Este chat no se guarda en tu diario local.
+      </p>
+
       {/* Agent selector */}
       <div className="grid sm:grid-cols-3 gap-3">
         {AGENTS.map((a) => {
@@ -158,7 +184,8 @@ const AgentChat = () => {
           return (
             <button
               key={a.id}
-              onClick={() => setAgent(a.id)}
+              onClick={() => changeAgent(a.id)}
+              aria-pressed={on}
               className={`reveal-stagger hover-lift press-spring text-left rounded-2xl p-4 border transition-all duration-500 ${
                 on
                   ? "glass-laser laser-border"
@@ -182,7 +209,7 @@ const AgentChat = () => {
           </p>
           {messages.length > 0 && (
             <button
-              onClick={() => setMessages([])}
+              onClick={resetChat}
               className="text-foreground/40 hover:text-foreground/80 transition-colors"
               aria-label="Reiniciar conversación"
             >
