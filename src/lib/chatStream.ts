@@ -48,10 +48,20 @@ export async function readChatStream(
 
   const consume = (text: string) => {
     buffer += text;
-    let end: number;
-    while (!finished && (end = buffer.indexOf("\n")) !== -1) {
-      const line = buffer.slice(0, end).replace(/\r$/, "");
-      buffer = buffer.slice(end + 1);
+    while (!finished) {
+      const lineFeed = buffer.indexOf("\n");
+      const carriageReturn = buffer.indexOf("\r");
+      if (lineFeed === -1 && carriageReturn === -1) break;
+      const end = lineFeed === -1
+        ? carriageReturn
+        : carriageReturn === -1
+          ? lineFeed
+          : Math.min(lineFeed, carriageReturn);
+      // A CRLF delimiter can be split across network chunks; wait for LF.
+      if (buffer[end] === "\r" && end + 1 === buffer.length) break;
+      const delimiterLength = buffer[end] === "\r" && buffer[end + 1] === "\n" ? 2 : 1;
+      const line = buffer.slice(0, end);
+      buffer = buffer.slice(end + delimiterLength);
       if (line === "") {
         flushEvent();
       } else if (line.startsWith("data:")) {
@@ -87,7 +97,9 @@ export async function readChatStream(
     return fullText;
   } finally {
     signal?.removeEventListener("abort", abortReader);
-    if (finished) await reader.cancel().catch(() => undefined);
+    // Release the upstream body on every exit, including malformed events,
+    // gateway errors and truncated streams.
+    await reader.cancel().catch(() => undefined);
     reader.releaseLock();
   }
 }
