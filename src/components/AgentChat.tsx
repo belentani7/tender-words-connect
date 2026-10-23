@@ -51,7 +51,9 @@ const AgentChat = () => {
   };
 
   useEffect(() => {
-    cancelPending();
+    requestRef.current?.abort();
+    requestRef.current = null;
+    setLoading(false);
     setMessages([]);
     setInput("");
   }, [agent]);
