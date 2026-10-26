@@ -6,7 +6,7 @@
 
 
 
- 🧭 Sobre el Proyecto
+## 🧭 Sobre el Proyecto
 
 ABRAZO no es solo un repositorio de código o un conjunto de textos estáticos; es un mapa cartografiado del caos emocional, un refugio para quienes transitan la delgada línea entre amar intensamente y caminar sobre cristal roto.
 
@@ -16,11 +16,11 @@ Aquí no hay juicios morales, etiquetas frías ni discursos clínicos distantes.
 
 
 
- 🗺️ Estructura del Mapa
+## 🗺️ Estructura del Mapa
 
 El contenido y la arquitectura de este proyecto se organizan en ejes temáticos diseñados para guiar al lector desde el epicentro del desconcierto hasta la firmeza del límite y la recuperación del espacio personal:
 
- Entender: Desglosar la alta intensidad emocional desde dentro. Entender el territorio sin simplificaciones.
+* Entender: Desglosar la alta intensidad emocional desde dentro. Entender el territorio sin simplificaciones.
 * Patrones: Identificar dinámicas ocultas, el ciclo de idealización/devaluación, los mecanismos de defensa y la subversión de la realidad.
 * Límites: El arte y la necesidad de cuidarse. El cimiento inquebrantable desde el cual se sostiene cualquier vínculo sano o se decide un final limpio.
 * Para los Dos / ¿Y si soy yo?: Espejos incómodos y necesarios para observar la propia responsabilidad, las heridas de infancia y la validación interna.
@@ -29,7 +29,7 @@ El contenido y la arquitectura de este proyecto se organizan en ejes temáticos 
 
 
 
- 💡 Filosofía y Principios
+## 💡 Filosofía y Principios
 
 1. La Realidad por Encima de la Fantasía: Las dinámicas humanas complejas no se resuelven con discursos edulcorados. Se entienden diseccionando las motivaciones, el miedo al abandono, la vergüenza y los mecanismos de control.
 2. Soberanía y Límites: Nadie está obligado a inmolarse en el altar de la inestabilidad ajena. Poner un límite no es un castigo; es la restauración del orden natural de un espacio propio.
@@ -37,13 +37,13 @@ El contenido y la arquitectura de este proyecto se organizan en ejes temáticos 
 
 
 
- 🛠️ Uso y Navegación
+## 🛠️ Uso y Navegación
 
 Este repositorio está estructurado para ser leído, adaptado y consultado como un manual de supervivencia emocional y técnica. Puedes explorar las carpetas y archivos correspondientes a cada módulo según el momento analítico o vital en el que te encuentres.
 
 
 
- 🛠️ Desarrollo
+## 🛠️ Desarrollo
 
 Requiere **Node 22.18 o superior** (el generador del sitemap usa el soporte nativo de TypeScript de Node; si no está disponible, se mantiene el `sitemap.xml` ya commiteado y el arranque no se interrumpe).
 
@@ -66,7 +66,7 @@ Las funciones de Supabase (`supabase/functions`) se configuran con variables de 
 
 
 
- 📄 Licencia
+## 📄 Licencia
 
 Este proyecto se comparte bajo los principios de apertura y soberanía personal. Consulta el archivo de licencia para más detalles sobre su uso y redistribución.
 
