@@ -34,7 +34,7 @@ jobs:
       - name: SPA fallback (404 -> index)
         run: |
           if [ -f dist/index.html ]; then cp dist/index.html dist/404.html; fi
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
   deploy:
