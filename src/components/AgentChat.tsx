@@ -3,9 +3,12 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Brain, HeartHandshake, Send, Sparkles, User2, AlertTriangle, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { readChatStream } from "@/lib/chatStream";
 
 type AgentId = "terapeuta" | "paciente" | "pareja";
 type Msg = { role: "user" | "assistant"; content: string };
+
+const MAX_REQUEST_MESSAGES = 40;
 
 const AGENTS: { id: AgentId; name: string; tagline: string; icon: typeof Brain; opener: string }[] = [
   {
@@ -39,25 +42,68 @@ const AgentChat = () => {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [interrupted, setInterrupted] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const requestRef = useRef<AbortController | null>(null);
+  const pendingTextRef = useRef<string | null>(null);
   const active = AGENTS.find((a) => a.id === agent)!;
 
-  useEffect(() => {
-    setMessages([]);
-    setInput("");
-  }, [agent]);
+  // A response must not keep writing into an unmounted conversation.
+  useEffect(() => () => requestRef.current?.abort(), []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
 
+  const restorePendingDraft = (submitted: string | null) => {
+    if (!submitted) return;
+    setInput((current) => {
+      const draft = current.trim();
+      if (!draft || draft === submitted) return submitted;
+      return submitted + "\n\n" + draft;
+    });
+  };
+
+  const stopRequest = () => {
+    const submitted = pendingTextRef.current;
+    requestRef.current?.abort();
+    requestRef.current = null;
+    pendingTextRef.current = null;
+    setLoading(false);
+    // Keep the submitted text and any newer draft together when a request is
+    // cancelled by reset or an agent change.
+    restorePendingDraft(submitted);
+  };
+
+  const changeAgent = (next: AgentId) => {
+    if (next === agent) return;
+    stopRequest();
+    setMessages([]);
+    setInterrupted(false);
+    setAgent(next);
+  };
+
+  const resetChat = () => {
+    stopRequest();
+    setInterrupted(false);
+    setMessages([]);
+  };
+
   const send = async () => {
     const text = input.trim();
-    if (!text || loading) return;
+    if (!text || loading || requestRef.current) return;
     const next: Msg[] = [...messages, { role: "user", content: text }];
+    // The edge function accepts at most 40 messages. Keep the full transcript
+    // in the UI but send the most recent window instead of triggering a
+    // predictable 400 after twenty complete exchanges.
+    const requestMessages = next.slice(-MAX_REQUEST_MESSAGES);
+    const controller = new AbortController();
+    requestRef.current = controller;
+    pendingTextRef.current = text;
     setMessages(next);
     setInput("");
     setLoading(true);
+    let hasReply = false;
 
     try {
       const resp = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-agent`, {
@@ -66,68 +112,77 @@ const AgentChat = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: JSON.stringify({ agent, messages: next }),
+        body: JSON.stringify({ agent, messages: requestMessages }),
+        signal: controller.signal,
       });
 
-      // Si algo falla se conserva el mensaje escrito y se devuelve al campo de
-      // texto: borraba lo que la persona habia contado justo cuando peor lo
-      // estaba pasando, y tenia que volver a escribirlo todo.
-      const fail = (msg: string) => {
-        toast.error(msg);
-        setInput(text);
-      };
-
-      if (resp.status === 429) {
-        fail("Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.");
-        return;
-      }
-      if (resp.status === 402) {
-        fail("Se agotaron los créditos de IA. Añade créditos para continuar.");
-        return;
-      }
-      if (!resp.ok || !resp.body) {
-        fail("No se pudo conectar con el agente. Inténtalo de nuevo.");
-        return;
-      }
-
-      setMessages((m) => [...m, { role: "assistant", content: "" }]);
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let acc = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-        let idx: number;
-        while ((idx = buffer.indexOf("\n")) !== -1) {
-          const line = buffer.slice(0, idx).trim();
-          buffer = buffer.slice(idx + 1);
-          if (!line.startsWith("data:")) continue;
-          const data = line.slice(5).trim();
-          if (data === "[DONE]") continue;
-          try {
-            const json = JSON.parse(data);
-            const delta = json.choices?.[0]?.delta?.content;
-            if (delta) {
-              acc += delta;
-              setMessages((m) => {
-                const copy = [...m];
-                copy[copy.length - 1] = { role: "assistant", content: acc };
-                return copy;
-              });
-            }
-          } catch {
-            // partial JSON, wait for more
-          }
+      if (resp.status === 429) throw new Error("Demasiadas solicitudes. Vuelve a intentarlo en un momento.");
+      if (resp.status === 402) throw new Error("El servicio de IA no tiene créditos disponibles.");
+      if (resp.status === 400) {
+        let detail = "";
+        try {
+          const payload = await resp.clone().json() as { detail?: unknown };
+          detail = typeof payload.detail === "string" ? payload.detail : "";
+        } catch {
+          // Keep the generic message when the gateway does not return JSON.
         }
+        if (/conversación|conversation|40 mensajes|demasiado larga/i.test(detail)) {
+          throw new Error("La conversación ha alcanzado su límite. Reinicia el chat para continuar.");
+        }
+        throw new Error("El mensaje no se pudo procesar. Prueba con un texto más corto.");
       }
-    } catch {
-      toast.error("Error de red. Revisa tu conexión.");
-      setInput(text);
+      if (resp.status === 503) throw new Error("El servicio de IA no está disponible en este momento.");
+      if (!resp.ok || !resp.body) throw new Error("No se pudo conectar con el agente.");
+
+      await readChatStream(resp.body, (reply) => {
+        if (controller.signal.aborted) return;
+        hasReply = true;
+        setMessages((current) => {
+          const updated = [...current];
+          if (updated[updated.length - 1]?.role === "assistant") {
+            updated[updated.length - 1] = { role: "assistant", content: reply };
+          } else {
+            updated.push({ role: "assistant", content: reply });
+          }
+          return updated;
+        });
+      }, controller.signal);
+      if (!hasReply) throw new Error("El agente no ha generado una respuesta. Inténtalo de nuevo.");
+      // Clear an interruption warning only after a complete retry succeeds.
+      setInterrupted(false);
+    } catch (error) {
+      if (controller.signal.aborted) return;
+      if (hasReply) {
+        // Keep the partial response visibly marked by the toast. Retrying
+        // will retain the existing conversation instead of losing context.
+        setInterrupted(true);
+        toast.error("Respuesta interrumpida. Lo recibido se ha conservado.");
+      } else {
+        // A failed request is not a sent message: restore the draft without
+        // creating duplicates on the next attempt. Do not overwrite new typing.
+        setMessages((current) =>
+          current[current.length - 1]?.role === "user"
+            ? current.slice(0, -1)
+            : current,
+        );
+        setInput((current) => current.trim() && current.trim() !== text ? `${text}\n\n${current}` : text);
+        const known = error instanceof Error && [
+          "Demasiadas solicitudes. Vuelve a intentarlo en un momento.",
+          "El servicio de IA no tiene créditos disponibles.",
+          "El mensaje no se pudo procesar. Prueba con un texto más corto.",
+          "La conversación ha alcanzado su límite. Reinicia el chat para continuar.",
+          "El servicio de IA no está disponible en este momento.",
+          "No se pudo conectar con el agente.",
+          "El agente no ha generado una respuesta. Inténtalo de nuevo.",
+        ].includes(error.message);
+        toast.error(known ? (error as Error).message : "Error de red o respuesta incompleta. Inténtalo de nuevo.");
+      }
     } finally {
-      setLoading(false);
+      if (requestRef.current === controller) {
+        requestRef.current = null;
+        pendingTextRef.current = null;
+        setLoading(false);
+      }
     }
   };
 
@@ -150,6 +205,11 @@ const AgentChat = () => {
         </p>
       </div>
 
+      <p role="note" className="text-foreground/55 text-xs leading-relaxed">
+        Privacidad: los mensajes enviados al agente se procesan mediante un servicio externo de IA.
+        Evita incluir información que te identifique. Este chat no se guarda en tu diario local.
+      </p>
+
       {/* Agent selector */}
       <div className="grid sm:grid-cols-3 gap-3">
         {AGENTS.map((a) => {
@@ -158,7 +218,8 @@ const AgentChat = () => {
           return (
             <button
               key={a.id}
-              onClick={() => setAgent(a.id)}
+              onClick={() => changeAgent(a.id)}
+              aria-pressed={on}
               className={`reveal-stagger hover-lift press-spring text-left rounded-2xl p-4 border transition-all duration-500 ${
                 on
                   ? "glass-laser laser-border"
@@ -182,7 +243,7 @@ const AgentChat = () => {
           </p>
           {messages.length > 0 && (
             <button
-              onClick={() => setMessages([])}
+              onClick={resetChat}
               className="text-foreground/40 hover:text-foreground/80 transition-colors"
               aria-label="Reiniciar conversación"
             >
@@ -232,6 +293,12 @@ const AgentChat = () => {
         </div>
 
         <div className="border-t border-foreground/[0.06] p-3">
+          {interrupted && (
+            <p role="alert" className="mb-2 rounded-xl border border-amber-400/30 p-3 text-xs text-amber-200">
+              La respuesta anterior quedó incompleta por un corte de conexión. El texto recibido permanece visible.
+              Puedes volver a enviar un mensaje para continuar.
+            </p>
+          )}
           <div className="flex items-end gap-2">
             <textarea
               value={input}
