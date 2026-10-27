@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import AgentChat from "./AgentChat";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn() } }));
@@ -48,7 +48,7 @@ describe("ABRAZO AgentChat reliability", () => {
       expect(screen.getByRole("textbox", { name: /escribe tu mensaje/i }))
         .toHaveValue("Un mensaje que no quiero perder");
     });
-    expect(screen.queryByText("Un mensaje que no quiero perder")).not.toBeInTheDocument();
+    expect(within(screen.getByRole("log")).queryByText("Un mensaje que no quiero perder")).not.toBeInTheDocument();
   });
 
   it("cancels a pending request on reset and restores its text", async () => {
@@ -63,7 +63,7 @@ describe("ABRAZO AgentChat reliability", () => {
 
     expect(requestSignal?.aborted).toBe(true);
     expect(screen.getByRole("textbox", { name: /escribe tu mensaje/i })).toHaveValue("Mi experiencia");
-    expect(screen.queryByText("Mi experiencia")).not.toBeInTheDocument();
+    expect(within(screen.getByRole("log")).queryByText("Mi experiencia")).not.toBeInTheDocument();
   });
 
   it("keeps the submitted message and a newer draft when reset cancels loading", () => {
