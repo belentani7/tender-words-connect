@@ -97,7 +97,7 @@ describe("ABRAZO chat SSE reader", () => {
   it("rejects oversized aggregate replies without presenting the excess text", async () => {
     const chunks = Array.from({ length: 6 }, () => event("a".repeat(100_000)));
     const onText = vi.fn();
-    await expect(readChatStream(streamed([encoder.encode(chunks.join("") + "data: [DONE]\\n\\n")]), onText))
+    await expect(readChatStream(streamed([encoder.encode(chunks.join("") + "data: [DONE]\n\n")]), onText))
       .rejects.toThrow("chat_reply_too_large");
     expect(onText).toHaveBeenCalledTimes(5);
     expect(onText.mock.lastCall?.[0]).toHaveLength(500_000);
