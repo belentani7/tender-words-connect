@@ -82,4 +82,25 @@ describe("ABRAZO chat SSE reader", () => {
     await expect(pending).rejects.toMatchObject({ name: "AbortError" });
     expect(wasCancelled).toBe(true);
   });
+  it("rejects an oversized unterminated SSE line instead of buffering indefinitely", async () => {
+    const input = "data: " + "x".repeat(150_000);
+    await expect(readChatStream(streamed([encoder.encode(input)]), () => {}))
+      .rejects.toThrow("chat_event_too_large");
+  });
+
+  it("bounds multiline SSE event data before parsing JSON", async () => {
+    const input = Array.from({ length: 5 }, () => "data: " + "a".repeat(30_000) + "\n").join("");
+    await expect(readChatStream(streamed([encoder.encode(input)]), () => {}))
+      .rejects.toThrow("chat_event_too_large");
+  });
+
+  it("rejects oversized aggregate replies without presenting the excess text", async () => {
+    const chunks = Array.from({ length: 6 }, () => event("a".repeat(100_000)));
+    const onText = vi.fn();
+    await expect(readChatStream(streamed([encoder.encode(chunks.join("") + "data: [DONE]\\n\\n")]), onText))
+      .rejects.toThrow("chat_reply_too_large");
+    expect(onText).toHaveBeenCalledTimes(5);
+    expect(onText.mock.lastCall?.[0]).toHaveLength(500_000);
+  });
+
 });

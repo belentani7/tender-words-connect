@@ -5,6 +5,11 @@
  * of a UTF-8 character). Only blank lines delimit events; a `data:` line by
  * itself is not guaranteed to contain a complete event.
  */
+// Bound untrusted SSE payloads so a stuck or compromised gateway cannot grow
+// a browser tab's memory without limit.
+const MAX_EVENT_CHARS = 128 * 1024;
+const MAX_REPLY_CHARS = 512 * 1024;
+
 export async function readChatStream(
   stream: ReadableStream<Uint8Array>,
   onText: (text: string) => void,
@@ -14,6 +19,7 @@ export async function readChatStream(
   const decoder = new TextDecoder();
   let buffer = "";
   let dataLines: string[] = [];
+  let eventChars = 0;
   let fullText = "";
   let finished = false;
 
@@ -21,6 +27,7 @@ export async function readChatStream(
     if (dataLines.length === 0) return;
     const payload = dataLines.join("\n");
     dataLines = [];
+    eventChars = 0;
     if (payload.trim() === "[DONE]") {
       finished = true;
       return;
@@ -41,6 +48,7 @@ export async function readChatStream(
 
     const delta = data.choices?.[0]?.delta?.content;
     if (typeof delta === "string" && delta.length > 0) {
+      if (fullText.length + delta.length > MAX_REPLY_CHARS) throw new Error("chat_reply_too_large");
       fullText += delta;
       onText(fullText);
     }
@@ -61,13 +69,18 @@ export async function readChatStream(
       if (buffer[end] === "\r" && end + 1 === buffer.length) break;
       const delimiterLength = buffer[end] === "\r" && buffer[end + 1] === "\n" ? 2 : 1;
       const line = buffer.slice(0, end);
+      if (line.length > MAX_EVENT_CHARS) throw new Error("chat_event_too_large");
       buffer = buffer.slice(end + delimiterLength);
       if (line === "") {
         flushEvent();
       } else if (line.startsWith("data:")) {
-        dataLines.push(line.slice(5).replace(/^ /, ""));
+        const data = line.slice(5).replace(/^ /, "");
+        eventChars += data.length + 1;
+        if (eventChars > MAX_EVENT_CHARS) throw new Error("chat_event_too_large");
+        dataLines.push(data);
       }
     }
+    if (!finished && buffer.length > MAX_EVENT_CHARS) throw new Error("chat_event_too_large");
   };
 
   // A request may already have received headers when the user changes agent.
