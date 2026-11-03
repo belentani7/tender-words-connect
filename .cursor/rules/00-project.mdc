@@ -1,0 +1,39 @@
+---
+description: Contexto, stack y convenciones base del proyecto
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Proyecto: belentani7__tender-words-connect
+
+Stack detectado: ci, frontend, node, react, tailwind, tests, typescript, vite.
+Gestores de paquetes: bun, npm.
+Tests: vitest.
+
+## Protocolo
+
+1. Spec-first: PRD → SRS → Design Doc → ADR → Plan → tests GWT.
+2. Cambios pequeños, reversibles y con verificación real.
+3. Conventional commits: `type(scope): summary`.
+4. No commitear secretos ni credenciales.
+5. No ejecutar TypeScript sin compilar en producción.
+
+## Comandos
+
+- `dev`: `vite`
+- `build`: `vite build`
+- `build:dev`: `vite build --mode development`
+- `lint`: `eslint .`
+- `typecheck`: `tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json`
+- `preview`: `vite preview`
+- `test`: `vitest run`
+- `test:watch`: `vitest`
+- `predev`: `node scripts/generate-sitemap.ts || echo "· sitemap.xml no regenerado (se mantiene el commiteado)"`
+- `prebuild`: `node scripts/generate-sitemap.ts`
+- `quality:check`: `npm run typecheck && npm run lint && npm test && npm run build`
+
+## Verificación mínima
+
+- Tests del stack en verde.
+- Build reproducible.
+- `gitleaks detect --source . --redact` limpio.
