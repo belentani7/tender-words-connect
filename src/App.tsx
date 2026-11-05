@@ -1,3 +1,4 @@
+import HeroShader from './components/HeroShader';
 // Punto de entrada de la aplicacion Tender Words Connect.
 //
 // El orden de los proveedores de arriba abajo no es casual. Cada uno envuelve
