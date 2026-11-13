@@ -1,20 +1,16 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
-
-const read = (path: string) => readFileSync(resolve(process.cwd(), path), "utf8");
+import indexHtml from "../../index.html?raw";
+import vercelJson from "../../vercel.json?raw";
 
 describe("production entrypoint", () => {
   it("mounts the real React application from the Vite shell", () => {
-    const html = read("index.html");
-
-    expect(html).toContain('<div id="root"></div>');
-    expect(html).toContain('<script type="module" src="/src/main.tsx"></script>');
-    expect(html).not.toContain("document.createElement('canvas')");
-    expect(html).not.toContain("document.createElement(");
+    expect(indexHtml).toContain('<div id="root"></div>');
+    expect(indexHtml).toContain('<script type="module" src="/src/main.tsx"></script>');
+    expect(indexHtml).not.toContain("document.createElement('canvas')");
+    expect(indexHtml).not.toContain("document.createElement(");
   });
 
   it("keeps Vercel aligned with the Vite output and SPA routes", () => {
-    const config = JSON.parse(read("vercel.json"));
+    const config = JSON.parse(vercelJson);
 
     expect(config.framework).toBe("vite");
     expect(config.outputDirectory).toBe("dist");
