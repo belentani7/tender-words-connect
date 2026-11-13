@@ -73,3 +73,7 @@ Este proyecto se comparte bajo los principios de apertura y soberanía personal.
 
 
 *© 2026 ABRAZO. Construido para convertir la tormenta en claridad.*
+
+
+## Producto
+Véase `plataforma/OFERTA.md`, `plataforma/precios.json`, `plataforma/ONEPAGER.md`.
