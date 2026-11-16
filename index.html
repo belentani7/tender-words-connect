@@ -79,7 +79,7 @@ color:var(--accent2);padding:4px 10px;border-radius:999px;margin:10px 0}
 </div></header>
 <main id="contenido"><div class="wrap">
 <section class="hero">
-    <div class="hero-canvas"></div>
+    <div class="hero-canvas"><canvas id="hero-canvas" aria-hidden="true"></canvas></div>
     <div class="hero-overlay" id="react-hero">
       <h1>Tender Words Connect</h1>
       <p>Producto completo con home hero, shader WebGL animado, y stack moderno listo para producción.</p>
@@ -101,6 +101,7 @@ color:var(--accent2);padding:4px 10px;border-radius:999px;margin:10px 0}
     </ul>
   </section>
   <footer><p>© 2026 Tender Words Connect - Parte del ecosistema Belentani</p></footer>
+<script>
 /* Hero Shader WebGL */
 (function() {
   const canvas = document.createElement('canvas');
@@ -142,6 +143,7 @@ color:var(--accent2);padding:4px 10px;border-radius:999px;margin:10px 0}
   function render(time) { gl.uniform1f(tl, time * 0.001); gl.uniform2f(ml, mouse.x, mouse.y); gl.drawArrays(gl.TRIANGLES, 0, 6); requestAnimationFrame(render); }
   requestAnimationFrame(render);
 })();
+</script>
 <!-- belentani-ampliacion:start -->
 <a href="ampliacion.html" data-belentani-ampliacion="1" aria-label="Abrir la ampliación de tender-words-connect" style="position:fixed;right:16px;bottom:16px;z-index:2147483647;display:inline-flex;align-items:center;gap:.45rem;padding:.62rem .85rem;border-radius:999px;background:#0f172a;color:#f8fafc;font:600 13px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;text-decoration:none;border:1px solid rgba(255,255,255,.18);box-shadow:0 8px 24px rgba(0,0,0,.28);white-space:nowrap;">Ampliación <span aria-hidden="true">&#8599;</span></a>
 <!-- belentani-ampliacion:end -->
@@ -193,6 +195,7 @@ color:var(--accent2);padding:4px 10px;border-radius:999px;margin:10px 0}
   "chips": []
 }
 </script>
+<script src="hero.js" defer></script>
 <script src="site-hero.js" defer></script>
 </body>
 </html>
