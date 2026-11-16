@@ -80,7 +80,7 @@ color:var(--accent2);padding:4px 10px;border-radius:999px;margin:10px 0}
 <main id="contenido"><div class="wrap">
 <section class="hero">
     <div class="hero-canvas"></div>
-    <div class="hero-overlay">
+    <div class="hero-overlay" id="react-hero">
       <h1>Tender Words Connect</h1>
       <p>Producto completo con home hero, shader WebGL animado, y stack moderno listo para producción.</p>
       <div class="hero-actions">
@@ -181,5 +181,18 @@ color:var(--accent2);padding:4px 10px;border-radius:999px;margin:10px 0}
   }catch(e){ console.log('WebGL init:', e.message); }
 })();
 </script>
+<script type="application/json" id="hero-data">
+{
+  "eyebrow": "",
+  "title": "Tender Words Connect",
+  "subtitle": "Producto completo con home hero, shader WebGL animado, y stack moderno listo para producción.",
+  "install": "npm ci && npm run build",
+  "docsHref": "docs.html",
+  "repoHref": "https://github.com/belentani7/tender-words-connect",
+  "demoHref": "",
+  "chips": []
+}
+</script>
+<script src="site-hero.js" defer></script>
 </body>
 </html>
