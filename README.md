@@ -77,3 +77,10 @@ Este proyecto se comparte bajo los principios de apertura y soberanía personal.
 
 ## Producto
 Véase `plataforma/OFERTA.md`, `plataforma/precios.json`, `plataforma/ONEPAGER.md`.
+
+## Verificacion
+
+```bash
+npm install
+npm test
+```

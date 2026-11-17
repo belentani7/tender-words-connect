@@ -355,3 +355,5 @@ body.a11y-dyslexia * {
     transform: none !important;
   }
 }
+
+@media print{body{background:#fff;color:#000}a[href]::after{content:" (" attr(href) ")"}}
