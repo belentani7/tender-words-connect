@@ -1,8 +1,11 @@
-# Contributor Covenant Code of Conduct
+# Código de Conducta — tender-words-connect
 
-This project adopts Contributor Covenant 2.1.
+Adaptado del Contributor Covenant, versión 2.1.
 
-- Be respectful and inclusive.
-- Report issues: belentani7pedro@gmail.com
+## Nuestro Compromiso
 
-https://www.contributor-covenant.org
+Nos comprometemos a hacer de este proyecto una experiencia libre de acoso para todos.
+
+## Aplicación
+
+Los casos de comportamiento inaceptable pueden ser reportados a @belentani7.

@@ -1,27 +1,9 @@
-# Security Policy
+# Política de Seguridad — tender-words-connect
 
-## Reporting a Vulnerability
+## Reportar vulnerabilidades
 
-If you discover a security vulnerability in this project, please email
-[belentani7pedro@gmail.com](mailto:belentani7pedro@gmail.com)
-instead of using the issue tracker.
+Contacta a @belentani7 antes de divulgar públicamente cualquier problema de seguridad.
 
-Please include:
-- Description of the vulnerability
-- Steps to reproduce
-- Potential impact
-- Suggested fix (if available)
+## Escaneo de secretos
 
-## Security Best Practices
-
-- Keep dependencies up to date
-- Use environment variables for sensitive data
-- Review pull requests carefully
-- Never commit `.env` or credentials
-
-## Supported Versions
-
-| Version | Supported |
-|---------|-----------|
-| Latest  | Yes |
-| Older   | As-is |
+Este repositorio utiliza gitleaks para detectar credenciales expuestas.

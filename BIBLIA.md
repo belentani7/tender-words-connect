@@ -1,10 +1,10 @@
-# tender-words-connect — BIBLIA.md
+# BIBLIA.md — tender-words-connect
 
 > Documento de doctrina del producto. Visión, misión, reglas, arquitectura, stack y decisiones de diseño.
 
 ## 1. Visión
 
-tender-words-connect es un producto del ecosistema belentani7. 
+tender-words-connect es un producto del ecosistema belentani7.
 Forma parte del universo integrado de proyectos bajo la organización GitHub belentani7.
 
 ## 2. Misión
@@ -53,6 +53,10 @@ Proveer valor a través de tecnología moderna, código mantenible y experiencia
 
 ## 8. Decisiones de Arquitectura
 
-- Monorepo o repositorio independiente según el producto
-- Despliegue por copia de archivos (cero build) salvo que se especifique lo contrario
+- Repositorio independiente
+- Despliegue por copia de archivos (cero build)
 - Working trees respetados: no se sobrescriben cambios sin restaurar desde HEAD
+
+## Convenciones de commit
+
+`type(scope): resumen` — feat, fix, docs, chore, refactor, test, perf, style.

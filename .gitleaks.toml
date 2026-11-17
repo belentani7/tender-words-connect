@@ -1,0 +1,29 @@
+title = "Belentani Ecosystem Gitleaks Configuration"
+useDefault = true
+
+[[rules]]
+id = "belentani-api-key"
+description = "Detecta API keys y tokens del ecosistema Belentani"
+regex = '''(?i)(api[_-]?key|secret|token|password|credential|apikey|access[_-]?token).*=.*['"][^'"]+['"]'''
+keywords = ["api", "key", "secret", "token", "password", "credential"]
+
+[[rules.allowlists]]
+description = "Permitir ejemplos y placeholders"
+condition = "OR"
+stopwords = ["example", "test", "placeholder", "your-key-here", "sk-test", "pk_test"]
+
+[[allowlists]]
+description = "Global allowlist"
+condition = "OR"
+paths = [
+  '''.gitleaks\.toml''',
+  '''(.*?)(jpg|gif|doc)$''',
+  '''node_modules/''',
+  '''dist/''',
+  '''tests/''']
+regexTarget = "match"
+regexes = [
+  '''(9[0-9]{2}|666)-\d{2}-\d{4}''',
+  '''219-09-9999''',
+  '''078-05-1120''']
+stopwords = ["client", "endpoint"]
