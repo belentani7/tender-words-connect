@@ -1,5 +1,4 @@
-import HeroShader from './components/HeroShader';
-// Punto de entrada de la aplicacion Tender Words Connect.
+// Punto de entrada de la aplicacion ABRAZO (Tender Words Connect).
 //
 // El orden de los proveedores de arriba abajo no es casual. Cada uno envuelve
 // al siguiente, asi que el de mas fuera es el primero que se ejecuta y el
