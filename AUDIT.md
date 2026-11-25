@@ -138,3 +138,58 @@ son navegadores. Se ha dejado anotado en el código para que nadie añada
 ---
 
 *Auditoría hecha con el mismo cariño con el que está escrito el proyecto: sin romper la ternura, sin esconder lo que no funciona.*
+
+---
+
+# Registro de restauración — 25 de noviembre de 2026
+
+Segunda pasada, forzada por un hallazgo grave: el `index.html` del repositorio
+**ya no era el shell de Vite**. Un generador externo ("repo-superpowers",
+"repo-cursor-superpowers-v1", "belentani-ampliacion") había sustituido la
+portada de la app por una landing estática promocional y había sembrado el
+repo de artefactos. La situación exacta antes de esta pasada:
+
+| # | Hallazgo | Severidad | Estado |
+|---|----------|-----------|--------|
+| 1 | `index.html` estático promocional: la app React no se montaba; `npm run build` "pasaba" pero emitía 4 módulos y 9,67 kB de página falsa; el test `production-entrypoint` FALLABA (73/74) | Crítico | Corregido: restaurado el shell (`<div id="root">` + `/src/main.tsx`), `<html lang="es">`, meta reales, fuentes con preconnect, favicon inline |
+| 2 | `<script src="C:\Users\USER\workspace\repositorios\heyduck\legacy\omega-superpowers-client.js">` en todas las páginas estáticas: ruta local de Windows, siempre 404, filtra estructura de directorios | Crítico | Corregido: archivos eliminados |
+| 3 | `omega-superpowers-client.js`: llamaba a `require('child_process')` desde el navegador para lanzar `C:\Users\USER\workspace\agent-mcp-hub\server.mjs` | Crítico | Corregido: eliminado |
+| 4 | Micrositio estático duplicado (`docs`, `accesibilidad`, `privacidad`, `404`, `ecosistema`, `ampliacion`, `site/`, `_shared/`): branding ajeno ("Tender Words Connect", "ecosistema Belentani"), meta `superpowers`, reclamos "WCAG 2.2 AA" de relleno y la promo "Superpowers MCP – 24 herramientas" embebida en un producto de salud mental | Alto | Corregido: eliminado íntegramente. El 404 real es `src/pages/NotFound.tsx`; la accesibilidad real vive en el panel y en los tests |
+| 5 | `site-hero.js`: bundle React de producción autogenerado (+147 kB) solo para la landing inyectada; `hero.js`/`hero.css` idem | Alto | Corregido: eliminados (React ya es dependencia del proyecto) |
+| 6 | 45 de 49 componentes `src/components/ui/` sin una sola importación desde la app (verificado con cierre de dependencias) + su sombra de dependencias (~34 `@radix-ui/*`, `react-hook-form`, `recharts`, `embla`, `vaul`, `cmdk`, `input-otp`, `react-day-picker`, `react-resizable-panels`, `date-fns`) | Alto | Corregido: podados; quedan `sonner`, `toast`, `toaster`, `tooltip` (los únicos importados). CSS generado 98,2 → 57,6 kB (16 → 10,2 kB gzip) |
+| 7 | `@lovable.dev/mcp-js` declarado dos veces (`dependencies ^0.20.0` y `devDependencies ^3.0.5`); `@vitejs/plugin-react-swc` duplicando a `@vitejs/plugin-react` | Medio | Corregido: solo `devDependencies` (^3.0.5, resuelto 3.6.0); vitest usa `@vitejs/plugin-react`; swc eliminado |
+| 8 | `bun.lock` + `bun.lockb` con URL interna de proxy (`europe-west4-npm.pkg.dev`); `package-lock.json.bak-20261117`; `tests/` (plantilla `assert True`); `canon-tokens.*` (tokens ajenos, fuera del runner de tests); `data/catalogo.*` (salida de `repo_forge.py`); `manifest.webmanifest`; `.python-version`; `robots.txt` raíz duplicado; `public/placeholder.svg` | Medio | Corregido: eliminados |
+| 9 | `npm audit` total: 18 avisos (14 moderados, 4 altas) en el árbol de desarrollo (vitest/mocker, typescript-eslint, mcp-js→@modelcontextprotocol/server, hono, body-parser). Antes se reportaba 0 solo con `--omit=dev`, y solo en el momento de la auditoría anterior | Medio | Corregido: lockfile regenerado (vite 8.3.8, vitest 4.1.12, typescript-eslint 8.74.0) → **0 avisos** también contando dev |
+| 10 | `AGENTS.md` / `BIBLIA.md` inyectadas con doctrina falsa ("deploy por copia de archivos, cero build", tokens CANON) | Medio | Corregido: reescritas con el estado real (stack, comandos, reglas) |
+| 11 | `pages.yml` con Node 20 y `npm install` (ci.yml usa Node 22 + `npm ci`); `.nvmrc` con `20`; `engines >=18` | Bajo | Corregido: Node 22 + `npm ci`; `.nvmrc` 22.18.0; `engines >=22.18` |
+| 12 | `HeroShader.jsx` importado en `App.tsx` pero nunca renderizado; dependía de `window.initHeroShader` del micrositio | Bajo | Corregido: componente e import eliminados |
+
+## Métricas — antes / después
+
+| Métrica | Antes (2026-11-25, base bad4645) | Después |
+|---|---|---|
+| `npm run typecheck` | limpio | limpio |
+| `npm run lint` | 0 errores, 10 avisos | 0 errores, **4 avisos** (mismo aviso fast-refresh en `tools/ui.tsx`, `sonner.tsx`, `useLang.tsx`) |
+| `npm test` | **73/74** (production-entrypoint fallaba) | **74/74** |
+| `npm run build` | 4 módulos; dist/index.html 9,67 kB (landing falsa) | **1937 módulos**; chunks: react 139,8 kB, router 37,8 kB, enciclopedia 65,8 kB (lazy), AgentChat 171,4 kB (lazy), main 463,9 kB (gzip 154 kB); CSS 57,6 kB (gzip 10,2 kB) |
+| `npm audit` (todo) | 18 avisos (4 altas) tras el podar; 0 solo `--omit=dev` | **0 avisos** (`--omit=dev` y total) |
+| Paquetes instalados | 583 | 496 |
+
+## Hallazgos honestos de esta pasada
+
+- **npm 10.9.8 aborta con `npm install`** en este árbol
+  (`TypeError: Cannot read properties of null (reading 'edgesOut')`,
+  `#loadPeerSet` de arborist). No depende de la versión de los paquetes:
+  ocurre incluso con el árbol previo a los bumps y con caché limpia.
+  El lockfile commiteado se regeneró con **npm 12.2.3**; `npm ci` (npm 10.9.8)
+  funciona con ese lockfile. Regenerar el lockfile requiere npm ≥ 11.
+- La variable `SITE_URL` limita el sitemap a HTTPS sin credenciales (correcto);
+  el valor por defecto sigue siendo `https://tender-words-connect.lovable.app`.
+- Las fuentes Google (`fonts.googleapis.com`) no son verificables desde el
+  entorno de esta pasada; es el mismo esquema que documentaba la auditoría
+  anterior (carga por `<link>` con preconnect).
+- El chunk principal (463,9 kB) sigue dominado por contenido + herramientas;
+  el siguiente paso de rendimiento es revisar `recharts` (ya eliminado) y
+  derivar más rutas a lazy loading si el sitio crece.
+- El aviso de fast-refresh restante en `src/components/ui/sonner.tsx` es
+  cosmético (componente vendido); dejarlo como está.
